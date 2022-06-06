@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">siftatcom</string>
+    <string name="err_fields_empty">Some fields are empty!</string>
+    <string name="successfully_registered">You have successfully registered!</string>
+    <string name="successfully_logged_in">You have successfully logged in!</string>
+    <string
+        name="err_firebase_general">Genera Error firebase!</string>
+    <string
+        name="err_incorrect_user_password">Incorrect username or password!</string>
+    <string
+        name="err_incorrect_user_password_heb">שם משתמש או סיסמה לא נכונים!</string>
+</resources>
