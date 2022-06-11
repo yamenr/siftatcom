@@ -1,8 +1,10 @@
-package com.ahmadyosef.app;
+package com.ahmadyosef.app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.ahmadyosef.app.R;
 
 public class FeedActivity extends AppCompatActivity {
 
