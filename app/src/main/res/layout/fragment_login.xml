@@ -15,57 +15,65 @@
             android:id="@+id/etPasswordLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
+            android:layout_marginBottom="44dp"
             android:ems="10"
             android:hint="password..."
             android:inputType="textPassword"
             android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnLoginLogin"
             app:layout_constraintStart_toStartOf="@+id/etUsernameLogin"
             app:layout_constraintTop_toBottomOf="@+id/etUsernameLogin" />
-
-        <EditText
-            android:id="@+id/etUsernameLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="38dp"
-            android:ems="10"
-            android:hint="username..."
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imgLogoLogin" />
 
         <Button
             android:id="@+id/btnLoginLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginBottom="15dp"
             android:text="Login"
+            app:layout_constraintBottom_toTopOf="@+id/lnkSignupLogin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etPasswordLogin" />
-
-        <ImageView
-            android:id="@+id/imgLogoLogin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="79dp"
-            android:src="@drawable/ic_launcher_foreground"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/lnkSignupLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginBottom="205dp"
             android:text="register..."
             android:textColor="#2196F3"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/btnLoginLogin"
             app:layout_constraintTop_toBottomOf="@+id/btnLoginLogin" />
+
+        <EditText
+            android:id="@+id/etUsernameLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="35dp"
+            android:ems="10"
+            android:hint="username..."
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/etPasswordLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imgLogoLogin" />
+
+        <ImageView
+            android:id="@+id/imgLogoLogin"
+            android:layout_width="107dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="57dp"
+            android:layout_marginBottom="104dp"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintBottom_toTopOf="@+id/etUsernameLogin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/team" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

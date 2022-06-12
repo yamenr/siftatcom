@@ -4,6 +4,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 
+import java.util.ArrayList;
+import java.util.Date;
+
 public class FirebaseServices {
 
     private static FirebaseServices instance;
@@ -36,5 +39,13 @@ public class FirebaseServices {
             instance = new FirebaseServices();
 
         return instance;
+    }
+
+    public ArrayList<Shift> shiftToday(Date date, String username)
+    {
+        ArrayList<Shift> shifts = new ArrayList<>();
+        // TODO: retrieve today's shifts according to username
+
+        return shifts;
     }
 }

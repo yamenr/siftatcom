@@ -2,6 +2,10 @@ package com.ahmadyosef.app.data;
 
 import java.util.ArrayList;
 
+enum userType {
+    Driver, Manager, Regular
+}
+
 public class User {
     private String id;
     private String startTime;

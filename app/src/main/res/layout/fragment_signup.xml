@@ -12,23 +12,27 @@
 
         <ImageView
             android:id="@+id/imgLogoSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="108dp"
+            android:layout_height="0dp"
             android:layout_marginTop="79dp"
+            android:layout_marginBottom="41dp"
             android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintBottom_toTopOf="@+id/etUsernameSignup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/team" />
 
         <EditText
             android:id="@+id/etUsernameSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="41dp"
+            android:layout_marginBottom="26dp"
             android:ems="10"
             android:hint="username..."
             android:inputType="textEmailAddress"
             android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/etPasswordSignup"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imgLogoSignup" />
@@ -37,11 +41,12 @@
             android:id="@+id/etPasswordSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
+            android:layout_marginBottom="29dp"
             android:ems="10"
             android:hint="password..."
             android:inputType="textPassword"
             android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnSignupSignup"
             app:layout_constraintStart_toStartOf="@+id/etUsernameSignup"
             app:layout_constraintTop_toBottomOf="@+id/etUsernameSignup" />
 
@@ -49,8 +54,9 @@
             android:id="@+id/btnSignupSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="29dp"
+            android:layout_marginBottom="304dp"
             android:text="Signup"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/etPasswordSignup" />
