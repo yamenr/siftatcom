@@ -17,9 +17,6 @@
             android:name=".activities.FeedActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.SignupActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>

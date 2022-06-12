@@ -1,14 +1,8 @@
 package com.ahmadyosef.app;
 
-
 enum ErrorCodes
 {
     IncorrectAuth, FieldsEmpty, True, False
-}
-
-enum RestCat
-{
-    Oriental, Fast, Sushi, Thai, Chinese
 }
 
 public class Utilities {

@@ -1,4 +1,4 @@
-package com.ahmadyosef.app;
+package com.ahmadyosef.app.data;
 
 enum shiftType {
     Morning, Afternoon, Night

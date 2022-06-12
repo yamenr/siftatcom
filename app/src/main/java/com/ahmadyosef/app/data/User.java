@@ -1,4 +1,4 @@
-package com.ahmadyosef.app;
+package com.ahmadyosef.app.data;
 
 import java.util.ArrayList;
 

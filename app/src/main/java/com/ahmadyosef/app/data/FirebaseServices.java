@@ -1,4 +1,4 @@
-package com.ahmadyosef.app;
+package com.ahmadyosef.app.data;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
