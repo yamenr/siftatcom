@@ -7,21 +7,30 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.adapters.ShiftAdapter;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
+import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.User;
 import com.ahmadyosef.app.interfaces.UsersCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,7 +47,10 @@ public class Todays extends Fragment {
     private ShiftAdapter adapter;
     private ArrayList<Shift> shifts = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
-    UsersCallback ucall;
+    private UsersCallback ucall;
+    private CalendarView cal;
+    private static final String TAG = "TodaysFragment";
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -94,6 +106,7 @@ public class Todays extends Fragment {
     }
 
     private void initialize() {
+        cal = getView().findViewById(R.id.cvTodays);
         rv = getView().findViewById(R.id.rvShiftsTodays);
         fbs = FirebaseServices.getInstance();
         ucall = new UsersCallback() {
@@ -109,6 +122,42 @@ public class Todays extends Fragment {
                 }
             }
         };
+        cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month,
+                                            int dayOfMonth) {
+                for (Shift s : shifts)
+                {
+                    if ((new Date(year, month, dayOfMonth)).toString().equals(s.getDate()))
+                    {
+                        Toast.makeText(getActivity(), "You already have a shift on this day!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
+                // TODO: add dialogue box prompt
+                fileShiftRequest(year, month, dayOfMonth);
+            }
+        });
+    }
+
+    private void fileShiftRequest(int year, int month, int dayOfMonth) {
+        FirebaseUser fbUser = fbs.getAuth().getCurrentUser();
+        ShiftRequest req = new ShiftRequest(fbUser.getEmail(), year, month, dayOfMonth);
+        fbs.getFire().collection("requests")
+                .add(req)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
+                    }
+                });
     }
 
     public ArrayList<User> getUsers()

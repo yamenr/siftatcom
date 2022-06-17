@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1049594429624",
-    "project_id": "shifts2-41f67",
-    "storage_bucket": "shifts2-41f67.appspot.com"
+    "project_number": "386704284416",
+    "project_id": "shifts-c3914",
+    "storage_bucket": "shifts-c3914.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1049594429624:android:926dcdca3f9a3bedb7744d",
+        "mobilesdk_app_id": "1:386704284416:android:ab15176f201a565e4831e5",
         "android_client_info": {
           "package_name": "com.ahmadyosef.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1049594429624-m20hvmpk34bg7fbmsmgul4sj3hi7h35e.apps.googleusercontent.com",
+          "client_id": "386704284416-84ii3q9faqef08li25jec2v51kc4230f.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAre-UbAfi8CWovyz3JdjXQe6vkCQqGTOs"
+          "current_key": "AIzaSyAABGnDQQMbISgELq2DUk28L1pbQGaLpTo"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1049594429624-m20hvmpk34bg7fbmsmgul4sj3hi7h35e.apps.googleusercontent.com",
+              "client_id": "386704284416-84ii3q9faqef08li25jec2v51kc4230f.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

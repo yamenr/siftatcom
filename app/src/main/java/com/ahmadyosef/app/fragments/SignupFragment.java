@@ -1,5 +1,6 @@
 package com.ahmadyosef.app.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -123,13 +124,18 @@ public class SignupFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-             //               Intent i = new Intent(SignupActivity.this, FeedActivity.class);
-               //             startActivity(i);
+                            gotoFeedActivity();
                         } else {
 
                             //Toast.makeText(getv, R.string.err_firebase_general, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private void gotoFeedActivity() {
+        Intent i = new Intent(getActivity(), FeedActivity.class);
+        startActivity(i);
+        ((Activity) getActivity()).overridePendingTransition(0, 0);
     }
 }

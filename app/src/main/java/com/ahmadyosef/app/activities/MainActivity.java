@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         initialize();
     }
 
+
     private void initialize() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frameLayoutMain, new LoginFragment());

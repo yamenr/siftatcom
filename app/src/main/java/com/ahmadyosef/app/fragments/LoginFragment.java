@@ -26,6 +26,7 @@ import com.ahmadyosef.app.data.FirebaseServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -84,6 +85,9 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initialize();
+        FirebaseUser currentUser = fbs.getAuth().getCurrentUser();
+        if (currentUser != null)
+            gotoFeedActivity();
     }
 
     private void initialize() {
