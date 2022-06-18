@@ -8,11 +8,10 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,9 +19,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
-
+import androidx.appcompat.widget.Toolbar;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.adapters.ShiftAdapter;
 import com.ahmadyosef.app.data.FirebaseServices;
@@ -36,12 +34,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.io.IOException;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -67,7 +64,7 @@ public class Todays extends Fragment {
     private Spinner spShiftType;
     private ShiftType selectedShiftType;
     private Date selectedDate;
-
+    private Toolbar tbAction;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -128,16 +125,26 @@ public class Todays extends Fragment {
         rv = getView().findViewById(R.id.rvShiftsTodays);
         fbs = FirebaseServices.getInstance();
         users = getUsers();
+        // TODO: fix toolbar issue
+        try {
+            tbAction = getView().findViewById(R.id.toolbar);
+            ((AppCompatActivity) getActivity()).setSupportActionBar(tbAction);
+        }
+        catch (Exception ex)
+        {
+            Log.e(TAG, ex.getMessage());
+        }
+
         ucall = new UsersCallback() {
             @Override
             public void onCallback(List<User> usersList) {
-                RecyclerView recyclerView = getView().findViewById(R.id.rvShiftsTodays);
-                recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+                rv = getView().findViewById(R.id.rvShiftsTodays);
+                rv.setLayoutManager(new LinearLayoutManager(getContext()));
                 User user = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), getUsers());
                 if (user != null)
                 {
                     adapter = new ShiftAdapter(getContext(), user.getShifts());
-                    recyclerView.setAdapter(adapter);
+                    rv.setAdapter(adapter);
                 }
             }
         };
@@ -189,6 +196,7 @@ public class Todays extends Fragment {
     public ArrayList<User> getUsers()
     {
         try {
+            users.clear();
             fbs.getFire().collection("users")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -278,6 +286,19 @@ public class Todays extends Fragment {
     {
         selectedShiftType = ShiftType.valueOf(data);
         scall.onCallback(selectedShiftType);
+        refreshShiftsInList();
     }
 
+    private void refreshShiftsInList()
+    {
+        getUsers();
+        for (User u : users
+             ) {
+            if (u.getUsername() == fbs.getAuth().getCurrentUser().getEmail())
+                shifts = u.getShifts();
+        }
+
+        adapter = new ShiftAdapter(getContext(), shifts);
+        rv.setAdapter(adapter);
+    }
 }

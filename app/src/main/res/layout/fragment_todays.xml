@@ -10,11 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="1dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="2dp"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:layout_constraintBottom_toTopOf="@+id/cvTodays"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/tvShiftsRegisteredTodays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="19dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginBottom="15dp"
             android:text="List of upcoming shifts..."
             app:layout_constraintBottom_toTopOf="@+id/rvShiftsTodays"
             app:layout_constraintStart_toStartOf="parent"
@@ -23,12 +40,12 @@
         <CalendarView
             android:id="@+id/cvTodays"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="37dp"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@+id/tvShiftsRegisteredTodays"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvShiftsTodays"
@@ -38,6 +55,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvShiftsRegisteredTodays" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
