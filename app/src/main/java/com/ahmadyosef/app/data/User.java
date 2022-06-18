@@ -8,23 +8,23 @@ enum userType {
 
 public class User {
     private String id;
-    private String startTime;
-    private String lastTime;
+    private String name;
     private String username;
     private String address;
     private String phone;
+    private String photo;
     private ArrayList<Shift> shifts;
 
     public User() {
     }
 
-    public User(String id, String startTime, String lastTime, String username, String address, String phone) {
+    public User(String id, String name, String username, String address, String phone, String photo) {
         this.id = id;
-        this.startTime = startTime;
-        this.lastTime = lastTime;
+        this.name = name;
         this.username = username;
         this.address = address;
         this.phone = phone;
+        this.photo = photo;
         this.shifts = new ArrayList<>();
     }
 
@@ -36,20 +36,12 @@ public class User {
         this.id = id;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getName() {
+        return name;
     }
 
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
-    }
-
-    public String getLastTime() {
-        return lastTime;
-    }
-
-    public void setLastTime(String lastTime) {
-        this.lastTime = lastTime;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getUsername() {
@@ -76,6 +68,14 @@ public class User {
         this.phone = phone;
     }
 
+    public String getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(String photo) {
+        this.photo = photo;
+    }
+
     public ArrayList<Shift> getShifts() {
         return shifts;
     }
@@ -88,11 +88,11 @@ public class User {
     public String toString() {
         return "User{" +
                 "id='" + id + '\'' +
-                ", startTime='" + startTime + '\'' +
-                ", lastTime='" + lastTime + '\'' +
+                ", name='" + name + '\'' +
                 ", username='" + username + '\'' +
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
+                ", photo='" + photo + '\'' +
                 ", shifts=" + shifts +
                 '}';
     }

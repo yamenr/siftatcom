@@ -10,4 +10,6 @@
     <string name="err_incorrect_user_password_heb">שם משתמש או סיסמה לא נכונים!</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="alert">alert</string>
+    <string name="dismiss">dismiss</string>
 </resources>

@@ -1,8 +1,11 @@
 package com.ahmadyosef.app.fragments;
 
+import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,7 +14,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CalendarView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
@@ -20,6 +26,7 @@ import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.User;
+import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.interfaces.UsersCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -30,10 +37,14 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +61,7 @@ public class Todays extends Fragment {
     private UsersCallback ucall;
     private CalendarView cal;
     private static final String TAG = "TodaysFragment";
+    private Spinner spShiftType;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -109,6 +121,7 @@ public class Todays extends Fragment {
         cal = getView().findViewById(R.id.cvTodays);
         rv = getView().findViewById(R.id.rvShiftsTodays);
         fbs = FirebaseServices.getInstance();
+        users = getUsers();
         ucall = new UsersCallback() {
             @Override
             public void onCallback(List<User> usersList) {
@@ -123,6 +136,7 @@ public class Todays extends Fragment {
             }
         };
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            //@RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month,
                                             int dayOfMonth) {
@@ -136,14 +150,20 @@ public class Todays extends Fragment {
                 }
 
                 // TODO: add dialogue box prompt
-                fileShiftRequest(year, month, dayOfMonth);
+                bookShiftRequest(year, month, dayOfMonth);
             }
         });
     }
 
-    private void fileShiftRequest(int year, int month, int dayOfMonth) {
+    //@RequiresApi(api = Build.VERSION_CODES.O)
+    private void bookShiftRequest(int year, int month, int dayOfMonth) {
         FirebaseUser fbUser = fbs.getAuth().getCurrentUser();
-        ShiftRequest req = new ShiftRequest(fbUser.getEmail(), year, month, dayOfMonth);
+        String uniqID = UUID.randomUUID().toString();
+        //ate selectedDate = Calendar.getInstance().getTime();
+        //final LocalDate d = LocalDate.of( year, month, dayOfMonth);
+        Date d = new java.util.Date(year, month, dayOfMonth);
+        ShiftType st = getShiftType();
+        ShiftRequest req = new ShiftRequest(fbUser.getEmail(), new Shift(uniqID, d.toString(), ShiftType.Afternoon));
         fbs.getFire().collection("requests")
                 .add(req)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
@@ -158,6 +178,25 @@ public class Todays extends Fragment {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+    }
+
+    private ShiftType getShiftType() {
+/*
+        final Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.dialogue_book_shift);
+        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
+        spShiftType.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                Toast.makeText(getActivity(),"Dismissed..!!",Toast.LENGTH_SHORT).show();
+            }
+        });
+        dialog.show();
+*/
+        return ShiftType.Afternoon;
     }
 
     public ArrayList<User> getUsers()

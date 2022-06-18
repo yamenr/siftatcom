@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
@@ -29,7 +30,8 @@ import com.google.firebase.auth.AuthResult;
  */
 public class SignupFragment extends Fragment {
 
-    private EditText etUsername,etPassword;
+    private EditText etName, etUsername, etPassword, etAddress, etPhone;
+    private ImageView ivPhoto;
     private Button btnSignup;
     private Utilities utils;
     private FirebaseServices fbs;
@@ -88,8 +90,12 @@ public class SignupFragment extends Fragment {
     }
 
     private void initialize() {
+        etName = getView().findViewById(R.id.etNameSignup);
         etUsername = getView().findViewById(R.id.etUsernameSignup);
         etPassword = getView().findViewById(R.id.etPasswordSignup);
+        etAddress = getView().findViewById(R.id.etAddressSignup);
+        etPhone = getView().findViewById(R.id.etPhoneSignup);
+        ivPhoto = getView().findViewById(R.id.ivProfilePhotoSignup);
         btnSignup = getView().findViewById(R.id.btnSignupSignup);
         utils = Utilities.getInstance();
         fbs = FirebaseServices.getInstance();
@@ -124,6 +130,7 @@ public class SignupFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            // TODO: get data from screen, create User object, if successfull goto feed
                             gotoFeedActivity();
                         } else {
 

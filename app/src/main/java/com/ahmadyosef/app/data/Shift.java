@@ -1,18 +1,14 @@
 package com.ahmadyosef.app.data;
 
-enum shiftType {
-    Morning, Afternoon, Night
-}
-
 public class Shift {
     private String id;
     private String date;
-    private shiftType type;
+    private ShiftType type;
 
     public Shift() {
     }
 
-    public Shift(String id, String date, shiftType type) {
+    public Shift(String id, String date, ShiftType type) {
         this.id = id;
         this.date = date;
         this.type = type;
@@ -34,11 +30,11 @@ public class Shift {
         this.date = date;
     }
 
-    public shiftType getType() {
+    public ShiftType getType() {
         return type;
     }
 
-    public void setType(shiftType type) {
+    public void setType(ShiftType type) {
         this.type = type;
     }
 
