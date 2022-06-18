@@ -1,11 +1,10 @@
 package com.ahmadyosef.app.fragments;
 
-import android.app.Dialog;
-import android.os.Build;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +14,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
@@ -37,11 +36,8 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -181,6 +177,7 @@ public class Todays extends Fragment {
     }
 
     private ShiftType getShiftType() {
+        showAlertDialogButtonClicked();
 /*
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.dialogue_book_shift);
@@ -236,5 +233,61 @@ public class Todays extends Fragment {
                 }
         }
         return null;
+    }
+
+    public void showAlertDialogButtonClicked()
+    {
+
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.pick_shift_time);
+
+        // set the custom layout
+        spShiftType = getView().findViewById(R.id.spShiftTypeBookShiftDialogue);
+        spShiftType.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
+        final View customLayout
+                = getLayoutInflater()
+                .inflate(
+                        R.layout.dialogue_book_shift,
+                        null);
+        builder.setView(customLayout);
+
+        // add a button
+        builder
+                .setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+
+                                // send data from the
+                                // AlertDialog to the Activity
+                                sendDialogDataToActivity(
+                                        spShiftType
+                                                .getSelectedItem().toString()
+                                                .toString());
+                            }
+                        });
+
+        // create and show
+        // the alert dialog
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+    }
+
+    // Do something with the data
+    // coming from the AlertDialog
+    private void sendDialogDataToActivity(String data)
+    {
+        Toast.makeText(getActivity(),
+                        data,
+                        Toast.LENGTH_SHORT)
+                .show();
     }
 }
