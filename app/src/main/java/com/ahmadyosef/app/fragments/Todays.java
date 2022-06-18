@@ -1,7 +1,10 @@
 package com.ahmadyosef.app.fragments;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +30,7 @@ import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.User;
 import com.ahmadyosef.app.data.ShiftType;
+import com.ahmadyosef.app.interfaces.ShiftTypeCallback;
 import com.ahmadyosef.app.interfaces.UsersCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -36,6 +41,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -55,9 +61,13 @@ public class Todays extends Fragment {
     private ArrayList<Shift> shifts = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
     private UsersCallback ucall;
+    private ShiftTypeCallback scall;
     private CalendarView cal;
     private static final String TAG = "TodaysFragment";
     private Spinner spShiftType;
+    private ShiftType selectedShiftType;
+    private Date selectedDate;
+
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -131,6 +141,30 @@ public class Todays extends Fragment {
                 }
             }
         };
+        scall = new ShiftTypeCallback() {
+            @Override
+            public void onCallback(ShiftType type) {
+                FirebaseUser fbUser = fbs.getAuth().getCurrentUser();
+                String uniqID = UUID.randomUUID().toString();
+                ShiftRequest req = new ShiftRequest(fbUser.getEmail(), new Shift(uniqID, selectedDate.toString(), selectedShiftType));
+                fbs.getFire().collection("requests")
+                        .add(req)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error adding document", e);
+                            }
+                        });
+
+            }
+        };
+
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             //@RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -146,54 +180,10 @@ public class Todays extends Fragment {
                 }
 
                 // TODO: add dialogue box prompt
-                bookShiftRequest(year, month, dayOfMonth);
+                selectedDate = new Date(year, month, dayOfMonth);
+                showAlertDialogButtonClicked();
             }
         });
-    }
-
-    //@RequiresApi(api = Build.VERSION_CODES.O)
-    private void bookShiftRequest(int year, int month, int dayOfMonth) {
-        FirebaseUser fbUser = fbs.getAuth().getCurrentUser();
-        String uniqID = UUID.randomUUID().toString();
-        //ate selectedDate = Calendar.getInstance().getTime();
-        //final LocalDate d = LocalDate.of( year, month, dayOfMonth);
-        Date d = new java.util.Date(year, month, dayOfMonth);
-        ShiftType st = getShiftType();
-        ShiftRequest req = new ShiftRequest(fbUser.getEmail(), new Shift(uniqID, d.toString(), ShiftType.Afternoon));
-        fbs.getFire().collection("requests")
-                .add(req)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-    }
-
-    private ShiftType getShiftType() {
-        showAlertDialogButtonClicked();
-/*
-        final Dialog dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.dialogue_book_shift);
-        Button dialogButton = (Button) dialog.findViewById(R.id.dialogButtonOK);
-        spShiftType.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
-        // if button is clicked, close the custom dialog
-        dialogButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                Toast.makeText(getActivity(),"Dismissed..!!",Toast.LENGTH_SHORT).show();
-            }
-        });
-        dialog.show();
-*/
-        return ShiftType.Afternoon;
     }
 
     public ArrayList<User> getUsers()
@@ -244,13 +234,13 @@ public class Todays extends Fragment {
         builder.setTitle(R.string.pick_shift_time);
 
         // set the custom layout
-        spShiftType = getView().findViewById(R.id.spShiftTypeBookShiftDialogue);
-        spShiftType.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
         final View customLayout
                 = getLayoutInflater()
                 .inflate(
                         R.layout.dialogue_book_shift,
                         null);
+        spShiftType = customLayout.findViewById(R.id.spShiftTypeBookShiftDialogue);
+        spShiftType.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
         builder.setView(customLayout);
 
         // add a button
@@ -279,15 +269,15 @@ public class Todays extends Fragment {
         AlertDialog dialog
                 = builder.create();
         dialog.show();
+
     }
 
     // Do something with the data
     // coming from the AlertDialog
     private void sendDialogDataToActivity(String data)
     {
-        Toast.makeText(getActivity(),
-                        data,
-                        Toast.LENGTH_SHORT)
-                .show();
+        selectedShiftType = ShiftType.valueOf(data);
+        scall.onCallback(selectedShiftType);
     }
+
 }

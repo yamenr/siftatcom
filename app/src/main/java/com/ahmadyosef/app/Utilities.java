@@ -31,4 +31,6 @@ public class Utilities {
     public boolean checkTrimEmpty(String text) {
         return text.trim().isEmpty();
     }
+
+
 }

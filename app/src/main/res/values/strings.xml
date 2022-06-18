@@ -14,4 +14,5 @@
     <string name="dismiss">dismiss</string>
     <string name="OK">OK</string>
     <string name="pick_shift_time">Pick your shift time:</string>
+    <string name="required_field">Required</string>
 </resources>
