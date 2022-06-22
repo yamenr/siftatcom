@@ -69,6 +69,7 @@ public class LoginFragment extends Fragment {
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -143,6 +144,11 @@ public class LoginFragment extends Fragment {
             return;
         }
 
+        if (username.equals(R.string.admin_str) && password.equals(R.string.admin_str))
+        {
+            gotoAdminPanel();
+        }
+
         fbs.getAuth().signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -154,6 +160,9 @@ public class LoginFragment extends Fragment {
                         }
                     }
                 });
+    }
+
+    private void gotoAdminPanel() {
     }
 
     public void gotoFeedActivity () {

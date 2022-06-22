@@ -1,10 +1,7 @@
 package com.ahmadyosef.app.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -34,7 +33,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -111,7 +109,9 @@ public class Todays extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_todays, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_todays, container, false);
+
+        return rootView;
     }
 
     @Override
@@ -125,15 +125,6 @@ public class Todays extends Fragment {
         rv = getView().findViewById(R.id.rvShiftsTodays);
         fbs = FirebaseServices.getInstance();
         users = getUsers();
-        // TODO: fix toolbar issue
-        try {
-            tbAction = getView().findViewById(R.id.toolbar);
-            ((AppCompatActivity) getActivity()).setSupportActionBar(tbAction);
-        }
-        catch (Exception ex)
-        {
-            Log.e(TAG, ex.getMessage());
-        }
 
         ucall = new UsersCallback() {
             @Override
@@ -287,18 +278,23 @@ public class Todays extends Fragment {
         selectedShiftType = ShiftType.valueOf(data);
         scall.onCallback(selectedShiftType);
         refreshShiftsInList();
+        Toast.makeText(getActivity(), getResources().getString(R.string.shift_request_sent), Toast.LENGTH_LONG).show();
     }
 
     private void refreshShiftsInList()
     {
         getUsers();
+        User user = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), users);
+
+        /*
         for (User u : users
              ) {
             if (u.getUsername() == fbs.getAuth().getCurrentUser().getEmail())
                 shifts = u.getShifts();
+        } */
+        if (user != null) {
+            adapter = new ShiftAdapter(getContext(), shifts);
+            rv.setAdapter(adapter);
         }
-
-        adapter = new ShiftAdapter(getContext(), shifts);
-        rv.setAdapter(adapter);
     }
 }

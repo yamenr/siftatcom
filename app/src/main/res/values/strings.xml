@@ -15,4 +15,6 @@
     <string name="OK">OK</string>
     <string name="pick_shift_time">Pick your shift time:</string>
     <string name="required_field">Required</string>
+    <string name="shift_request_sent">Shift request sent to supervisor!</string>
+    <string name="admin_str">admin</string>
 </resources>
