@@ -4,17 +4,20 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import androidx.appcompat.widget.Toolbar;
 import com.ahmadyosef.app.R;
+import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.fragments.Todays;
 
 public class FeedActivity extends AppCompatActivity {
 
-    private Toolbar tbAction;
+    private FirebaseServices fbs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class FeedActivity extends AppCompatActivity {
     }
 
     private void initialize() {
+        fbs = FirebaseServices.getInstance();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frameLayoutFeed, new Todays());
         ft.commit();
@@ -44,25 +48,21 @@ public class FeedActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            //case R.id.miSearch:
-                // User chose the "Settings" item, show the app settings UI...
-                //return true;
-
             case R.id.miProfile:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
                 return true;
 
-            case R.id.miSettings:
-
+            case R.id.miSignout:
+                fbs.getAuth().getInstance().signOut();
+                gotoMainActivity();
                 return true;
 
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
 
+    public void gotoMainActivity () {
+        Intent i = new Intent(this, FeedActivity.class);
+        startActivity(i);
+    }
 }
