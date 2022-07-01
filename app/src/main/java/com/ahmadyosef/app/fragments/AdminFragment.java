@@ -1,14 +1,46 @@
 package com.ahmadyosef.app.fragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
+import com.ahmadyosef.app.adapters.RequestAdapter;
+import com.ahmadyosef.app.adapters.ShiftAdapter;
+import com.ahmadyosef.app.data.FirebaseServices;
+import com.ahmadyosef.app.data.Shift;
+import com.ahmadyosef.app.data.ShiftRequest;
+import com.ahmadyosef.app.data.ShiftType;
+import com.ahmadyosef.app.data.User;
+import com.ahmadyosef.app.interfaces.RequestsCallback;
+import com.ahmadyosef.app.interfaces.ShiftTypeCallback;
+import com.ahmadyosef.app.interfaces.UsersCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +48,16 @@ import com.ahmadyosef.app.R;
  * create an instance of this fragment.
  */
 public class AdminFragment extends Fragment {
+
+    private RecyclerView rv;
+    private FirebaseServices fbs;
+    private RequestAdapter adapter;
+    private ArrayList<ShiftRequest> requests = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
+    private UsersCallback ucall;
+    private RequestsCallback rcall;
+    private static final String TAG = "AdminFragment";
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,5 +104,56 @@ public class AdminFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_admin, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initialize();
+    }
+
+    private void initialize() {
+        rv = getView().findViewById(R.id.rvRequestsAdmin);
+        fbs = FirebaseServices.getInstance();
+        requests = getRequests();
+
+        rcall = new RequestsCallback() {
+            @Override
+            public void onCallback(List<ShiftRequest> requests) {
+                rv = getView().findViewById(R.id.rvRequestsAdmin);
+                rv.setLayoutManager(new LinearLayoutManager(getContext()));
+                    adapter = new RequestAdapter(getContext(), requests);
+                    rv.setAdapter(adapter);
+            }
+        };
+
+    }
+
+    public ArrayList<ShiftRequest> getRequests()
+    {
+        try {
+            fbs.getFire().collection("reques 1ts")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    requests.add(document.toObject(ShiftRequest.class));
+                                }
+
+                                rcall.onCallback(requests);
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(getActivity(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return requests;
     }
 }

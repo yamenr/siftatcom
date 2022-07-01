@@ -2,6 +2,7 @@
     <string name="app_name">siftatcom</string>
     <string name="db_shifts">shifts</string>
     <string name="db_users">users</string>
+    <string name="db_requests">requests</string>
     <string name="err_fields_empty">Some fields are empty!</string>
     <string name="successfully_registered">You have successfully registered!</string>
     <string name="successfully_logged_in">You have successfully logged in!</string>
