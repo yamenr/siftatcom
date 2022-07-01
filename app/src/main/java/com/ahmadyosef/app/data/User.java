@@ -2,10 +2,6 @@ package com.ahmadyosef.app.data;
 
 import java.util.ArrayList;
 
-enum userType {
-    Driver, Manager, Regular
-}
-
 public class User {
     private String id;
     private String name;
@@ -13,18 +9,20 @@ public class User {
     private String address;
     private String phone;
     private String photo;
+    private UserType type;
     private ArrayList<Shift> shifts;
 
     public User() {
     }
 
-    public User(String id, String name, String username, String address, String phone, String photo) {
+    public User(String id, String name, String username, String address, String phone, String photo, UserType type) {
         this.id = id;
         this.name = name;
         this.username = username;
         this.address = address;
         this.phone = phone;
         this.photo = photo;
+        this.type = type;
         this.shifts = new ArrayList<>();
     }
 
@@ -76,6 +74,14 @@ public class User {
         this.photo = photo;
     }
 
+    public UserType getType() {
+        return type;
+    }
+
+    public void setType(UserType type) {
+        this.type = type;
+    }
+
     public ArrayList<Shift> getShifts() {
         return shifts;
     }
@@ -93,6 +99,7 @@ public class User {
                 ", address='" + address + '\'' +
                 ", phone='" + phone + '\'' +
                 ", photo='" + photo + '\'' +
+                ", type=" + type +
                 ", shifts=" + shifts +
                 '}';
     }

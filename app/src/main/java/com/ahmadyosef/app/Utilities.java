@@ -1,5 +1,7 @@
 package com.ahmadyosef.app;
 
+import java.util.regex.Pattern;
+
 enum ErrorCodes
 {
     IncorrectAuth, FieldsEmpty, True, False
@@ -19,9 +21,17 @@ public class Utilities {
 
         return instance;
     }
-
+    // TODO: offline email and password validation
+/*
     public boolean validateEmail(String username) {
         return true;
+    }
+
+
+    public boolean emailPatternMatches(String emailAddress, String regexPattern) {
+        return Pattern.compile(regexPattern)
+                .matcher(emailAddress)
+                .matches();
     }
 
     public boolean validatePassword(String password) {
@@ -32,5 +42,9 @@ public class Utilities {
         return text.trim().isEmpty();
     }
 
-
+/*
+    public boolean validateEmailPassword(String username, String password) {
+        return
+                emailPatternMatches(username, R.string.email_regex_pattern)&&
+    }*/
 }

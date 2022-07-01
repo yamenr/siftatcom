@@ -2,9 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
     <item
         android:id="@+id/miProfile"
         android:title="Profile"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/miAdmin"
+        android:title="Admin"
         app:showAsAction="never">
     </item>
     <item

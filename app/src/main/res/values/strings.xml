@@ -17,4 +17,8 @@
     <string name="required_field">Required</string>
     <string name="shift_request_sent">Shift request sent to supervisor!</string>
     <string name="admin_str">admin</string>
+    <string name="email_regex_pattern">^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
+        + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$</string>
+    <string name="err_not_admin">You\'re not an admin user!</string>
+
 </resources>

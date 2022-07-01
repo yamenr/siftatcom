@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.FirebaseServices;
+import com.ahmadyosef.app.fragments.AdminFragment;
 import com.ahmadyosef.app.fragments.Todays;
 
 public class FeedActivity extends AppCompatActivity {
@@ -51,6 +54,13 @@ public class FeedActivity extends AppCompatActivity {
             case R.id.miProfile:
                 return true;
 
+            case R.id.miAdmin:
+                if (userIsAdmin())
+                    gotoAdminFragment();
+                else
+                    Toast.makeText(this, R.string.err_not_admin, Toast.LENGTH_SHORT).show();
+                return true;
+                
             case R.id.miSignout:
                 fbs.getAuth().getInstance().signOut();
                 gotoMainActivity();
@@ -59,6 +69,17 @@ public class FeedActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void gotoAdminFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frameLayoutFeed, new AdminFragment());
+        ft.commit();
+    }
+
+    private boolean userIsAdmin() {
+        // TODO: Add check user admin
+        return true;
     }
 
     public void gotoMainActivity () {

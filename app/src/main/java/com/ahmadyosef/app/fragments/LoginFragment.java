@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import android.widget.Toast;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.Utilities;
 import com.ahmadyosef.app.activities.FeedActivity;
-import com.ahmadyosef.app.activities.MainActivity;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -138,13 +136,7 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-        if (!utils.validateEmail(username) || !utils.validatePassword(password))
-        {
-            Toast.makeText(getActivity(), R.string.err_incorrect_user_password, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        if (username.equals(R.string.admin_str) && password.equals(R.string.admin_str))
+        if (username.equals(getResources().getString(R.string.admin_str)) && password.equals(getResources().getString(R.string.admin_str)))
         {
             gotoAdminPanel();
         }
@@ -163,6 +155,8 @@ public class LoginFragment extends Fragment {
     }
 
     private void gotoAdminPanel() {
+        /*Intent i = new Intent(getActivity(), AdminActivity.class);
+        startActivity(i);*/
     }
 
     public void gotoFeedActivity () {

@@ -33,6 +33,7 @@ import com.ahmadyosef.app.activities.FeedActivity;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.User;
+import com.ahmadyosef.app.data.UserType;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -146,6 +147,14 @@ public class SignupFragment extends Fragment {
         String username = etUsername.getText().toString();
         String password = etPassword.getText().toString();
 
+        // TODO: Add offline email password validation
+        /*
+        if (!utils.validateEmailPassword(username, password))
+        {
+            Toast.makeText(getActivity(), R.string.err_incorrect_user_password, Toast.LENGTH_SHORT).show();
+            return;
+        } */
+
         fbs.getAuth().createUserWithEmailAndPassword(username, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
@@ -168,7 +177,8 @@ public class SignupFragment extends Fragment {
         String address = etAddress.getText().toString();
         String phone = etName.getText().toString();
 
-        User user = new User(id, name, username, address, phone, "");
+        User user = new User(id, name, username, address, phone, "", UserType.Manager);
+        //String id, String name, String username, String address, String phone, String photo, UserType type
 
         fbs.getFire().collection(getResources().getString(R.string.db_users))
                 .add(user)
