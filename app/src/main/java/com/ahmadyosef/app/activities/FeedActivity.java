@@ -2,6 +2,7 @@ package com.ahmadyosef.app.activities;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
@@ -36,7 +37,7 @@ public class FeedActivity extends AppCompatActivity {
 
     private void initialize() {
         fbs = FirebaseServices.getInstance();
-        gotoTestFragment();
+        gotoFragment(R.id.miProfile);
     }
 
     @Override
@@ -50,20 +51,12 @@ public class FeedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miProfile:
-                gotoTodaysFragment();
-                return true;
-
-            case R.id.miTest:
-                gotoTestFragment();
-                return true;
-
-            case R.id.miBlank:
-                gotoBlankFragment();
+                gotoFragment(R.id.miProfile);
                 return true;
 
             case R.id.miAdmin:
                 if (userIsAdmin())
-                    gotoAdminFragment();
+                    gotoFragment(R.id.miAdmin);
                 else
                     Toast.makeText(this, R.string.err_not_admin, Toast.LENGTH_SHORT).show();
                 return true;
@@ -78,27 +71,23 @@ public class FeedActivity extends AppCompatActivity {
         }
     }
 
-    private void gotoTodaysFragment() {
+    private void gotoFragment(int frId) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frameLayoutFeed, new Todays());
-        ft.commit();
-    }
+        Fragment fr = null;
+        switch (frId) {
+            case R.id.miProfile:
+                fr = new Todays();
+                break;
 
-    private void gotoAdminFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frameLayoutFeed, new AdminFragment());
-        ft.commit();
-    }
-
-    private void gotoTestFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frameLayoutFeed, new TestFragment());
-        ft.commit();
-    }
-
-    private void gotoBlankFragment() {
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frameLayoutFeed, new BlankFragment());
+            case R.id.miAdmin:
+                if (userIsAdmin())
+                    fr = new AdminFragment();
+                else {
+                    Toast.makeText(this, R.string.err_not_admin, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+        }
+        ft.replace(R.id.frameLayoutFeed, fr);
         ft.commit();
     }
 
