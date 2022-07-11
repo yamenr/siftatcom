@@ -126,6 +126,10 @@ public class Todays extends Fragment {
         fbs = FirebaseServices.getInstance();
         users = getUsers();
 
+        setCallbacksAndHandlers();
+    }
+
+    private void setCallbacksAndHandlers() {
         ucall = new UsersCallback() {
             @Override
             public void onCallback(List<User> usersList) {
@@ -139,6 +143,7 @@ public class Todays extends Fragment {
                 }
             }
         };
+
         scall = new ShiftTypeCallback() {
             @Override
             public void onCallback(ShiftType type) {
@@ -184,6 +189,29 @@ public class Todays extends Fragment {
         });
     }
 
+    public void deSetCallbacksAndHandlers()
+    {
+        ucall = new UsersCallback() {
+            @Override
+            public void onCallback(List<User> usersList) {
+            }
+        };
+
+        scall = new ShiftTypeCallback() {
+            @Override
+            public void onCallback(ShiftType type) {
+            }
+        };
+
+        cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            //@RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month,
+                                            int dayOfMonth) {
+            }
+        });
+    }
+
     public ArrayList<User> getUsers()
     {
         try {
@@ -199,6 +227,7 @@ public class Todays extends Fragment {
                                 }
 
                                 ucall.onCallback(users);
+
                             } else {
                                 //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
                             }
@@ -296,5 +325,29 @@ public class Todays extends Fragment {
             adapter = new ShiftAdapter(getContext(), shifts);
             rv.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        deSetCallbacksAndHandlers();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        deSetCallbacksAndHandlers();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        deSetCallbacksAndHandlers();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setCallbacksAndHandlers();
     }
 }

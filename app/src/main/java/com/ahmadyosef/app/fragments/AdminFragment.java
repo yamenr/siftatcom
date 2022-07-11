@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -102,8 +103,10 @@ public class AdminFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin, container, false);
+
+        View rootView = inflater.inflate(R.layout.fragment_admin, container, false);
+
+        return rootView;
     }
 
     @Override
@@ -126,13 +129,12 @@ public class AdminFragment extends Fragment {
                     rv.setAdapter(adapter);
             }
         };
-
     }
 
     public ArrayList<ShiftRequest> getRequests()
     {
         try {
-            fbs.getFire().collection("reques 1ts")
+            fbs.getFire().collection("requests")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override

@@ -4,7 +4,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,10 +11,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.fragments.AdminFragment;
+import com.ahmadyosef.app.fragments.BlankFragment;
+import com.ahmadyosef.app.fragments.TestFragment;
 import com.ahmadyosef.app.fragments.Todays;
 
 public class FeedActivity extends AppCompatActivity {
@@ -36,9 +36,7 @@ public class FeedActivity extends AppCompatActivity {
 
     private void initialize() {
         fbs = FirebaseServices.getInstance();
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.replace(R.id.frameLayoutFeed, new Todays());
-        ft.commit();
+        gotoTestFragment();
     }
 
     @Override
@@ -52,6 +50,15 @@ public class FeedActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miProfile:
+                gotoTodaysFragment();
+                return true;
+
+            case R.id.miTest:
+                gotoTestFragment();
+                return true;
+
+            case R.id.miBlank:
+                gotoBlankFragment();
                 return true;
 
             case R.id.miAdmin:
@@ -71,9 +78,27 @@ public class FeedActivity extends AppCompatActivity {
         }
     }
 
+    private void gotoTodaysFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frameLayoutFeed, new Todays());
+        ft.commit();
+    }
+
     private void gotoAdminFragment() {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frameLayoutFeed, new AdminFragment());
+        ft.commit();
+    }
+
+    private void gotoTestFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frameLayoutFeed, new TestFragment());
+        ft.commit();
+    }
+
+    private void gotoBlankFragment() {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frameLayoutFeed, new BlankFragment());
         ft.commit();
     }
 
@@ -83,7 +108,7 @@ public class FeedActivity extends AppCompatActivity {
     }
 
     public void gotoMainActivity () {
-        Intent i = new Intent(this, FeedActivity.class);
+        Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
     }
 }
