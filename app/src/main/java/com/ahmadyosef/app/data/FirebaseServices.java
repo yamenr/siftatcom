@@ -54,4 +54,32 @@ public class FirebaseServices {
         return instance;
     }
 
+    public ArrayList<User> getUsers()
+    {
+        ArrayList<User> users = new ArrayList<>();
+
+        try {
+            users.clear();
+            fire.collection("users")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    users.add(document.toObject(User.class));
+                                }
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e)
+        {
+            //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return users;
+    }
 }

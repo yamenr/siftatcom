@@ -2,6 +2,8 @@ package com.ahmadyosef.app.fragments;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,7 +15,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
@@ -57,6 +61,7 @@ public class AdminFragment extends Fragment {
     private ArrayList<User> users = new ArrayList<>();
     private UsersCallback ucall;
     private RequestsCallback rcall;
+    private TextView tvApprove;
     private static final String TAG = "AdminFragment";
 
 

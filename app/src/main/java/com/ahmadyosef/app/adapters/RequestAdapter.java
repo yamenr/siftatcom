@@ -1,17 +1,27 @@
 package com.ahmadyosef.app.adapters;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
+import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
+import com.ahmadyosef.app.data.ShiftType;
+import com.ahmadyosef.app.data.User;
+import com.ahmadyosef.app.interfaces.RequestDialogueCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder> {
@@ -19,28 +29,47 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     private List<ShiftRequest> mData;
     private LayoutInflater mInflater;
     private Context context;
+    private RequestDialogueCallback rdc;
+    private ArrayList<User> users;
+    private FirebaseServices fbs;
 
     private final RequestAdapter.ItemClickListener mClickListener = new RequestAdapter.ItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             ShiftRequest request = mData.get(position);
-
-            // TODO: add switch to details activity
-            /*
-            Intent i = new Intent(context, RestDetailsActivity.class);
-            i.putExtra("shift", shift);
-
-
-
-            context.startActivity(i);*/
+            rdc = new RequestDialogueCallback() {
+                @Override
+                public void onCallback(boolean b) {
+                    if (b == true)
+                    {
+                        addShiftToUser(request);
+                    }
+                }
+            };
+            showAlertDialogButtonClicked(view);
         }
     };
+
+    private void addShiftToUser(ShiftRequest request) {
+        users = fbs.getUsers();
+        for(User user : users)
+        {
+            if (user.getUsername().equals(request.getUsername()))
+            {
+                user.getShifts().add(request.getShift());
+                // TODO:
+                    // updateUserShifts();
+                    // removeFromRequest();
+            }
+        }
+    }
 
     // data is passed into the constructor
     public RequestAdapter(Context context, List<ShiftRequest> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.context = context;
+        this.fbs = FirebaseServices.getInstance();
     }
 
     // inflates the row layout from xml when needed
@@ -93,4 +122,83 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
+
+    public void showAlertDialogButtonClicked(View view)
+    {
+        //TextView
+        // Create an alert builder
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(view.getContext());
+        builder.setTitle(R.string.approve_shift_request);
+
+        // set the custom layout
+        final View customLayout
+                = ((Activity)view.getContext()).getLayoutInflater()
+                .inflate(
+                        R.layout.dialogue_approve_shift,
+                        null);
+        //spShiftType = customLayout.findViewById(R.id.spShiftTypeBookShiftDialogue);
+        //spShiftType.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
+        builder.setView(customLayout);
+
+        // add a button
+        builder
+                .setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                rdc.onCallback(true);
+                                // send data from the
+                                // AlertDialog to the Activity
+                                /*
+                                sendDialogDataToActivity(
+                                        spShiftType
+                                                .getSelectedItem().toString()
+                                                .toString()); */
+                            }
+                        });
+
+        // create and show
+        // the alert dialog
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+
+    }
+
+
+    // Do something with the data
+    // coming from the AlertDialog
+    /*
+    private void sendDialogDataToActivity(String data)
+    {
+        selectedShiftType = ShiftType.valueOf(data);
+        scall.onCallback(selectedShiftType);
+        refreshShiftsInList();
+        Toast.makeText(getActivity(), getResources().getString(R.string.shift_request_sent), Toast.LENGTH_LONG).show();
+    } */
+
+    /*
+    private void refreshShiftsInList()
+    {
+        getUsers();
+        User user = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), users);
+
+        /*
+        for (User u : users
+             ) {
+            if (u.getUsername() == fbs.getAuth().getCurrentUser().getEmail())
+                shifts = u.getShifts();
+        }
+        if (user != null) {
+            adapter = new ShiftAdapter(getContext(), shifts);
+            rv.setAdapter(adapter);
+        }
+    }*/
+
 }

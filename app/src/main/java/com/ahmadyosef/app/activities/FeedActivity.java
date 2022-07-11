@@ -15,8 +15,6 @@ import android.widget.Toast;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.fragments.AdminFragment;
-import com.ahmadyosef.app.fragments.BlankFragment;
-import com.ahmadyosef.app.fragments.TestFragment;
 import com.ahmadyosef.app.fragments.Todays;
 
 public class FeedActivity extends AppCompatActivity {
