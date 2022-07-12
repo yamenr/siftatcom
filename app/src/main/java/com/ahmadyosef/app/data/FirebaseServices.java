@@ -18,7 +18,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class FirebaseServices {
 
@@ -81,5 +83,63 @@ public class FirebaseServices {
         }
 
         return users;
+    }
+
+    public Map<String, User> getUsersMap()
+    {
+        Map<String, User> users = new HashMap<>();
+
+        try {
+            users.clear();
+            fire.collection("users")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    users.put(document.getId(), document.toObject(User.class));
+                                }
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e)
+        {
+            //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return users;
+    }
+
+    public Map<String, ShiftRequest> getRequestsMap()
+    {
+        Map<String, ShiftRequest> requests = new HashMap<>();
+
+        try {
+            requests.clear();
+            fire.collection("requests")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    requests.put(document.getId(), document.toObject(ShiftRequest.class));
+                                }
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e)
+        {
+            //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return requests;
     }
 }

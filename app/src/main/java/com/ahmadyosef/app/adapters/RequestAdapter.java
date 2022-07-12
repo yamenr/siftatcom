@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
@@ -20,9 +22,12 @@ import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.User;
 import com.ahmadyosef.app.interfaces.RequestDialogueCallback;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder> {
 
@@ -51,18 +56,55 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     };
 
     private void addShiftToUser(ShiftRequest request) {
-        users = fbs.getUsers();
-        for(User user : users)
+        Map<String, User> users = fbs.getUsersMap();
+        for(Map.Entry<String, User> user: users.entrySet())
         {
-            if (user.getUsername().equals(request.getUsername()))
+            if (user.getValue().getUsername().equals(request.getUsername()))
             {
-                user.getShifts().add(request.getShift());
-                // TODO:
-                    // updateUserShifts();
-                    // removeFromRequest();
+                user.getValue().getShifts().add(request.getShift());
+                fbs.getFire().collection("users").
+                                document(user.getKey()).
+                                set(user.getValue()).
+                                addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                removeRequest(request);
+                                Log.i("addShiftToUser: ", "User shift added successfully!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e("addShiftToUser: ", "User shift failed to be added to Firestore! " + e.getMessage());
+                    }
+                });
             }
         }
     }
+
+    private void removeRequest(ShiftRequest request) {
+        Map<String, ShiftRequest> requests = fbs.getRequestsMap();
+        for(Map.Entry<String, ShiftRequest> requestEntry: requests.entrySet())
+        {
+            if (requestEntry.getValue().getUsername().equals(request.getUsername()))
+            {
+                fbs.getFire().collection("requests").
+                        document(requestEntry.getKey()).
+                        delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.i("addShiftToUser: ", "Request removed successfully!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("addShiftToUser: ", "Failed to remove request from Firestore!" + e.getMessage());
+                            }
+                        });
+            }
+        }
+    }
+
+
 
     // data is passed into the constructor
     public RequestAdapter(Context context, List<ShiftRequest> data) {
