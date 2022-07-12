@@ -133,7 +133,7 @@ public class Todays extends Fragment {
             public void onCallback(List<User> usersList) {
                 rv = getView().findViewById(R.id.rvShiftsTodays);
                 rv.setLayoutManager(new LinearLayoutManager(getContext()));
-                User user = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), getUsers());
+                User user = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), usersList);
                 if (user != null)
                 {
                     adapter = new ShiftAdapter(getContext(), user.getShifts());
@@ -214,7 +214,7 @@ public class Todays extends Fragment {
     {
         try {
             users.clear();
-            fbs.getFire().collection("users")
+            fbs.getFire().collection("users_")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
