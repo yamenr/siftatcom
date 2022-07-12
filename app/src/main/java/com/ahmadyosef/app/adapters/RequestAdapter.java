@@ -22,10 +22,16 @@ import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.User;
 import com.ahmadyosef.app.interfaces.RequestDialogueCallback;
+import com.ahmadyosef.app.interfaces.UsersMapCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,6 +41,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     private LayoutInflater mInflater;
     private Context context;
     private RequestDialogueCallback rdc;
+    private UsersMapCallback umc;
     private ArrayList<User> users;
     private FirebaseServices fbs;
 
@@ -42,6 +49,12 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         @Override
         public void onItemClick(View view, int position) {
             ShiftRequest request = mData.get(position);
+            umc = new UsersMapCallback() {
+                @Override
+                public void onCallback(Map<String, User> users) {
+
+                }
+            };
             rdc = new RequestDialogueCallback() {
                 @Override
                 public void onCallback(boolean b) {
@@ -51,12 +64,13 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                     }
                 }
             };
+
             showAlertDialogButtonClicked(view);
         }
     };
 
     private void addShiftToUser(ShiftRequest request) {
-        Map<String, User> users = fbs.getUsersMap();
+        Map<String, User> users = getUsersMap();
         for(Map.Entry<String, User> user: users.entrySet())
         {
             if (user.getValue().getUsername().equals(request.getUsername()))
@@ -167,23 +181,15 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
 
     public void showAlertDialogButtonClicked(View view)
     {
-        //TextView
-        // Create an alert builder
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(view.getContext());
         builder.setTitle(R.string.approve_shift_request);
-
-        // set the custom layout
         final View customLayout
                 = ((Activity)view.getContext()).getLayoutInflater()
                 .inflate(
                         R.layout.dialogue_approve_shift,
                         null);
-        //spShiftType = customLayout.findViewById(R.id.spShiftTypeBookShiftDialogue);
-        //spShiftType.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
         builder.setView(customLayout);
-
-        // add a button
         builder
                 .setPositiveButton(
                         "OK",
@@ -195,52 +201,41 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                                     int which)
                             {
                                 rdc.onCallback(true);
-                                // send data from the
-                                // AlertDialog to the Activity
-                                /*
-                                sendDialogDataToActivity(
-                                        spShiftType
-                                                .getSelectedItem().toString()
-                                                .toString()); */
                             }
                         });
 
-        // create and show
-        // the alert dialog
         AlertDialog dialog
                 = builder.create();
         dialog.show();
-
     }
 
-
-    // Do something with the data
-    // coming from the AlertDialog
-    /*
-    private void sendDialogDataToActivity(String data)
+    public Map<String, User> getUsersMap()
     {
-        selectedShiftType = ShiftType.valueOf(data);
-        scall.onCallback(selectedShiftType);
-        refreshShiftsInList();
-        Toast.makeText(getActivity(), getResources().getString(R.string.shift_request_sent), Toast.LENGTH_LONG).show();
-    } */
+        Map<String, User> users = new HashMap<>();
 
-    /*
-    private void refreshShiftsInList()
-    {
-        getUsers();
-        User user = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), users);
-
-        /*
-        for (User u : users
-             ) {
-            if (u.getUsername() == fbs.getAuth().getCurrentUser().getEmail())
-                shifts = u.getShifts();
+        try {
+            users.clear();
+            fbs.getFire().collection("users_")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    users.put(document.getId(), document.toObject(User.class));
+                                }
+                                umc.onCallback(users);
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
         }
-        if (user != null) {
-            adapter = new ShiftAdapter(getContext(), shifts);
-            rv.setAdapter(adapter);
+        catch (Exception e)
+        {
+            Log.e("getUsersMap(): ", e.getMessage());
         }
-    }*/
 
+        return users;
+    }
 }

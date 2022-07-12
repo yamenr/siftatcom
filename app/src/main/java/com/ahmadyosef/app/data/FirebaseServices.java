@@ -62,7 +62,7 @@ public class FirebaseServices {
 
         try {
             users.clear();
-            fire.collection("users")
+            fire.collection("users_")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -91,7 +91,7 @@ public class FirebaseServices {
 
         try {
             users.clear();
-            fire.collection("users")
+            fire.collection("users_")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -108,7 +108,7 @@ public class FirebaseServices {
         }
         catch (Exception e)
         {
-            //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e("getUsersMap(): ", e.getMessage());
         }
 
         return users;

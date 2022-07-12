@@ -180,7 +180,7 @@ public class SignupFragment extends Fragment {
         User user = new User(id, name, username, address, phone, "", UserType.Manager);
         //String id, String name, String username, String address, String phone, String photo, UserType type
 
-        fbs.getFire().collection(getResources().getString(R.string.db_users))
+        fbs.getFire().collection("users_")
                 .add(user)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
