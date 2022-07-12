@@ -62,7 +62,7 @@ public class FirebaseServices {
 
         try {
             users.clear();
-            fire.collection("users_")
+            getFire().collection("users_")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
