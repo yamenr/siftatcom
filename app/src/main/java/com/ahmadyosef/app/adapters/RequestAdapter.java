@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
@@ -21,6 +22,7 @@ import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.User;
+import com.ahmadyosef.app.fragments.AdminFragment;
 import com.ahmadyosef.app.interfaces.RequestDialogueCallback;
 import com.ahmadyosef.app.interfaces.UsersMapCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -42,19 +44,15 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     private Context context;
     private RequestDialogueCallback rdc;
     private UsersMapCallback umc;
-    private ArrayList<User> users;
+    //private ArrayList<User> users;
+    private Map<String, User> users;
+    Map<String, ShiftRequest> requests;
     private FirebaseServices fbs;
 
     private final RequestAdapter.ItemClickListener mClickListener = new RequestAdapter.ItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             ShiftRequest request = mData.get(position);
-            umc = new UsersMapCallback() {
-                @Override
-                public void onCallback(Map<String, User> users) {
-
-                }
-            };
             rdc = new RequestDialogueCallback() {
                 @Override
                 public void onCallback(boolean b) {
@@ -70,13 +68,12 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     };
 
     private void addShiftToUser(ShiftRequest request) {
-        Map<String, User> users = getUsersMap();
         for(Map.Entry<String, User> user: users.entrySet())
         {
             if (user.getValue().getUsername().equals(request.getUsername()))
             {
                 user.getValue().getShifts().add(request.getShift());
-                fbs.getFire().collection("users").
+                fbs.getFire().collection("users_").
                                 document(user.getKey()).
                                 set(user.getValue()).
                                 addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -96,7 +93,6 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     }
 
     private void removeRequest(ShiftRequest request) {
-        Map<String, ShiftRequest> requests = fbs.getRequestsMap();
         for(Map.Entry<String, ShiftRequest> requestEntry: requests.entrySet())
         {
             if (requestEntry.getValue().getUsername().equals(request.getUsername()))
@@ -118,14 +114,20 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         }
     }
 
-
-
     // data is passed into the constructor
     public RequestAdapter(Context context, List<ShiftRequest> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.context = context;
         this.fbs = FirebaseServices.getInstance();
+        umc = new UsersMapCallback() {
+            @Override
+            public void onCallback(Map<String, User> users) {
+
+            }
+        };
+        users = getUsersMap();
+        requests = fbs.getRequestsMap();
     }
 
     // inflates the row layout from xml when needed
