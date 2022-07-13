@@ -2,6 +2,8 @@ package com.ahmadyosef.app.fragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -11,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.Spinner;
@@ -123,8 +127,6 @@ public class Todays extends Fragment {
         rv = getView().findViewById(R.id.rvShiftsTodays);
         fbs = FirebaseServices.getInstance();
         users = getUsers();
-
-        setCallbacksAndHandlers();
     }
 
     private void setCallbacksAndHandlers() {

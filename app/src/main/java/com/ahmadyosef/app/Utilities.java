@@ -1,5 +1,10 @@
 package com.ahmadyosef.app;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.regex.Pattern;
 
 enum ErrorCodes
@@ -20,6 +25,20 @@ public class Utilities {
             instance = new Utilities();
 
         return instance;
+    }
+
+    public Date convertDate(String dateStr)
+    {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        Date date = null;
+        try {
+            date = format.parse(dateStr);
+            System.out.println(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return date;
     }
     // TODO: offline email and password validation
 /*

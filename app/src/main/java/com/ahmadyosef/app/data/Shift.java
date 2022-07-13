@@ -1,9 +1,15 @@
 package com.ahmadyosef.app.data;
 
-public class Shift {
+import com.ahmadyosef.app.Utilities;
+
+import java.util.Date;
+import java.time.format.DateTimeFormatter;
+
+public class Shift /*implements Comparable*/{
     private String id;
     private String date;
     private ShiftType type;
+    private Utilities utils;
 
     public Shift() {
     }
@@ -46,4 +52,12 @@ public class Shift {
                 ", type=" + type +
                 '}';
     }
+
+    /* TODO: sorting by date
+    @Override
+    public int compareTo(Object o) {
+        Shift shift = (Shift)o;
+        Date d = Utilities.getInstance().convertDate(shift.getDate());
+        return (int) (d.getTime()/1000);
+    } */
 }
