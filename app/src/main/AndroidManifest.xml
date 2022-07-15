@@ -21,7 +21,8 @@
             android:exported="false" />
         <activity
             android:name=".activities.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Siftatcom.NoBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
