@@ -1,6 +1,6 @@
 package com.ahmadyosef.app.data;
 
 public enum UserType {
-    Driver, Manager, Regular
+    UserType, Driver, Manager, Regular
 }
 

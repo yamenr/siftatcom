@@ -60,7 +60,7 @@ public class SignupFragment extends Fragment {
     private Button btnSignup;
     private Utilities utils;
     private FirebaseServices fbs;
-    private static final String TAG = "SingupFragment";
+    private static final String TAG = "SignupFragment";
     private Uri filePath;
     private StorageReference storageReference;
 
@@ -128,11 +128,17 @@ public class SignupFragment extends Fragment {
         utils = Utilities.getInstance();
         fbs = FirebaseServices.getInstance();
         spUserType = getView().findViewById(R.id.spUserTypeSignup);
-        spUserType.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
+        spUserType.setAdapter(new ArrayAdapter<UserType>(getActivity(), android.R.layout.simple_list_item_1, UserType.values()));
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 signup(view);
+            }
+        });
+        ivPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectPhoto();
             }
         });
     }
@@ -176,7 +182,9 @@ public class SignupFragment extends Fragment {
         String username = etUsername.getText().toString();
         String address = etAddress.getText().toString();
         String phone = etName.getText().toString();
-
+        String userType = spUserType.getSelectedItem().toString();
+        if (userType.equals(String.valueOf(UserType.UserType)))
+            userType = String.valueOf(UserType.Regular);
         User user = new User(id, name, username, address, phone, "", UserType.Manager);
         //String id, String name, String username, String address, String phone, String photo, UserType type
 
@@ -197,10 +205,10 @@ public class SignupFragment extends Fragment {
     }
 
     private boolean checkFields() {
-            if (etName.length() == 0 ||
-                etUsername.length() == 0 ||
-                etPassword.length() == 0 ||
-                etAddress.length() == 0 ||
+            if (etName.length() == 0        ||
+                etUsername.length() == 0    ||
+                etPassword.length() == 0    ||
+                etAddress.length() == 0     ||
                 etPhone.length() == 0)
             {
                 etName.setError(getResources().getString(R.string.required_field));
@@ -216,13 +224,6 @@ public class SignupFragment extends Fragment {
         ((Activity) getActivity()).overridePendingTransition(0, 0);
     }
 
-
-    public void selectPhoto(View view) {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        getActivity().startActivityForResult(Intent.createChooser(intent, "Select Picture"),40);
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -243,34 +244,6 @@ public class SignupFragment extends Fragment {
                 Toast.makeText(getActivity(), "Canceled", Toast.LENGTH_SHORT).show();
             }
         }
-    }
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-/*
-        ActivityResultLauncher<Intent> someActivityResultLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == Activity.RESULT_OK) {
-                            // There are no request codes
-                            Intent data = result.getData();
-                            if (data != null) {
-                                try {
-                                    filePath = data.getData();
-                                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), data.getData());
-                                    ivPhoto.setBackground(null);
-                                    ivPhoto.setImageBitmap(bitmap);
-                                    uploadImage();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    }
-                }); */
     }
 
     private void uploadImage()
@@ -345,5 +318,12 @@ public class SignupFragment extends Fragment {
                                 }
                             });
         }
+    }
+
+    public void selectPhoto() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        getActivity().startActivityForResult(Intent.createChooser(intent, "Select Picture"),40);
     }
 }

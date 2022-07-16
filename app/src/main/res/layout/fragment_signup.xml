@@ -8,105 +8,110 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/imgLogoSignup"
-            android:layout_width="50dp"
-            android:layout_height="49dp"
-            android:src="@drawable/ic_launcher_foreground"
-            app:srcCompat="@drawable/team"
-            tools:layout_editor_absoluteX="180dp"
-            tools:layout_editor_absoluteY="16dp" />
-
-        <EditText
-            android:id="@+id/etUsernameSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:ems="10"
-            android:hint="username..."
-            android:inputType="textEmailAddress"
-            android:minHeight="48dp"
-            app:layout_constraintTop_toBottomOf="@+id/etNameSignup"
-            tools:layout_editor_absoluteX="104dp" />
-
-        <EditText
-            android:id="@+id/etPasswordSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:ems="10"
-            android:hint="password..."
-            android:inputType="textPassword"
-            android:minHeight="48dp"
-            app:layout_constraintTop_toBottomOf="@+id/etUsernameSignup"
-            tools:layout_editor_absoluteX="104dp" />
-
-        <Button
-            android:id="@+id/btnSignupSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:text="Signup"
-            app:layout_constraintTop_toBottomOf="@+id/ivProfilePhotoSignup"
-            tools:layout_editor_absoluteX="160dp" />
+        android:layout_height="match_parent"
+        android:background="@drawable/logo"
+        app:layout_constraintBottom_toTopOf="@+id/spUserTypeSignup"
+        app:layout_constraintTop_toTopOf="@+id/spUserTypeSignup">
 
         <EditText
             android:id="@+id/etNameSignup"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="41dp"
             android:ems="10"
-            android:hint="name..."
+            android:hint="@string/signup_etName_str"
             android:inputType="textPersonName"
-            app:layout_constraintTop_toBottomOf="@+id/imgLogoSignup"
-            tools:layout_editor_absoluteX="104dp" />
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/etUsernameSignup"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivProfilePhotoSignup" />
+
+        <EditText
+            android:id="@+id/etPhoneSignup"
+            android:layout_width="212dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="286dp"
+            android:ems="10"
+            android:hint="phone..."
+            android:inputType="textPersonName"
+            android:minHeight="48dp"
+            app:layout_constraintStart_toStartOf="@+id/etAddressSignup"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/etAddressSignup"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
+            android:layout_height="61dp"
+            android:layout_marginTop="61dp"
+            android:layout_marginEnd="1dp"
+            android:layout_marginBottom="61dp"
             android:ems="10"
             android:hint="address..."
             android:inputType="textPostalAddress"
-            app:layout_constraintTop_toBottomOf="@+id/etPasswordSignup"
-            tools:layout_editor_absoluteX="103dp" />
-
-        <EditText
-            android:id="@+id/etPhoneSignup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            android:ems="10"
-            android:hint="phone..."
-            android:inputType="textPersonName"
-            app:layout_constraintTop_toBottomOf="@+id/etAddressSignup"
-            tools:layout_editor_absoluteX="104dp" />
-
-        <Spinner
-            android:id="@+id/spUserTypeSignup"
-            android:layout_width="244dp"
-            android:layout_height="35dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/etPhoneSignup"
-            tools:layout_editor_absoluteX="94dp" />
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toBottomOf="@+id/etPhoneSignup"
+            app:layout_constraintEnd_toEndOf="@+id/etPasswordSignup"
+            app:layout_constraintTop_toTopOf="@+id/etPasswordSignup" />
 
         <ImageView
             android:id="@+id/ivProfilePhotoSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="26dp"
-            app:layout_constraintTop_toBottomOf="@+id/spUserTypeSignup"
-            tools:layout_editor_absoluteX="141dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="37dp"
+            android:contentDescription="@string/image_name_profile"
+            app:layout_constraintStart_toEndOf="@+id/etUsernameSignup"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/user"
             tools:src="@tools:sample/avatars" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline3"
+        <EditText
+            android:id="@+id/etUsernameSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="1dp"
+            android:ems="10"
+            android:hint="username..."
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/etPasswordSignup"
+            app:layout_constraintStart_toStartOf="@+id/etNameSignup"
+            app:layout_constraintTop_toBottomOf="@+id/ivProfilePhotoSignup" />
+
+        <EditText
+            android:id="@+id/etPasswordSignup"
+            android:layout_width="wrap_content"
+            android:layout_height="61dp"
+            android:layout_marginTop="63dp"
+            android:layout_marginBottom="61dp"
+            android:ems="10"
+            android:hint="password..."
+            android:inputType="textPassword"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/etPhoneSignup"
+            app:layout_constraintStart_toStartOf="@+id/etUsernameSignup"
+            app:layout_constraintTop_toBottomOf="@+id/ivProfilePhotoSignup" />
+
+        <Spinner
+            android:id="@+id/spUserTypeSignup"
+            android:layout_width="245dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:minHeight="48dp"
+            app:layout_constraintBottom_toTopOf="@+id/btnSignupSignup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <Button
+            android:id="@+id/btnSignupSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_begin="20dp" />
+            android:layout_marginBottom="30dp"
+            android:text="Signup"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

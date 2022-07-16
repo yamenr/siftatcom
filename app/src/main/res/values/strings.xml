@@ -23,5 +23,7 @@
     <string name="email_regex_pattern">^(?=.{1,64}@)[A-Za-z0-9_-]+(\\.[A-Za-z0-9_-]+)*@"
         + "[^-][A-Za-z0-9-]+(\\.[A-Za-z0-9-]+)*(\\.[A-Za-z]{2,})$</string>
     <string name="err_not_admin">You\'re not an admin user!</string>
+    <string name="signup_etName_str">name...</string>
+    <string name="image_name_profile">profile photo</string>
 
 </resources>
