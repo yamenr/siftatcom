@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
@@ -25,11 +26,18 @@ public class FeedActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
-        ActionBar actionBar = getSupportActionBar();
 
-        actionBar.setTitle("  Shiftatcom");
+        ActionBar actionBar = getSupportActionBar();
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setCustomView(R.layout.custom_action_bar_layout);
+        View view =getSupportActionBar().getCustomView();
+        /*
+        actionBar.setIcon(R.drawable.logo);
+        actionBar.setTitle("");
+        //actionBar.setTitle("  Shiftatcom");
         actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true); */
         initialize();
     }
 

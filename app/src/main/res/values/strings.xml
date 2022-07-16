@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">siftatcom</string>
+    <string name="app_name">Shiftatcom</string>
     <string name="db_shifts">shifts</string>
     <string name="db_users">users</string>
     <string name="db_requests">requests</string>
