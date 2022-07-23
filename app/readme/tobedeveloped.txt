@@ -1,0 +1,3 @@
+Admin: Request, Current Shifts (By days), Delete Button
+Employee: Adding color to shift + 7 days, delete request
+Signup: As company, employees are signed up only through company
