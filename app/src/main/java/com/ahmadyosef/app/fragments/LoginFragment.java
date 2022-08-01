@@ -148,6 +148,7 @@ public class LoginFragment extends Fragment {
                     if (user.equals(c.getUsername()))
                     {
                         gotoAdminActivity();
+                        return;
                     }
                 }
 

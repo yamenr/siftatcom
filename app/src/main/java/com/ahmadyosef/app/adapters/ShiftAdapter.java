@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.Shift;
+import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.User;
+import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
 import java.util.List;
 
@@ -57,6 +59,13 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
     public void onBindViewHolder(ShiftAdapter.ViewHolder holder, int position) {
         Shift shift = mData.get(position);
         holder.tvDate.setText(shift.getDate());
+        if (shift.getType() == ShiftType.Morning)
+            Picasso.get().load(R.drawable.sunrise).into(holder.ivPhoto);
+        else if (shift.getType() == ShiftType.Afternoon)
+            Picasso.get().load(R.drawable.sun).into(holder.ivPhoto);
+        else
+            Picasso.get().load(R.drawable.night).into(holder.ivPhoto);
+
         //Picasso.get().load(rest.getPhoto()).into(holder.ivPhoto);
     }
 
@@ -69,12 +78,12 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
     // stores and recycles views as they are scrol    led off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvDate;
-        //ImageView ivPhoto;
+        ImageView ivPhoto;
 
         ViewHolder(View itemView) {
             super(itemView);
             tvDate = itemView.findViewById(R.id.tvDate);
-            //ivPhoto = itemView.findViewById(R.id.ivPhotoRestRow);
+            ivPhoto = itemView.findViewById(R.id.ivShiftIconRow);
             itemView.setOnClickListener(this);
         }
 

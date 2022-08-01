@@ -74,10 +74,10 @@ public class MainActivity extends AppCompatActivity {
                 gotoFeedActivity();
             }
         };
-        /*
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frameLayoutMain, new LoginFragment());
-        ft.commit(); */
+        ft.commit();
     }
 
     private void gotoAdminActivity() {

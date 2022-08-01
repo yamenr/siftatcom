@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/miProfile"
+        android:id="@+id/miProfileFeed"
         android:title="Profile"
         app:showAsAction="never">
     </item>
     <item
-        android:id="@+id/miAdmin"
+        android:id="@+id/miCommonFeed"
         android:title="Admin"
         app:showAsAction="never">
     </item>
     <item
-        android:id="@+id/miSignout"
+        android:id="@+id/miSignoutFeed"
         android:title="Signout"
         app:showAsAction="never">
     </item>

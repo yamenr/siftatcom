@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +28,7 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         initialize();
-        gotoFragment(R.id.miProfile);
+        gotoFragment(R.id.miProfileFeed);
     }
 
     private void initialize() {
@@ -52,18 +51,18 @@ public class FeedActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.miProfile:
-                gotoFragment(R.id.miProfile);
+            case R.id.miProfileFeed:
+                gotoFragment(R.id.miProfileFeed);
                 return true;
 
-            case R.id.miAdmin:
+            case R.id.miCommonFeed:
                 if (userIsAdmin())
-                    gotoFragment(R.id.miAdmin);
+                    gotoFragment(R.id.miCommonFeed);
                 else
                     Toast.makeText(this, R.string.err_not_admin, Toast.LENGTH_SHORT).show();
                 return true;
                 
-            case R.id.miSignout:
+            case R.id.miSignoutFeed:
                 fbs.getAuth().getInstance().signOut();
                 gotoMainActivity();
                 return true;
@@ -77,11 +76,11 @@ public class FeedActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment fr = null;
         switch (frId) {
-            case R.id.miProfile:
+            case R.id.miProfileFeed:
                 fr = new Todays();
                 break;
 
-            case R.id.miAdmin:
+            case R.id.miCommonFeed:
                 if (userIsAdmin())
                     fr = new AdminFragment();
                 else {
