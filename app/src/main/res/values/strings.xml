@@ -25,5 +25,5 @@
     <string name="err_not_admin">You\'re not an admin user!</string>
     <string name="signup_etName_str">name...</string>
     <string name="image_name_profile">profile photo</string>
-
+    <string name="register_company_title">Register your company</string>
 </resources>

@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
@@ -27,23 +28,18 @@ public class FeedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
-        ActionBar actionBar = getSupportActionBar();
-        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.custom_action_bar_layout);
-        View view =getSupportActionBar().getCustomView();
-        /*
-        actionBar.setIcon(R.drawable.logo);
-        actionBar.setTitle("");
-        //actionBar.setTitle("  Shiftatcom");
-        actionBar.setDisplayUseLogoEnabled(true);
-        actionBar.setDisplayShowHomeEnabled(true); */
         initialize();
+        gotoFragment(R.id.miProfile);
     }
 
     private void initialize() {
         fbs = FirebaseServices.getInstance();
-        gotoFragment(R.id.miProfile);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setCustomView(R.layout.custom_action_bar_layout);
+        TextView tvCurrentUser = findViewById(R.id.tvCurrentUserBar);
+        tvCurrentUser.setText(fbs.getAuth().getCurrentUser().getEmail());
     }
 
     @Override

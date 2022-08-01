@@ -19,12 +19,20 @@ import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.Utilities;
+import com.ahmadyosef.app.activities.AdminActivity;
 import com.ahmadyosef.app.activities.FeedActivity;
+import com.ahmadyosef.app.data.Company;
 import com.ahmadyosef.app.data.FirebaseServices;
+import com.ahmadyosef.app.interfaces.CompaniesCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,6 +46,9 @@ public class LoginFragment extends Fragment {
     private Button btnLogin;
     private Utilities utils;
     private FirebaseServices fbs;
+    private ArrayList<Company> companies = new ArrayList<>();
+    private CompaniesCallback ccall;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,10 +95,29 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
         initialize();
+        //PickUserTypeActivity();
+    }
+
+    private void PickUserTypeActivity() {
         FirebaseUser currentUser = fbs.getAuth().getCurrentUser();
         if (currentUser != null)
-            gotoFeedActivity();
+        {
+            getCompanies();
+        }
     }
+
+    /*
+    private boolean userIsCompany(String user) {
+
+        companies = getCompanies();
+        for(Company c : companies)
+        {
+            if (user.equals(c.getUsername()))
+                return true;
+        }
+
+        return false;
+    } */
 
     private void initialize() {
         etUsername = getView().findViewById(R.id.etUsernameLogin);
@@ -108,10 +138,27 @@ public class LoginFragment extends Fragment {
                 gotoSignup();
             }
         });
+        ccall = new CompaniesCallback() {
+            @Override
+            public void onCallback(List<Company> companies) {
+                String user = fbs.getAuth().getCurrentUser().getEmail();
+
+                for(Company c : companies)
+                {
+                    if (user.equals(c.getUsername()))
+                    {
+                        gotoAdminActivity();
+                    }
+                }
+
+                gotoFeedActivity();
+            }
+        };
     }
 
     private void gotoSignup() {
-        Fragment fragment = new SignupFragment();
+        //Fragment fragment = new SignupFragment();
+        Fragment fragment = new CompanySignupFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayoutMain, fragment);
@@ -136,17 +183,12 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-        if (username.equals(getResources().getString(R.string.admin_str)) && password.equals(getResources().getString(R.string.admin_str)))
-        {
-            gotoAdminPanel();
-        }
-
         fbs.getAuth().signInWithEmailAndPassword(username, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            gotoFeedActivity();
+                            PickUserTypeActivity();
                         } else {
                             Toast.makeText(getActivity(), R.string.err_incorrect_user_password, Toast.LENGTH_SHORT).show();
                         }
@@ -154,14 +196,48 @@ public class LoginFragment extends Fragment {
                 });
     }
 
-    private void gotoAdminPanel() {
+    private void gotoAdminActivity() {
+        Intent i = new Intent(getActivity(), AdminActivity.class);
+        startActivity(i);
+        ((Activity) getActivity()).overridePendingTransition(0, 0);
         /*Intent i = new Intent(getActivity(), AdminActivity.class);
         startActivity(i);*/
     }
 
-    public void gotoFeedActivity () {
+    private void gotoFeedActivity () {
         Intent i = new Intent(getActivity(), FeedActivity.class);
         startActivity(i);
         ((Activity) getActivity()).overridePendingTransition(0, 0);
     }
+
+    public ArrayList<Company> getCompanies()
+    {
+        try {
+            companies.clear();
+            fbs.getFire().collection("companies")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    companies.add(document.toObject(Company.class));
+                                }
+
+                                ccall.onCallback(companies);
+
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e)
+        {
+            //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return companies;
+    }
+
 }
