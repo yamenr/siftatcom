@@ -46,7 +46,7 @@ public class AdminActivity extends AppCompatActivity {
                 gotoFragment(R.id.miCommonAdm);
                 return true;
 
-            case R.id.miSignoutFeed:
+            case R.id.miSignoutAdm:
                 fbs.getAuth().getInstance().signOut();
                 gotoMainActivity();
                 return true;

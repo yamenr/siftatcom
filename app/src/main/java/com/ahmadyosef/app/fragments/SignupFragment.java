@@ -30,21 +30,31 @@ import android.widget.Toast;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.Utilities;
 import com.ahmadyosef.app.activities.FeedActivity;
+import com.ahmadyosef.app.data.Company;
 import com.ahmadyosef.app.data.FirebaseServices;
+import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.User;
 import com.ahmadyosef.app.data.UserType;
+import com.ahmadyosef.app.interfaces.AddUserToCompanyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.FirebaseOptions;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -63,6 +73,9 @@ public class SignupFragment extends Fragment {
     private static final String TAG = "SignupFragment";
     private Uri filePath;
     private StorageReference storageReference;
+    private AddUserToCompanyCallback acall;
+    private FirebaseOptions firebaseOptions;
+    private FirebaseAuth mAuth2;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -129,6 +142,7 @@ public class SignupFragment extends Fragment {
         fbs = FirebaseServices.getInstance();
         spUserType = getView().findViewById(R.id.spUserTypeSignup);
         spUserType.setAdapter(new ArrayAdapter<UserType>(getActivity(), android.R.layout.simple_list_item_1, UserType.values()));
+        spUserType.setSelection(0);
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,6 +155,26 @@ public class SignupFragment extends Fragment {
                 selectPhoto();
             }
         });
+        acall = new AddUserToCompanyCallback() {
+            @Override
+            public void onCallback(Map<String, Company> companies, User user) {
+                addUserToCompany(companies, user.getUsername());
+            }
+        };
+        PrepareFirebaseAuth2();
+    }
+
+    private void PrepareFirebaseAuth2() {
+        firebaseOptions = new FirebaseOptions.Builder()
+                .setDatabaseUrl("[shiftatcom.appspot.com]")
+                .setApiKey("AIzaSyAzHAAA7CWjNSqWksbsXFaYl4P3oR1vhqk")
+                .setApplicationId("shiftatcom").build();
+
+        try { FirebaseApp myApp = FirebaseApp.initializeApp(getActivity(), firebaseOptions, "shiftatcom");
+            mAuth2 = FirebaseAuth.getInstance(myApp);
+        } catch (IllegalStateException e){
+            mAuth2 = FirebaseAuth.getInstance(FirebaseApp.getInstance("shiftatcom"));
+        }
     }
 
     public void signup(View view) {
@@ -161,13 +195,13 @@ public class SignupFragment extends Fragment {
             return;
         } */
 
-        fbs.getAuth().createUserWithEmailAndPassword(username, password)
+        mAuth2.createUserWithEmailAndPassword(username, password)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             signupInFirestore();
-                            gotoFeedActivity();
+                            //gotoFeedActivity();
                         } else {
                             Log.e(TAG, task.getException().getMessage());
                             //Toast.makeText(getv, R.string.err_firebase_general, Toast.LENGTH_SHORT).show();
@@ -183,9 +217,10 @@ public class SignupFragment extends Fragment {
         String address = etAddress.getText().toString();
         String phone = etName.getText().toString();
         String userType = spUserType.getSelectedItem().toString();
-        if (userType.equals(String.valueOf(UserType.UserType)))
-            userType = String.valueOf(UserType.Regular);
-        User user = new User(id, name, username, address, phone, "", UserType.Manager);
+        /*
+        if (userType.equals(String.valueOf(UserType.Regular)))
+            userType = String.valueOf(UserType.Regular); */
+        User user = new User(id, name, username, address, phone, "", UserType.valueOf(userType));
         //String id, String name, String username, String address, String phone, String photo, UserType type
 
         fbs.getFire().collection("users_")
@@ -194,6 +229,7 @@ public class SignupFragment extends Fragment {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                        AddToCompany(user);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -202,6 +238,10 @@ public class SignupFragment extends Fragment {
                         Log.w(TAG, "Error adding document", e);
                     }
                 });
+    }
+
+    private void AddToCompany(User user) {
+        getCompaniesMap(user);
     }
 
     private boolean checkFields() {
@@ -325,5 +365,61 @@ public class SignupFragment extends Fragment {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         getActivity().startActivityForResult(Intent.createChooser(intent, "Select Picture"),40);
+    }
+
+    public Map<String, Company> getCompaniesMap(User user)
+    {
+        Map<String, Company> companies = new HashMap<>();
+
+        try {
+            companies.clear();
+            fbs.getFire().collection("companies")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    companies.put(document.getId(), document.toObject(Company.class));
+                                }
+                                // TODO: add callback
+                                acall.onCallback(companies, user);
+                                //addUserToCompany(companies, user);
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e)
+        {
+            Log.e("getCompaniesMap(): ", e.getMessage());
+        }
+
+        return companies;
+    }
+
+    private void addUserToCompany(Map<String, Company> companies, String username) {
+        for(Map.Entry<String, Company> company: companies.entrySet())
+        {
+            if (company.getValue().getUsername().equals(fbs.getAuth().getCurrentUser().getEmail()))
+            {
+                company.getValue().getUsers().add(username);
+                fbs.getFire().collection("companies").
+                        document(company.getKey()).
+                        set(company.getValue()).
+                        addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.i("addUserToCompany: ", "User added successfully to company!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("addUserToCompany: ", "User failed to be added successfully in Firestore! " + e.getMessage());
+                            }
+                        });
+            }
+        }
     }
 }

@@ -46,7 +46,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     private UsersMapCallback umc;
     //private ArrayList<User> users;
     private Map<String, User> users;
-    Map<String, ShiftRequest> requests;
+    private Map<String, ShiftRequest> requests;
     private FirebaseServices fbs;
     private View current;
 

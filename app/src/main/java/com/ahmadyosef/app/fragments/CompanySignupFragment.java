@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.Utilities;
+import com.ahmadyosef.app.activities.AdminActivity;
 import com.ahmadyosef.app.activities.FeedActivity;
 import com.ahmadyosef.app.data.Company;
 import com.ahmadyosef.app.data.FirebaseServices;
@@ -156,7 +157,7 @@ public class CompanySignupFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             signupInFirestore();
-                            gotoFeedActivity();
+                            gotoAdminActivity();
                         } else {
                             Log.e(TAG, task.getException().getMessage());
                             //Toast.makeText(getv, R.string.err_firebase_general, Toast.LENGTH_SHORT).show();
@@ -226,10 +227,16 @@ public class CompanySignupFragment extends Fragment {
 
     private void gotoFeedActivity() {
         Intent i = new Intent(getActivity(), FeedActivity.class);
-        i.putExtra("userType", "Company");
         startActivity(i);
         ((Activity) getActivity()).overridePendingTransition(0, 0);
     }
+
+    private void gotoAdminActivity() {
+        Intent i = new Intent(getActivity(), AdminActivity.class);
+        startActivity(i);
+        ((Activity) getActivity()).overridePendingTransition(0, 0);
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
