@@ -16,6 +16,7 @@ import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.fragments.CommonFragment;
 import com.ahmadyosef.app.fragments.SignupFragment;
+import com.ahmadyosef.app.fragments.UsersListFragment;
 
 public class AdminActivity extends AppCompatActivity {
 
@@ -75,7 +76,7 @@ public class AdminActivity extends AppCompatActivity {
                 break;
 
             case R.id.miCommonFeed:
-                fr = new CommonFragment();
+                fr = new UsersListFragment();
                 break;
         }
         ft.replace(R.id.frameLayoutAdmin, fr);

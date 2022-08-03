@@ -201,13 +201,17 @@ public class SignupFragment extends Fragment {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             signupInFirestore();
-                            //gotoFeedActivity();
+                            Toast.makeText(getActivity(), R.string.user_successfully_registered, Toast.LENGTH_LONG).show();
+                            gotoUsersFragment();
                         } else {
                             Log.e(TAG, task.getException().getMessage());
-                            //Toast.makeText(getv, R.string.err_firebase_general, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
+    }
+
+    private void gotoUsersFragment() {
+
     }
 
     private void signupInFirestore() {
@@ -404,6 +408,7 @@ public class SignupFragment extends Fragment {
         {
             if (company.getValue().getUsername().equals(fbs.getAuth().getCurrentUser().getEmail()))
             {
+                fbs.setCompany(company.getValue());
                 company.getValue().getUsers().add(username);
                 fbs.getFire().collection("companies").
                         document(company.getKey()).

@@ -28,6 +28,7 @@ public class FirebaseServices {
     private FirebaseAuth auth;
     private FirebaseFirestore fire;
     private FirebaseStorage storage;
+    private Company company;
 
     public FirebaseAuth getAuth() {
         return auth;
@@ -46,6 +47,7 @@ public class FirebaseServices {
         auth = FirebaseAuth.getInstance();
         fire = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        company = null;
     }
 
     public static FirebaseServices getInstance()
@@ -54,6 +56,14 @@ public class FirebaseServices {
             instance = new FirebaseServices();
 
         return instance;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
     }
 
     public ArrayList<User> getUsers()
