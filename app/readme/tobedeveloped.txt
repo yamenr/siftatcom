@@ -1,3 +1,11 @@
 Admin: Request, Current Shifts (By days), Delete Button
 Employee: Adding color to shift + 7 days, delete request
+    * Icon for each shift added
 Signup: As company, employees are signed up only through company
+    * Done
+
+Added extra already:
+* Users list from admin
+
+TODO: * Show today shifts for admin
+      * Enable Admin to modify user shifts
