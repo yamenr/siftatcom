@@ -147,6 +147,7 @@ public class LoginFragment extends Fragment {
                 {
                     if (user.equals(c.getUsername()))
                     {
+                        fbs.setCompany(c);
                         gotoAdminActivity();
                         return;
                     }

@@ -43,8 +43,8 @@ public class AdminActivity extends AppCompatActivity {
                 gotoFragment(R.id.miAddAdm);
                 return true;
 
-            case R.id.miCommonAdm:
-                gotoFragment(R.id.miCommonAdm);
+            case R.id.miUsersListAdm:
+                gotoFragment(R.id.miUsersListAdm);
                 return true;
 
             case R.id.miSignoutAdm:
@@ -75,7 +75,7 @@ public class AdminActivity extends AppCompatActivity {
                 fr = new SignupFragment();
                 break;
 
-            case R.id.miCommonFeed:
+            case R.id.miUsersListAdm:
                 fr = new UsersListFragment();
                 break;
         }
