@@ -2,9 +2,6 @@ package com.ahmadyosef.app.data;
 
 import com.ahmadyosef.app.Utilities;
 
-import java.util.Date;
-import java.time.format.DateTimeFormatter;
-
 public class Shift /*implements Comparable*/{
     private String id;
     private String date;

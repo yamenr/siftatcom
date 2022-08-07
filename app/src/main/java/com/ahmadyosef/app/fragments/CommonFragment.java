@@ -1,26 +1,49 @@
 package com.ahmadyosef.app.fragments;
 
+import static com.ahmadyosef.app.CalendarUtils.daysInWeekArray;
+import static com.ahmadyosef.app.CalendarUtils.monthYearFromDate;
+
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+import android.widget.TextView;
 
+import com.ahmadyosef.app.CalendarUtils;
 import com.ahmadyosef.app.R;
+import com.ahmadyosef.app.adapters.CommonAdapter;
+import com.ahmadyosef.app.data.FirebaseServices;
+import com.ahmadyosef.app.data.Shift;
+import com.ahmadyosef.app.data.User;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link CommonFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CommonFragment extends Fragment {
+public class CommonFragment extends Fragment  implements CommonAdapter.OnItemListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Map<String, User> users;
+    private FirebaseServices fbs;
+    private TextView monthYearText;
+    private RecyclerView calendarRecyclerView;
+    private ListView shiftListView;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -62,5 +85,72 @@ public class CommonFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_common, container, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        fbs = FirebaseServices.getInstance();
+        users = fbs.getUsersMapByCompany();
+        initWidgets();
+        setWeekView();
+    }
+
+    private void setWeekView() {
+        CalendarUtils.selectedDate = LocalDate.now();
+        monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
+        ArrayList<LocalDate> days = daysInWeekArray(CalendarUtils.selectedDate);
+
+        CommonAdapter calendarAdapter = new CommonAdapter(days, this);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
+        calendarRecyclerView.setLayoutManager(layoutManager);
+        calendarRecyclerView.setAdapter(calendarAdapter);
+        setEventAdpater();
+    }
+
+    private void initWidgets() {
+        calendarRecyclerView = getActivity().findViewById(R.id.calendarRecyclerView);
+        monthYearText = getActivity().findViewById(R.id.monthYearTV);
+        shiftListView = getActivity().findViewById(R.id.shiftListView);
+    }
+
+
+    public void previousWeekAction(View view)
+    {
+        CalendarUtils.selectedDate = CalendarUtils.selectedDate.minusWeeks(1);
+        setWeekView();
+    }
+
+    public void nextWeekAction(View view)
+    {
+        CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusWeeks(1);
+        setWeekView();
+    }
+
+    public void onItemClick(int position, LocalDate date)
+    {
+        CalendarUtils.selectedDate = date;
+        setWeekView();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        setEventAdpater();
+    }
+
+    private void setEventAdpater()
+    {
+        // TODO: set adapter for shifts
+        /*
+        ArrayList<Shift> dailyEvents =
+        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
+        eventListView.setAdapter(eventAdapter); */
+    }
+
+    public void newEventAction(View view)
+    {
+        //startActivity(new Intent(this, EventEditActivity.class));
     }
 }

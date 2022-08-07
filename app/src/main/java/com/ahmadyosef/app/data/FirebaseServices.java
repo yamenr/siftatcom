@@ -152,4 +152,34 @@ public class FirebaseServices {
 
         return requests;
     }
+
+    public Map<String, User> getUsersMapByCompany()
+    {
+        Map<String, User> users = new HashMap<>();
+
+        try {
+            users.clear();
+            fire.collection("users_")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    if (company.getUsers().contains(document.toObject(User.class).getUsername()))
+                                        users.put(document.getId(), document.toObject(User.class));
+                                }
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e)
+        {
+            Log.e("getUsersMap(): ", e.getMessage());
+        }
+
+        return users;
+    }
 }

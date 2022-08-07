@@ -27,4 +27,6 @@
     <string name="image_name_profile">profile photo</string>
     <string name="register_company_title">Register your company</string>
     <string name="user_successfully_registered">User successfully registered!</string>
+    <string name="back"><![CDATA[<-]]></string>
+    <string name="forward"><![CDATA[->]]></string>
 </resources>
