@@ -19,8 +19,11 @@ import android.widget.TextView;
 import com.ahmadyosef.app.CalendarUtils;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.adapters.CommonAdapter;
+import com.ahmadyosef.app.adapters.ShiftUserAdapter;
+import com.ahmadyosef.app.data.Company;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
+import com.ahmadyosef.app.data.ShiftUser;
 import com.ahmadyosef.app.data.User;
 
 import java.time.LocalDate;
@@ -39,6 +42,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private Map<String, User> users;
+    private ArrayList<ShiftUser> shifts;
     private FirebaseServices fbs;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
@@ -92,8 +96,24 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         super.onStart();
         fbs = FirebaseServices.getInstance();
         users = fbs.getUsersMapByCompany();
+        shifts = prepareShiftsListOrder(users);
         initWidgets();
         setWeekView();
+    }
+
+    // TODO: move to FirebaseServices/Utilities
+    private ArrayList<ShiftUser> prepareShiftsListOrder(Map<String, User> users) {
+        shifts = new ArrayList<>();
+
+        for(User user: users.values())
+        {
+            for(Shift shift: user.getShifts())
+            {
+                shifts.add(new ShiftUser(user.getUsername(), shift.getDate(), shift.getType()));
+            }
+        }
+
+        return shifts;
     }
 
     private void setWeekView() {
@@ -105,7 +125,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
-        setEventAdpater();
+        setShiftsUsersAdpater();
     }
 
     private void initWidgets() {
@@ -137,16 +157,15 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     public void onResume()
     {
         super.onResume();
-        setEventAdpater();
+        setShiftsUsersAdpater();
     }
 
-    private void setEventAdpater()
+    private void setShiftsUsersAdpater()
     {
-        // TODO: set adapter for shifts
-        /*
-        ArrayList<Shift> dailyEvents =
-        EventAdapter eventAdapter = new EventAdapter(getApplicationContext(), dailyEvents);
-        eventListView.setAdapter(eventAdapter); */
+        // TODO: set adapter f   or shifts
+
+        ShiftUserAdapter shiftUserAdapter = new ShiftUserAdapter(getActivity(), shifts);
+        shiftListView.setAdapter(shiftUserAdapter);
     }
 
     public void newEventAction(View view)
