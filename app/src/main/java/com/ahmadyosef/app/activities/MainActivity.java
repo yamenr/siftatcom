@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private void initialize() {
         fbs = FirebaseServices.getInstance();
         // TODO: remove when done, for tests only
-        fbs.getAuth().signOut();
+        //fbs.getAuth().signOut();
         //
         ccall = new CompaniesCallback() {
             @Override

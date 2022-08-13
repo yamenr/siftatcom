@@ -166,14 +166,14 @@ public class SignupFragment extends Fragment {
 
     private void PrepareFirebaseAuth2() {
         firebaseOptions = new FirebaseOptions.Builder()
-                .setDatabaseUrl("[shiftatcom.appspot.com]")
-                .setApiKey("AIzaSyAzHAAA7CWjNSqWksbsXFaYl4P3oR1vhqk")
-                .setApplicationId("shiftatcom").build();
+                .setDatabaseUrl("[shiftatcom2.appspot.com]")
+                .setApiKey("AIzaSyAbOlKCwigINTFiJkaU4XlYwr4hu0hzr6U")
+                .setApplicationId("shiftatcom2").build();
 
-        try { FirebaseApp myApp = FirebaseApp.initializeApp(getActivity(), firebaseOptions, "shiftatcom");
+        try { FirebaseApp myApp = FirebaseApp.initializeApp(getActivity(), firebaseOptions, "shiftatcom2");
             mAuth2 = FirebaseAuth.getInstance(myApp);
         } catch (IllegalStateException e){
-            mAuth2 = FirebaseAuth.getInstance(FirebaseApp.getInstance("shiftatcom"));
+            mAuth2 = FirebaseAuth.getInstance(FirebaseApp.getInstance("shiftatcom2"));
         }
     }
 

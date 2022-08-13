@@ -34,7 +34,8 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
 
         TextView eventCellTV = convertView.findViewById(R.id.tvShiftCalendarCell);
 
-        String shiftUser = shift.getUsername() +" "+ CalendarUtils.formattedTime(LocalTime.parse(shift.getDate()));
+        // TODO: Fix string date parsing
+        String shiftUser = shift.getUsername() +" "+ shift.getDate(); //CalendarUtils.formattedTime(LocalTime.parse(shift.getDate()));
         eventCellTV.setText(shiftUser);
         return convertView;
     }

@@ -6,13 +6,17 @@ import static com.ahmadyosef.app.CalendarUtils.monthYearFromDate;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -20,15 +24,23 @@ import com.ahmadyosef.app.CalendarUtils;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.adapters.CommonAdapter;
 import com.ahmadyosef.app.adapters.ShiftUserAdapter;
+import com.ahmadyosef.app.adapters.UserAdapter;
 import com.ahmadyosef.app.data.Company;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftUser;
 import com.ahmadyosef.app.data.User;
+import com.ahmadyosef.app.interfaces.UsersCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,12 +53,15 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private Map<String, User> users;
+    private ArrayList<User> users = new ArrayList<>();
     private ArrayList<ShiftUser> shifts;
     private FirebaseServices fbs;
     private TextView monthYearText;
     private RecyclerView calendarRecyclerView;
     private ListView shiftListView;
+    private UsersCallback ucall;
+    private Button btnPrevious, btnNext;
+    private static final String TAG = "CommonFragment";
 
 
     // TODO: Rename and change types of parameters
@@ -94,22 +109,35 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     @Override
     public void onStart() {
         super.onStart();
-        fbs = FirebaseServices.getInstance();
-        users = fbs.getUsersMapByCompany();
-        shifts = prepareShiftsListOrder(users);
         initWidgets();
+        initialize();
         setWeekView();
     }
 
+    private void initialize() {
+        fbs = FirebaseServices.getInstance();
+        users = getUsers();
+        ucall = new UsersCallback() {
+            @Override
+            public void onCallback(List<User> usersList) {
+                shifts = prepareShiftsListOrder(users);
+                setShiftsUsersAdpater();
+
+            }
+        };
+        CalendarUtils.selectedDate = LocalDate.now();
+    }
+
     // TODO: move to FirebaseServices/Utilities
-    private ArrayList<ShiftUser> prepareShiftsListOrder(Map<String, User> users) {
+    private ArrayList<ShiftUser> prepareShiftsListOrder(ArrayList<User> users) {
         shifts = new ArrayList<>();
 
-        for(User user: users.values())
+        for(User user: users)
         {
             for(Shift shift: user.getShifts())
             {
-                shifts.add(new ShiftUser(user.getUsername(), shift.getDate(), shift.getType()));
+                if (shift.getDate().equals(CalendarUtils.selectedDate.toString()))
+                    shifts.add(new ShiftUser(user.getUsername(), shift.getDate(), shift.getType()));
             }
         }
 
@@ -117,7 +145,6 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     }
 
     private void setWeekView() {
-        CalendarUtils.selectedDate = LocalDate.now();
         monthYearText.setText(monthYearFromDate(CalendarUtils.selectedDate));
         ArrayList<LocalDate> days = daysInWeekArray(CalendarUtils.selectedDate);
 
@@ -125,26 +152,30 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+        shifts = prepareShiftsListOrder(users);
         setShiftsUsersAdpater();
     }
 
     private void initWidgets() {
+        btnPrevious = getActivity().findViewById(R.id.btnPreviousCommonFragment);
+        btnNext = getActivity().findViewById(R.id.btnNextCommonFragment);
         calendarRecyclerView = getActivity().findViewById(R.id.calendarRecyclerView);
         monthYearText = getActivity().findViewById(R.id.monthYearTV);
         shiftListView = getActivity().findViewById(R.id.shiftListView);
-    }
-
-
-    public void previousWeekAction(View view)
-    {
-        CalendarUtils.selectedDate = CalendarUtils.selectedDate.minusWeeks(1);
-        setWeekView();
-    }
-
-    public void nextWeekAction(View view)
-    {
-        CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusWeeks(1);
-        setWeekView();
+        btnPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CalendarUtils.selectedDate = CalendarUtils.selectedDate.minusWeeks(1);
+                setWeekView();
+            }
+        });
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusWeeks(1);
+                setWeekView();
+            }
+        });
     }
 
     public void onItemClick(int position, LocalDate date)
@@ -157,13 +188,12 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     public void onResume()
     {
         super.onResume();
-        setShiftsUsersAdpater();
+        //setShiftsUsersAdpater();
     }
 
     private void setShiftsUsersAdpater()
     {
         // TODO: set adapter f   or shifts
-
         ShiftUserAdapter shiftUserAdapter = new ShiftUserAdapter(getActivity(), shifts);
         shiftListView.setAdapter(shiftUserAdapter);
     }
@@ -172,4 +202,37 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     {
         //startActivity(new Intent(this, EventEditActivity.class));
     }
+
+    public ArrayList<User> getUsers()
+    {
+        try {
+            users.clear();
+            fbs.getFire().collection("users_")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    User user = document.toObject(User.class);
+                                    if (fbs.getCompany().getUsers().contains(user.getUsername()))
+                                        users.add(document.toObject(User.class));
+                                }
+
+                                ucall.onCallback(users);
+
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e)
+        {
+            //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
+        return users;
+    }
+
 }

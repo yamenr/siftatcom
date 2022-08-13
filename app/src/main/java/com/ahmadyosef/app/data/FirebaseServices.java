@@ -1,9 +1,11 @@
 package com.ahmadyosef.app.data;
 
 import android.util.Log;
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.interfaces.UsersCallback;
@@ -11,6 +13,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -28,6 +31,7 @@ public class FirebaseServices {
     private FirebaseAuth auth;
     private FirebaseFirestore fire;
     private FirebaseStorage storage;
+    private static Map<String, User> users;
     private Company company;
 
     public FirebaseAuth getAuth() {
@@ -54,7 +58,6 @@ public class FirebaseServices {
     {
         if (instance == null)
             instance = new FirebaseServices();
-
         return instance;
     }
 
@@ -159,7 +162,7 @@ public class FirebaseServices {
 
         try {
             users.clear();
-            fire.collection("users_")
+            fire.collection("users_").orderBy("username", Query.Direction.ASCENDING)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -182,4 +185,5 @@ public class FirebaseServices {
 
         return users;
     }
+
 }

@@ -35,6 +35,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -59,7 +61,7 @@ public class Todays extends Fragment {
     private static final String TAG = "TodaysFragment";
     private Spinner spShiftType;
     private ShiftType selectedShiftType;
-    private Date selectedDate;
+    private LocalDate selectedDate;
     private Toolbar tbAction;
 
 
@@ -171,7 +173,7 @@ public class Todays extends Fragment {
                                             int dayOfMonth) {
                 for (Shift s : shifts)
                 {
-                    if ((new Date(year, month, dayOfMonth)).toString().equals(s.getDate()))
+                    if ((LocalDate.of(year, month + 1, dayOfMonth)).toString().equals(s.getDate()))
                     {
                         Toast.makeText(getActivity(), "You already have a shift on this day!", Toast.LENGTH_LONG).show();
                         return;
@@ -179,7 +181,7 @@ public class Todays extends Fragment {
                 }
 
                 // TODO: add dialogue box prompt
-                selectedDate = new Date(year, month, dayOfMonth);
+                selectedDate = LocalDate.of(year, month + 1, dayOfMonth);
                 showAlertDialogButtonClicked();
             }
         });
