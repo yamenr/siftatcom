@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.interfaces.UsersCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,6 +35,7 @@ public class FirebaseServices {
     private FirebaseStorage storage;
     private static Map<String, User> users;
     private Company company;
+    private static final String TAG = "CompanySignupFragment";
 
     public FirebaseAuth getAuth() {
         return auth;
@@ -51,6 +54,7 @@ public class FirebaseServices {
         auth = FirebaseAuth.getInstance();
         fire = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
+        users = getUsersMap();
         company = null;
     }
 
@@ -67,6 +71,51 @@ public class FirebaseServices {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public void removeShiftFromUser(ShiftUser shift)
+    {
+        // TODO: delete shift from user
+        /*
+        Query q = fire.collection("users").
+            whereEqualTo("username", shift.getUsername()).
+            whereEqualTo("date", shift.getDate()).
+            whereEqualTo("type", shift.getType()); */
+
+        ArrayList<User> users = new ArrayList<>();
+
+        try {
+            getFire().collection("users_")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    User current = document.toObject(User.class);
+                                    if (current.getUsername().equals(shift.getUsername()))
+                                    {
+                                        for(Shift shiftUser: current.getShifts())
+                                        {
+                                            if (shiftUser.getDate().equals(shift.getDate()) &&
+                                                shiftUser.getType().equals(shift.getType()))
+                                            {
+
+                                            }
+                                        }
+                                    }
+                                }
+                            } else {
+                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
+                            }
+                        }
+                    });
+        }
+        catch (Exception e)
+        {
+            //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     public ArrayList<User> getUsers()
@@ -186,4 +235,40 @@ public class FirebaseServices {
         return users;
     }
 
+    public void removeShiftFromUser2(ShiftUser shiftUser) {
+        if (users == null)
+            users = getUsersMap();
+
+        for(Map.Entry<String, User> user: users.entrySet())
+        {
+            if (user.getValue().getUsername().equals(shiftUser.getUsername()))
+            {
+                ArrayList<Shift> removeList = new ArrayList<>();
+                for (Shift shift : user.getValue().getShifts()) {
+                    if (shift.getType().equals(shiftUser.getType()) &&
+                            shift.getDate().equals(shiftUser.getDate())) {
+                        removeList.add(shift);
+                    }
+                }
+
+                user.getValue().getShifts().removeAll(removeList);
+
+                fire.collection("users_").
+                        document(user.getKey()).
+                        set(user.getValue()).
+                        addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.i("addShiftToUser: ", "User shift removed successfully!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("addShiftToUser: ", "Failed to remove user shift! " + e.getMessage());
+                            }
+                        });
+                continue;
+            }
+        }
+    }
 }

@@ -72,7 +72,7 @@ public class FeedActivity extends AppCompatActivity {
         }
     }
 
-    private void gotoFragment(int frId) {
+    public void gotoFragment(int frId) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment fr = null;
         switch (frId) {

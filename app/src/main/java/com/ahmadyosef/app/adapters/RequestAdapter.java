@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
@@ -49,6 +50,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     private Map<String, ShiftRequest> requests;
     private FirebaseServices fbs;
     private View current;
+    private static final String TAG = "RequuestAdapter";
 
     private final RequestAdapter.ItemClickListener mClickListener = new RequestAdapter.ItemClickListener() {
         @Override
@@ -60,7 +62,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                 public void onCallback(boolean b) {
                     if (b == true)
                     {
-                        addShiftToUser(request);
+                        addShiftToUser(request, position);
                     }
                 }
             };
@@ -69,7 +71,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         }
     };
 
-    private void addShiftToUser(ShiftRequest request) {
+    private void addShiftToUser(ShiftRequest request, int position) {
         for(Map.Entry<String, User> user: users.entrySet())
         {
             if (user.getValue().getUsername().equals(request.getUsername()))
@@ -81,7 +83,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                                 addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                removeRequest(request);
+                                removeRequest(request, position);
                                 Log.i("addShiftToUser: ", "User shift added successfully!");
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -94,18 +96,17 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         }
     }
 
-    private void removeRequest(ShiftRequest request) {
+    private void removeRequest(ShiftRequest request, int position) {
         for(Map.Entry<String, ShiftRequest> requestEntry: requests.entrySet())
         {
-            if (requestEntry.getValue().getUsername().equals(request.getUsername()))
+            if (requestEntry.getValue().getShift().getId().equals(request.getShift().getId()))
             {
                 fbs.getFire().collection("requests").
                         document(requestEntry.getKey()).
                         delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
-                                mData = getRequests();
-                                notifyDataSetChanged();
+                                removeAt(position);
                                 Log.i("addShiftToUser: ", "Request removed successfully!");
                             }
                         }).addOnFailureListener(new OnFailureListener() {
@@ -116,6 +117,12 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                         });
             }
         }
+    }
+
+    public void removeAt(int position) {
+        mData.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, mData.size());
     }
 
     // data is passed into the constructor
@@ -244,36 +251,5 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         }
 
         return users;
-    }
-
-    public ArrayList<ShiftRequest> getRequests()
-    {
-        ArrayList<ShiftRequest> requests = new ArrayList<>();
-
-        try {
-            users.clear();
-            fbs.getFire().collection("requests")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    requests.add(document.toObject(ShiftRequest.class));
-                                }
-
-
-                            } else {
-                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
-                            }
-                        }
-                    });
-        }
-        catch (Exception e)
-        {
-            //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-        return requests;
     }
 }

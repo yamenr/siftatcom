@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
+import com.ahmadyosef.app.activities.FeedActivity;
 import com.ahmadyosef.app.adapters.RequestAdapter;
 import com.ahmadyosef.app.adapters.ShiftAdapter;
 import com.ahmadyosef.app.data.FirebaseServices;
@@ -122,6 +123,14 @@ public class AdminFragment extends Fragment {
         initialize();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter != null) {
+            ((FeedActivity) getActivity()).gotoFragment(R.id.miCommonFeed);
+        }
+    }
+
     private void initialize() {
         rv = getView().findViewById(R.id.rvRequestsAdmin);
         fbs = FirebaseServices.getInstance();
@@ -132,8 +141,8 @@ public class AdminFragment extends Fragment {
             public void onCallback(List<ShiftRequest> requests) {
                 rv = getView().findViewById(R.id.rvRequestsAdmin);
                 rv.setLayoutManager(new LinearLayoutManager(getContext()));
-                    adapter = new RequestAdapter(getContext(), requests);
-                    rv.setAdapter(adapter);
+                adapter = new RequestAdapter(getContext(), requests);
+                rv.setAdapter(adapter);
             }
         };
     }

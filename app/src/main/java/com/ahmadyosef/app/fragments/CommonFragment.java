@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -28,10 +29,13 @@ import com.ahmadyosef.app.adapters.UserAdapter;
 import com.ahmadyosef.app.data.Company;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
+import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.ShiftUser;
 import com.ahmadyosef.app.data.User;
 import com.ahmadyosef.app.interfaces.UsersCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -122,7 +126,6 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
             public void onCallback(List<User> usersList) {
                 shifts = prepareShiftsListOrder(users);
                 setShiftsUsersAdpater();
-
             }
         };
         CalendarUtils.selectedDate = LocalDate.now();
@@ -196,11 +199,20 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         // TODO: set adapter f   or shifts
         ShiftUserAdapter shiftUserAdapter = new ShiftUserAdapter(getActivity(), shifts);
         shiftListView.setAdapter(shiftUserAdapter);
+        shiftListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                removeItem(i);
+                return false;
+            }
+        });
     }
 
-    public void newEventAction(View view)
-    {
-        //startActivity(new Intent(this, EventEditActivity.class));
+    private void removeItem(int i) {
+        fbs.removeShiftFromUser2(shifts.get(i));
+        shifts.remove(i);
+        users = getUsers();
+        ((ShiftUserAdapter)(shiftListView.getAdapter())).notifyDataSetChanged();
     }
 
     public ArrayList<User> getUsers()
@@ -234,5 +246,6 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
 
         return users;
     }
+
 
 }
