@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.fragments.AdminFragment;
+import com.ahmadyosef.app.fragments.CommonFragment;
 import com.ahmadyosef.app.fragments.Todays;
 
 public class FeedActivity extends AppCompatActivity {
@@ -28,7 +29,7 @@ public class FeedActivity extends AppCompatActivity {
         setContentView(R.layout.activity_feed);
 
         initialize();
-        gotoFragment(R.id.miProfileFeed);
+        gotoFragment(R.id.miTodayFeed);
     }
 
     private void initialize() {
@@ -51,15 +52,12 @@ public class FeedActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.miProfileFeed:
-                gotoFragment(R.id.miProfileFeed);
+            case R.id.miTodayFeed:
+                gotoFragment(R.id.miTodayFeed);
                 return true;
 
             case R.id.miCommonFeed:
-                if (userIsAdmin())
-                    gotoFragment(R.id.miCommonFeed);
-                else
-                    Toast.makeText(this, R.string.err_not_admin, Toast.LENGTH_SHORT).show();
+                gotoFragment(R.id.miCommonFeed);
                 return true;
                 
             case R.id.miSignoutFeed:
@@ -76,25 +74,15 @@ public class FeedActivity extends AppCompatActivity {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment fr = null;
         switch (frId) {
-            case R.id.miProfileFeed:
+            case R.id.miTodayFeed:
                 fr = new Todays();
                 break;
 
             case R.id.miCommonFeed:
-                if (userIsAdmin())
-                    fr = new AdminFragment();
-                else {
-                    Toast.makeText(this, R.string.err_not_admin, Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                fr = new CommonFragment();
         }
         ft.replace(R.id.frameLayoutFeed, fr);
         ft.commit();
-    }
-
-    private boolean userIsAdmin() {
-        // TODO: Add check user admin
-        return true;
     }
 
     public void gotoMainActivity () {

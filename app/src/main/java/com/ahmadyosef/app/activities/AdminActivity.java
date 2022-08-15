@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.FirebaseServices;
+import com.ahmadyosef.app.fragments.AdminFragment;
 import com.ahmadyosef.app.fragments.CommonFragment;
 import com.ahmadyosef.app.fragments.SignupFragment;
 import com.ahmadyosef.app.fragments.UsersListFragment;
@@ -46,6 +47,10 @@ public class AdminActivity extends AppCompatActivity {
 
             case R.id.miCommonAdm:
                 gotoFragment(R.id.miCommonAdm);
+                return true;
+
+            case R.id.miRequestsAdm:
+                gotoFragment(R.id.miRequestsAdm);
                 return true;
 
             case R.id.miUsersListAdm:
@@ -82,6 +87,10 @@ public class AdminActivity extends AppCompatActivity {
 
             case R.id.miCommonAdm:
                 fr = new CommonFragment();
+                break;
+
+            case R.id.miRequestsAdm:
+                fr = new AdminFragment();
                 break;
 
             case R.id.miUsersListAdm:

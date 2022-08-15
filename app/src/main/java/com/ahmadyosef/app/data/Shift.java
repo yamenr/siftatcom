@@ -1,12 +1,20 @@
 package com.ahmadyosef.app.data;
 
+import android.util.Log;
+
 import com.ahmadyosef.app.Utilities;
 
-public class Shift /*implements Comparable*/{
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Comparator;
+
+public class Shift implements Comparable<Shift> {
     private String id;
     private String date;
     private ShiftType type;
     private Utilities utils;
+    private static final String TAG = "AdminFragment";
 
     public Shift() {
     }
@@ -48,6 +56,17 @@ public class Shift /*implements Comparable*/{
                 ", date='" + date + '\'' +
                 ", type=" + type +
                 '}';
+    }
+
+    /*
+    @Override
+    public int compare(Shift shift, Shift t1) {
+        return (LocalDate.parse(shift.date)).compareTo(LocalDate.parse(t1.date));
+    } */
+
+    @Override
+    public int compareTo(Shift shift) {
+        return (LocalDate.parse(date)).compareTo(LocalDate.parse(shift.date));
     }
 
     /* TODO: sorting by date

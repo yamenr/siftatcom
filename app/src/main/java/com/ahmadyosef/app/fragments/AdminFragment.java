@@ -28,6 +28,7 @@ import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.ShiftType;
+import com.ahmadyosef.app.data.ShiftUser;
 import com.ahmadyosef.app.data.User;
 import com.ahmadyosef.app.interfaces.RequestsCallback;
 import com.ahmadyosef.app.interfaces.ShiftTypeCallback;
@@ -61,7 +62,7 @@ public class AdminFragment extends Fragment {
     private FirebaseServices fbs;
     private RequestAdapter adapter;
     private ArrayList<ShiftRequest> requests = new ArrayList<>();
-    private ArrayList<User> users = new ArrayList<>();
+    private Map<String, User> users = new HashMap<>();
     private UsersCallback ucall;
     private RequestsCallback rcall;
     private TextView tvApprove;
@@ -134,6 +135,7 @@ public class AdminFragment extends Fragment {
     private void initialize() {
         rv = getView().findViewById(R.id.rvRequestsAdmin);
         fbs = FirebaseServices.getInstance();
+        users = fbs.getUsersMapByCompany();
         requests = getRequests();
 
         rcall = new RequestsCallback() {
@@ -157,7 +159,9 @@ public class AdminFragment extends Fragment {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    requests.add(document.toObject(ShiftRequest.class));
+                                    ShiftRequest request =document.toObject(ShiftRequest.class);
+                                    if (users.values().stream().filter(o -> o.getUsername().equals(request.getUsername())).findFirst().isPresent())
+                                        requests.add(request);
                                 }
 
                                 rcall.onCallback(requests);

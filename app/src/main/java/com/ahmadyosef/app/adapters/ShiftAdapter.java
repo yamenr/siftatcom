@@ -16,6 +16,8 @@ import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.User;
 import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> {
@@ -44,6 +46,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
     public ShiftAdapter(Context context, List<Shift> data) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
+        Collections.sort(this.mData);
         this.context = context;
     }
 
