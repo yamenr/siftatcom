@@ -7,6 +7,23 @@ Signup: As company, employees are signed up only through company
 Added extra already:
 * Users list from admin
 
-TODO: * Show today shifts for admin
-      * Enable Admin to modify user shifts
-      * Remove redundancy from code
+TODO: * Show today shifts for admin - done
+      * Enable Admin to modify user shifts - done partially
+      * Remove redundancy from code: done partially
+
+TODO: * Admin user:
+        * New Shift: Button
+        * Edit Shift: Click
+        * Delete Shift: Long Click
+        * Create new 2 dialogues for edit and new
+
+TODO: * Regular user:
+        * Fix common issues for regular user to see other colleagues
+            -> company null
+
+TODO: * Design
+        * Requests
+        * Today's shifts
+        * Logo app opening
+        * Font sizes
+        * Common page lines between items
