@@ -29,4 +29,10 @@
     <string name="user_successfully_registered">User successfully registered!</string>
     <string name="back"><![CDATA[<-]]></string>
     <string name="forward"><![CDATA[->]]></string>
+    <string name="are_you_sure_delete">Are you sure you want to delete shift?</string>
+    <string name="pick_user">pick user...</string>
+    <string name="enter_date">enter date...</string>
+    <string name="edit_user_shift_dialogue">Edit user shift</string>
+    <string name="no_changes_made_to_shift">No changes have been made to shift!</string>
+    <string name="must_choose_user">You must choose a user!</string>
 </resources>

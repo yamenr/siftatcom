@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,13 +31,20 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
         ShiftUser shift = getItem(position);
 
         if (convertView == null)
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.calendar_cell, parent, false);
+        convertView = LayoutInflater.from(getContext()).inflate(R.layout.common_shift_user_details, parent, false);
 
-        TextView eventCellTV = convertView.findViewById(R.id.tvShiftCalendarCell);
+        TextView tvUsername = convertView.findViewById(R.id.tvCommonShiftUsername);
+        Button btnEdit = convertView.findViewById(R.id.btnEditCommonShift);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         // TODO: Fix string date parsing
-        String shiftUser = shift.getType().toString().toUpperCase() +"   "+ shift.getUsername();
-        eventCellTV.setText(shiftUser);
+        String shiftUser = shift.getUsername();
+        tvUsername.setText(shiftUser);
         return convertView;
     }
 }

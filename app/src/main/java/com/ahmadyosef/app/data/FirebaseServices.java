@@ -26,6 +26,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class FirebaseServices {
 
@@ -268,6 +269,30 @@ public class FirebaseServices {
                             }
                         });
                 continue;
+            }
+        }
+    }
+
+    public void addShiftToUser(ShiftUser newShift) {
+        for(Map.Entry<String, User> user: users.entrySet())
+        {
+            if (user.getValue().getUsername().equals(newShift.getUsername()))
+            {
+                user.getValue().getShifts().add(new Shift(UUID.randomUUID().toString(), newShift.getDate(), newShift.getType()));
+                fire.collection("users_").
+                        document(user.getKey()).
+                        set(user.getValue()).
+                        addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.i("addShiftToUser: ", "User shift added successfully!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("addShiftToUser: ", "User shift failed to be added to Firestore! " + e.getMessage());
+                            }
+                        });
             }
         }
     }

@@ -38,7 +38,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -265,7 +264,7 @@ public class Todays extends Fragment {
                 .inflate(
                         R.layout.dialogue_book_shift,
                         null);
-        spShiftType = customLayout.findViewById(R.id.spShiftTypeBookShiftDialogue);
+        spShiftType = customLayout.findViewById(R.id.spUserAddEditShiftDialogue);
         spShiftType.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
         builder.setView(customLayout);
 

@@ -2,10 +2,15 @@ package com.ahmadyosef.app;
 
 import android.util.Log;
 
+import com.ahmadyosef.app.data.ShiftUser;
+import com.ahmadyosef.app.data.User;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,6 +52,10 @@ public class Utilities {
 
     public LocalDate convertLocalDate(String dateStr)
     {
+        String[] str = dateStr.split("-");
+        LocalDate date2 = LocalDate.of(Integer.parseInt(str[0]), Integer.parseInt(str[1]), Integer.parseInt(str[2]));
+        return date2;
+        /*
         LocalDate date = null;
         String regex = " at:(\\d{4}-\\d{2}-\\d{2}) Notes:";
         Matcher m = Pattern.compile(regex).matcher(dateStr);
@@ -56,9 +65,30 @@ public class Utilities {
             Log.e(TAG, "Date error string!");
         }
 
-        return date;
+        return date;*/
     }
 
+    public long getMilliSecsForCalendar(LocalDate date)
+    {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, date.getYear());
+        calendar.set(Calendar.MONTH, date.getMonthValue());
+        calendar.set(Calendar.DAY_OF_MONTH, date.getDayOfMonth());
+
+        return calendar.getTimeInMillis();
+    }
+
+    public ArrayList<String> usersList(ArrayList<User> users) {
+        ArrayList<String> userList = new ArrayList<>();
+
+        for(User user: users)
+        {
+            if (!userList.contains(user.getUsername()))
+                userList.add(user.getUsername());
+        }
+
+        return userList;
+    }
     // TODO: offline email and password validation
 /*
     public boolean validateEmail(String username) {
