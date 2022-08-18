@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.FirebaseServices;
+import com.ahmadyosef.app.fragments.AboutFragment;
 import com.ahmadyosef.app.fragments.AdminFragment;
 import com.ahmadyosef.app.fragments.CommonFragment;
 import com.ahmadyosef.app.fragments.SignupFragment;
@@ -57,6 +58,10 @@ public class AdminActivity extends AppCompatActivity {
                 gotoFragment(R.id.miUsersListAdm);
                 return true;
 
+            case R.id.miAboutAdm:
+                gotoFragment(R.id.miAboutAdm);
+                return true;
+
             case R.id.miSignoutAdm:
                 fbs.getAuth().getInstance().signOut();
                 gotoMainActivity();
@@ -95,6 +100,10 @@ public class AdminActivity extends AppCompatActivity {
 
             case R.id.miUsersListAdm:
                 fr = new UsersListFragment();
+                break;
+
+            case R.id.miAboutAdm:
+                fr = new AboutFragment();
                 break;
         }
         ft.replace(R.id.frameLayoutAdmin, fr);

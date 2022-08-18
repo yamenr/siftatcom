@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.FirebaseServices;
+import com.ahmadyosef.app.fragments.AboutFragment;
 import com.ahmadyosef.app.fragments.AdminFragment;
 import com.ahmadyosef.app.fragments.CommonFragment;
 import com.ahmadyosef.app.fragments.Todays;
@@ -59,7 +60,11 @@ public class FeedActivity extends AppCompatActivity {
             case R.id.miCommonFeed:
                 gotoFragment(R.id.miCommonFeed);
                 return true;
-                
+
+            case R.id.miAboutFeed:
+                gotoFragment(R.id.miAboutFeed);
+                return true;
+
             case R.id.miSignoutFeed:
                 fbs.getAuth().getInstance().signOut();
                 gotoMainActivity();
@@ -80,6 +85,9 @@ public class FeedActivity extends AppCompatActivity {
 
             case R.id.miCommonFeed:
                 fr = new CommonFragment();
+
+            case R.id.miAboutFeed:
+                fr = new AboutFragment();
         }
         ft.replace(R.id.frameLayoutFeed, fr);
         ft.commit();

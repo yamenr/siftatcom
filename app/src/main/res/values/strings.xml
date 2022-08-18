@@ -35,4 +35,6 @@
     <string name="edit_user_shift_dialogue">Edit user shift</string>
     <string name="no_changes_made_to_shift">No changes have been made to shift!</string>
     <string name="must_choose_user">You must choose a user!</string>
+    <string name="about_description"><![CDATA[App developed by team YA. Youssef Abu Rass & Ahmad Abu Idris 2022]]></string>
+    <string name="copyrights"><![CDATA[All rights reserved to Ahmad & Youssef ©]]></string>
 </resources>

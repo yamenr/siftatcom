@@ -17,5 +17,9 @@
         android:title="Signout"
         app:showAsAction="never">
     </item>
-
+    <item
+        android:id="@+id/miAboutFeed"
+        android:title="About"
+        app:showAsAction="never">
+    </item>
 </menu>

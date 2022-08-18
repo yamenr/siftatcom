@@ -218,7 +218,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
 
     private void setShiftsUsersAdpater()
     {
-        // TODO: set adapter f   or shifts
+        // TODO: set adapter for shifts
         ShiftUserAdapter shiftUserAdapter = new ShiftUserAdapter(getActivity(), shifts);
         shiftListView.setAdapter(shiftUserAdapter);
         shiftListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {

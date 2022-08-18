@@ -89,6 +89,26 @@ public class Utilities {
 
         return userList;
     }
+
+    public String sayHello()
+    {
+        Calendar c = Calendar.getInstance();
+        int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
+
+        if(timeOfDay >= 4 && timeOfDay < 12)
+        {
+            return "Good Morning";
+        }
+        else if(timeOfDay >= 12 && timeOfDay < 17){
+            return "Good Afternoon";
+        }
+        else if(timeOfDay >= 17 && timeOfDay < 21){
+            return "Good Evening";
+        }
+        else
+            return "Good Night";
+    }
+
     // TODO: offline email and password validation
 /*
     public boolean validateEmail(String username) {
