@@ -296,4 +296,14 @@ public class FirebaseServices {
             }
         }
     }
+
+    public String getNameOfUser(String shiftUser) {
+        for(User user: users.values())
+        {
+            if (user.getUsername().equals(shiftUser))
+                return user.getName();
+        }
+        // TODO: change it after check
+        return "check!";
+    }
 }

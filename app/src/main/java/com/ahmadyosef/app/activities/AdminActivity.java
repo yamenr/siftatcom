@@ -23,6 +23,7 @@ import com.ahmadyosef.app.fragments.UsersListFragment;
 public class AdminActivity extends AppCompatActivity {
 
     private FirebaseServices fbs;
+    private Fragment fr = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +83,13 @@ public class AdminActivity extends AppCompatActivity {
         tvCurrentUser.setText(fbs.getAuth().getCurrentUser().getEmail());
     }
 
+    public Fragment getFr() {
+        return fr;
+    }
+
     private void gotoFragment(int frId) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        Fragment fr = null;
+        //Fragment fr = null;
         switch (frId) {
             case R.id.miAddAdm:
                 fr = new SignupFragment();

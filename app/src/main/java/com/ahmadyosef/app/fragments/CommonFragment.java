@@ -49,6 +49,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -77,6 +78,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     private RecyclerView calendarRecyclerView;
     private ListView shiftListView;
     private Button btnAddShift;
+    private FloatingActionButton flbtnAddShift;
     private UsersCallback ucall;
     private Button btnPrevious, btnNext;
     private static final String TAG = "CommonFragment";
@@ -181,6 +183,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         monthYearText = getActivity().findViewById(R.id.monthYearTV);
         shiftListView = getActivity().findViewById(R.id.shiftListView);
         btnAddShift = getActivity().findViewById(R.id.btnAddShiftCommon);
+        flbtnAddShift = getActivity().findViewById(R.id.fltbtnAddShift);
         btnAddShift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,6 +202,12 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
             public void onClick(View view) {
                 CalendarUtils.selectedDate = CalendarUtils.selectedDate.plusWeeks(1);
                 setWeekView();
+            }
+        });
+        flbtnAddShift.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showShiftAddDialog();
             }
         });
     }
@@ -221,129 +230,12 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         // TODO: set adapter for shifts
         ShiftUserAdapter shiftUserAdapter = new ShiftUserAdapter(getActivity(), shifts);
         shiftListView.setAdapter(shiftUserAdapter);
-        shiftListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // TODO: show popup are you sure
-                showAlertDialogDeleteItem(i);
-                return false;
-            }
-        });
-        /*
-        shiftListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                showShiftEditDialog(i);
-            }
-        }); */
-
     }
 
-    private void removeItem(int i) {
-        fbs.removeShiftFromUser2(shifts.get(i));
-        shifts.remove(i);
-        refreshCommon();
-    }
-
-    private void refreshCommon()
+    public void refreshCommon()
     {
         users = getUsers();
         ((ShiftUserAdapter)(shiftListView.getAdapter())).notifyDataSetChanged();
-    }
-
-    private void showShiftEditDialog(int i) {
-        Spinner spShift, spUsers;
-        CalendarView cal;
-
-        // Create an alert builder
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.edit_user_shift_dialogue);
-
-        // set the custom layout
-        final View customLayout
-                = getLayoutInflater()
-                .inflate(
-                        R.layout.dialogue_edit_shift,
-                        null);
-        spShift = customLayout.findViewById(R.id.spShiftTypeAddEditShiftDialogue);
-        spUsers = customLayout.findViewById(R.id.spUserAddEditShiftDialogue);
-        cal = customLayout.findViewById(R.id.calAddEditShiftDialogue);
-        final LocalDate[] curDate = {selectedDate};
-        cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                curDate[0] = LocalDate.of(year, month, day);
-            }
-        });
-        ShiftUser shift = shifts.get(i);
-        LocalDate date = utils.convertLocalDate(shift.getDate());
-        cal.setDate(utils.getMilliSecsForCalendar(date), true, true);
-        spShift.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
-        ArrayList<String> userShifts = utils.usersList(users);
-        spUsers.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, userShifts));
-        spUsers.setSelection(userShifts.indexOf(shift.getUsername()));
-        builder.setView(customLayout);
-
-        // add a button
-        builder
-                .setPositiveButton(
-                        "OK",
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialog,
-                                    int which)
-                            {
-
-                                // send data from the
-                                // AlertDialog to the Activity
-                                sendDialogDataToActivity(spUsers.getSelectedItem().toString(),
-                                        spShift.getSelectedItem().toString(), curDate[0].toString(), i);
-                            }
-                        });
-
-        // create and show
-        // the alert dialog
-        AlertDialog dialog
-                = builder.create();
-        dialog.show();
-    }
-
-    private void sendDialogDataToActivity(String user, String shiftType, String date, int i)
-    {
-        if (shiftChanges(user, shiftType, date, i))
-            updateShift(user, shiftType, date, i);
-        else
-            Toast.makeText(getActivity(), R.string.no_changes_made_to_shift, Toast.LENGTH_LONG).show();
-    }
-
-    private boolean shiftChanges(String user, String shiftType, String date, int i) {
-        ShiftUser shift = shifts.get(i);
-        if (!shift.getUsername().equals(user) || !shift.getDate().equals(date) || !shift.getType().equals(shiftType))
-            return true;
-        return false;
-    }
-
-    private void updateShift(String user, String shiftType, String date, int i) {
-        // TODO: if user changes, add new shift to user, remove from current
-        if (!shifts.get(i).getUsername().equals(user))
-        {
-            ShiftUser shiftsOld = shifts.get(i);
-            removeItem(i);
-            // TODO: check process
-            ShiftUser newShift = new ShiftUser(user, date, ShiftType.valueOf(shiftType));
-            fbs.addShiftToUser(newShift);
-            removeItem(i);
-        }
-        else
-        {
-            shifts.get(i).setDate(date);
-            shifts.get(i).setType(ShiftType.valueOf(shiftType));
-            users = getUsers();
-            ((ShiftUserAdapter)(shiftListView.getAdapter())).notifyDataSetChanged();
-        }
     }
 
     private void showShiftAddDialog() {
@@ -418,9 +310,14 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         dialog.show();
     }
 
-    private void sendAddDialogDataToActivity(String user, String shiftType, String date)
+    public ArrayList<ShiftUser> getLastUsershifts()
     {
+        return this.shifts;
+    }
 
+    public ArrayList<User> getLastUsersList()
+    {
+        return this.users;
     }
 
     public ArrayList<User> getUsers()
@@ -455,33 +352,4 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         return users;
     }
 
-    public void showAlertDialogDeleteItem(int position)
-    {
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.are_you_sure_delete);
-        final View customLayout
-                = getActivity().getLayoutInflater()
-                .inflate(
-                        R.layout.dialogue_are_you_sure_delete,
-                        null);
-        builder.setView(customLayout);
-        builder
-                .setPositiveButton(
-                        "OK",
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(
-                                    DialogInterface dialog,
-                                    int which)
-                            {
-                                removeItem(position);
-                            }
-                        });
-
-        AlertDialog dialog
-                = builder.create();
-        dialog.show();
-    }
 }
