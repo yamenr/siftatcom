@@ -99,10 +99,10 @@ public class Utilities {
         {
             return "Good Morning";
         }
-        else if(timeOfDay >= 12 && timeOfDay < 17){
+        else if(timeOfDay >= 12 && timeOfDay < 18){
             return "Good Afternoon";
         }
-        else if(timeOfDay >= 17 && timeOfDay < 21){
+        else if(timeOfDay >= 18 && timeOfDay < 23){
             return "Good Evening";
         }
         else

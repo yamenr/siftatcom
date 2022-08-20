@@ -215,16 +215,18 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
 
     private void updateShift(String user, String shiftType, String date, int i) {
         // TODO: if user changes, add new shift to user, remove from current
+        ShiftUser newShift = new ShiftUser(user, date, ShiftType.valueOf(shiftType));
         if (!shifts.get(i).getUsername().equals(user))
         {
-            ShiftUser newShift = new ShiftUser(user, date, ShiftType.valueOf(shiftType));
             fbs.addShiftToUser(newShift);
             removeItem(i);
         }
         else
         {
-            cf.getLastUsershifts().get(i).setDate(date);
-            cf.getLastUsershifts().get(i).setType(ShiftType.valueOf(shiftType));
+            //cf.getLastUsershifts().get(i).setDate(date);
+            //cf.getLastUsershifts().get(i).setType(ShiftType.valueOf(shiftType));
+            ShiftUser original = shifts.get(i);
+            fbs.editUserShift(newShift, original);
             cf.refreshCommon();
         }
     }

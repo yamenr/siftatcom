@@ -50,8 +50,7 @@ public class FirebaseServices {
         return storage;
     }
 
-    public FirebaseServices()
-    {
+    public FirebaseServices() {
         auth = FirebaseAuth.getInstance();
         fire = FirebaseFirestore.getInstance();
         storage = FirebaseStorage.getInstance();
@@ -59,8 +58,7 @@ public class FirebaseServices {
         company = null;
     }
 
-    public static FirebaseServices getInstance()
-    {
+    public static FirebaseServices getInstance() {
         if (instance == null)
             instance = new FirebaseServices();
         return instance;
@@ -74,53 +72,7 @@ public class FirebaseServices {
         this.company = company;
     }
 
-    public void removeShiftFromUser(ShiftUser shift)
-    {
-        // TODO: delete shift from user
-        /*
-        Query q = fire.collection("users").
-            whereEqualTo("username", shift.getUsername()).
-            whereEqualTo("date", shift.getDate()).
-            whereEqualTo("type", shift.getType()); */
-
-        ArrayList<User> users = new ArrayList<>();
-
-        try {
-            getFire().collection("users_")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    User current = document.toObject(User.class);
-                                    if (current.getUsername().equals(shift.getUsername()))
-                                    {
-                                        for(Shift shiftUser: current.getShifts())
-                                        {
-                                            if (shiftUser.getDate().equals(shift.getDate()) &&
-                                                shiftUser.getType().equals(shift.getType()))
-                                            {
-
-                                            }
-                                        }
-                                    }
-                                }
-                            } else {
-                                //Log.e("AllRestActivity: readData()", "Error getting documents.", task.getException());
-                            }
-                        }
-                    });
-        }
-        catch (Exception e)
-        {
-            //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    public ArrayList<User> getUsers()
-    {
+    public ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<>();
 
         try {
@@ -139,17 +91,14 @@ public class FirebaseServices {
                             }
                         }
                     });
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         return users;
     }
 
-    public Map<String, User> getUsersMap()
-    {
+    public Map<String, User> getUsersMap() {
         Map<String, User> users = new HashMap<>();
 
         try {
@@ -168,17 +117,14 @@ public class FirebaseServices {
                             }
                         }
                     });
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e("getUsersMap(): ", e.getMessage());
         }
 
         return users;
     }
 
-    public Map<String, ShiftRequest> getRequestsMap()
-    {
+    public Map<String, ShiftRequest> getRequestsMap() {
         Map<String, ShiftRequest> requests = new HashMap<>();
 
         try {
@@ -197,22 +143,19 @@ public class FirebaseServices {
                             }
                         }
                     });
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             //Toast.makeText(getApplicationContext(), "error reading!" + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         return requests;
     }
 
-    public Map<String, User> getUsersMapByCompany()
-    {
+    public Map<String, User> getUsersMapByCompany() {
         Map<String, User> users = new HashMap<>();
 
         try {
             users.clear();
-            fire.collection("users_").orderBy("username", Query.Direction.ASCENDING)
+            fire.collection("users_")
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -227,9 +170,7 @@ public class FirebaseServices {
                             }
                         }
                     });
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e("getUsersMap(): ", e.getMessage());
         }
 
@@ -240,10 +181,8 @@ public class FirebaseServices {
         if (users == null)
             users = getUsersMap();
 
-        for(Map.Entry<String, User> user: users.entrySet())
-        {
-            if (user.getValue().getUsername().equals(shiftUser.getUsername()))
-            {
+        for (Map.Entry<String, User> user : users.entrySet()) {
+            if (user.getValue().getUsername().equals(shiftUser.getUsername())) {
                 ArrayList<Shift> removeList = new ArrayList<>();
                 for (Shift shift : user.getValue().getShifts()) {
                     if (shift.getType().equals(shiftUser.getType()) &&
@@ -273,12 +212,50 @@ public class FirebaseServices {
         }
     }
 
+    public void refreshUsersMap()
+    {
+        users = getUsersMapByCompany();
+    }
+
     public void addShiftToUser(ShiftUser newShift) {
         for(Map.Entry<String, User> user: users.entrySet())
         {
             if (user.getValue().getUsername().equals(newShift.getUsername()))
             {
                 user.getValue().getShifts().add(new Shift(UUID.randomUUID().toString(), newShift.getDate(), newShift.getType()));
+                fire.collection("users_").
+                        document(user.getKey()).
+                        set(user.getValue()).
+                        addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.i("addShiftToUser: ", "User shift added successfully!");
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e("addShiftToUser: ", "User shift failed to be added to Firestore! " + e.getMessage());
+                            }
+                        });
+            }
+        }
+    }
+
+    public void editUserShift(ShiftUser updatedShift, ShiftUser original) {
+        for(Map.Entry<String, User> user: users.entrySet())
+        {
+            if (user.getValue().getUsername().equals(original.getUsername()))
+            {
+                //user.getValue().getShifts().add(new Shift(UUID.randomUUID().toString(), newShift.getDate(), newShift.getType()));
+                for(Shift shift: user.getValue().getShifts()) {
+                    if (shift.getDate().equals(original.getDate()) &&
+                        shift.getType().equals(original.getType()))
+                    {
+                        shift.setDate(updatedShift.getDate());
+                        shift.setType(updatedShift.getType());
+                        break;
+                    }
+                }
                 fire.collection("users_").
                         document(user.getKey()).
                         set(user.getValue()).
