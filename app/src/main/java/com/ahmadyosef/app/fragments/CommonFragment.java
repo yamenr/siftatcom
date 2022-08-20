@@ -222,7 +222,9 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     public void onResume()
     {
         super.onResume();
-        //setShiftsUsersAdpater();
+        initWidgets();
+        initialize();
+        setWeekView();
     }
 
     private void setShiftsUsersAdpater()
@@ -239,6 +241,12 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     }
 
     private void showShiftAddDialog() {
+        if (users.isEmpty())
+        {
+            Toast.makeText(getContext(), R.string.no_users_add_new_one, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Spinner spShift, spUsers;
         CalendarView cal;
 
@@ -263,24 +271,11 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
                 curDate[0] = LocalDate.of(year, month, day);
             }
         });
-        //ShiftUser shift = shifts.get(i);
-        //LocalDate date = utils.convertLocalDate(shift.getDate());
         cal.setDate(utils.getMilliSecsForCalendar(curDate[0]), true, true);
         spShift.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
         ArrayList<String> userShifts = utils.usersList(users);
         spUsers.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, userShifts));
-        /*
-        TextView errorText = (TextView)spUsers.getSelectedView();
-        try {
-            errorText.setError(getResources().getString(R.string.must_choose_user), getResources().getDrawable(R.drawable.stop));
-            errorText.setTextColor(Color.RED);//just to highlight that this is an error
-            errorText.setText(R.string.must_choose_user);
-        }
-        catch(Exception ex)
-        {
-            Log.e(TAG, ex.getMessage());
-        } */
-        //spUsers.setSelection(userShifts.indexOf(shift.getUsername()));
+
         builder.setView(customLayout);
 
         // add a button

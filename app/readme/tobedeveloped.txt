@@ -12,9 +12,9 @@ TODO: * Show today shifts for admin - done
       * Remove redundancy from code: done partially
 
 TODO: * Admin user:
-        * New Shift: Button
-        * Edit Shift: Click
-        * Delete Shift: Long Click
+        * New Shift: Button - done
+        * Edit Shift: Click - done
+        * Delete Shift: Click - done
         * Create new 2 dialogues for edit and new
 
 TODO: * Regular user:
@@ -24,6 +24,6 @@ TODO: * Regular user:
 TODO: * Design
         * Requests
         * Today's shifts
-        * Logo app opening
+        * Logo app opening - done
         * Font sizes
         * Common page lines between items

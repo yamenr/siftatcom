@@ -72,11 +72,22 @@ public class AboutFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        init();
+
+    }
+
+    private void init() {
         ivLogo = getActivity().findViewById(R.id.ivLogoAbout);
         tvDescription = getActivity().findViewById(R.id.tvDescriptionAbout);
         tvCopyrights = getActivity().findViewById(R.id.tvCopyrightsAbout);
         ivLogo.setImageResource(R.drawable.logo);
         tvDescription.setText(R.string.about_description);
         tvCopyrights.setText(R.string.copyrights);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        init();
     }
 }

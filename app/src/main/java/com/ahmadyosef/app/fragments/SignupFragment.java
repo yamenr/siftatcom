@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.Utilities;
+import com.ahmadyosef.app.activities.AdminActivity;
 import com.ahmadyosef.app.activities.FeedActivity;
 import com.ahmadyosef.app.data.Company;
 import com.ahmadyosef.app.data.FirebaseServices;
@@ -132,6 +133,12 @@ public class SignupFragment extends Fragment {
         initialize();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initialize();
+    }
+
     private void initialize() {
         etName = getView().findViewById(R.id.etNameSignup);
         etUsername = getView().findViewById(R.id.etUsernameSignup);
@@ -204,7 +211,6 @@ public class SignupFragment extends Fragment {
                         if (task.isSuccessful()) {
                             signupInFirestore();
                             Toast.makeText(getActivity(), R.string.user_successfully_registered, Toast.LENGTH_LONG).show();
-                            gotoUsersFragment();
                         } else {
                             Log.e(TAG, task.getException().getMessage());
                         }
@@ -212,12 +218,13 @@ public class SignupFragment extends Fragment {
                 });
     }
 
-    private void gotoUsersFragment() {
+    private void gotoCommonFragment() {
         Fragment fragment = new CommonFragment();
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayoutAdmin, fragment);
         fragmentTransaction.addToBackStack(null);
+        ((AdminActivity)getActivity()).setFr(fragment);
         fragmentTransaction.commit();
     }
 
@@ -246,7 +253,7 @@ public class SignupFragment extends Fragment {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
+                        Log.e(TAG, "Error adding document", e);
                     }
                 });
     }
@@ -423,6 +430,7 @@ public class SignupFragment extends Fragment {
                         addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
+                                gotoCommonFragment();
                                 Log.i("addUserToCompany: ", "User added successfully to company!");
                             }
                         }).addOnFailureListener(new OnFailureListener() {

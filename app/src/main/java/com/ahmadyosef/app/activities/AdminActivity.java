@@ -87,6 +87,10 @@ public class AdminActivity extends AppCompatActivity {
         return fr;
     }
 
+    public Fragment setFr(Fragment fr) {
+        return this.fr = fr;
+    }
+
     private void gotoFragment(int frId) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         //Fragment fr = null;
