@@ -172,6 +172,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 7);
         calendarRecyclerView.setLayoutManager(layoutManager);
         calendarRecyclerView.setAdapter(calendarAdapter);
+        //getUsers();
         shifts = prepareShiftsListOrder(users);
         setShiftsUsersAdpater();
     }
@@ -215,15 +216,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
     public void onItemClick(int position, LocalDate date)
     {
         CalendarUtils.selectedDate = date;
-        setWeekView();
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        initWidgets();
-        initialize();
+        getUsers();
         setWeekView();
     }
 
@@ -293,8 +286,8 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
                                 // AlertDialog to the Activity
                                 ShiftUser newShiftUser = new ShiftUser(spUsers.getSelectedItem().toString(), curDate[0].toString(),
                                     ShiftType.valueOf(spShift.getSelectedItem().toString()));
-                                fbs.addShiftToUser(newShiftUser);
                                 refreshCommon();
+                                fbs.addShiftToUser(newShiftUser);
                             }
                         });
 

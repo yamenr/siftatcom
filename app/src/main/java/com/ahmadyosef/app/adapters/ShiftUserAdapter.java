@@ -146,6 +146,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
                         R.layout.dialogue_edit_shift,
                         null);
         spShift = customLayout.findViewById(R.id.spShiftTypeAddEditShiftDialogue);
+        //setShiftTypeSpinnerSelection(spShift, shifts.get(i).getType());
         spUsers = customLayout.findViewById(R.id.spUserAddEditShiftDialogue);
         cal = customLayout.findViewById(R.id.calAddEditShiftDialogue);
         final LocalDate[] curDate = {selectedDate};
@@ -159,6 +160,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
         LocalDate date = utils.convertLocalDate(shift.getDate());
         cal.setDate(utils.getMilliSecsForCalendar(date), true, true);
         spShift.setAdapter(new ArrayAdapter<ShiftType>(context, android.R.layout.simple_list_item_1, ShiftType.values()));
+        spShift.setSelection(shifts.get(i).getType().ordinal());
         ArrayList<String> userShifts = utils.usersList(cf.getLastUsersList());
         spUsers.setAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, userShifts));
         spUsers.setSelection(userShifts.indexOf(shift.getUsername()));
@@ -189,6 +191,12 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
                 = builder.create();
         dialog.show();
     }
+
+    /*
+    private void setShiftTypeSpinnerSelection(Spinner spShift, ShiftType type) {
+        if (type == ShiftType.Morning)
+            spShift.setSelection(0);
+    } */
 
     private void sendDialogDataToActivity(String user, String shiftType, String date, int i)
     {
