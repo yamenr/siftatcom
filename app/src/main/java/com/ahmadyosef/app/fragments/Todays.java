@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -61,7 +62,7 @@ public class Todays extends Fragment {
     private Spinner spShiftType;
     private ShiftType selectedShiftType;
     private LocalDate selectedDate;
-    private Toolbar tbAction;
+    private Switch swMyOrAll;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -122,8 +123,32 @@ public class Todays extends Fragment {
     private void initialize() {
         cal = getView().findViewById(R.id.cvTodays);
         rv = getView().findViewById(R.id.rvShiftsTodays);
+        swMyOrAll = getView().findViewById(R.id.swMyShiftOrAllTeamShiftsTodays);
+        swMyOrAll.setText(R.string.my_shifts);
         fbs = FirebaseServices.getInstance();
         users = getUsers();
+        swMyOrAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Switch sw = (Switch)view;
+                if (sw.isChecked())
+                {
+                    filterAllTeamShifts();
+                    swMyOrAll.setText(R.string.team_shifts);
+                }
+                else
+                {
+                    filterOnlyCurrentUserShifts();
+                    swMyOrAll.setText(R.string.my_shifts);
+                }
+            }
+        });
+    }
+
+    private void filterOnlyCurrentUserShifts() {
+    }
+
+    private void filterAllTeamShifts() {
     }
 
     private void setCallbacksAndHandlers() {

@@ -7,11 +7,11 @@
         android:title="Today"
         app:showAsAction="never">
     </item>
-    <item
+    <!--<item
         android:id="@+id/miCommonFeed"
         android:title="Common"
         app:showAsAction="never">
-    </item>
+    </item> -->
     <item
         android:id="@+id/miSignoutFeed"
         android:title="Signout"

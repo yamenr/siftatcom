@@ -14,10 +14,10 @@
             android:id="@+id/tvShiftsRegisteredTodays"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="10dp"
             android:text="List of upcoming shifts..."
             android:textSize="24sp"
-            app:layout_constraintBottom_toTopOf="@+id/rvShiftsTodays"
+            app:layout_constraintBottom_toTopOf="@+id/swMyShiftOrAllTeamShiftsTodays"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cvTodays" />
@@ -26,7 +26,6 @@
             android:id="@+id/cvTodays"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toTopOf="@+id/tvShiftsRegisteredTodays"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -39,6 +38,17 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/swMyShiftOrAllTeamShiftsTodays" />
+
+        <Switch
+            android:id="@+id/swMyShiftOrAllTeamShiftsTodays"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="9dp"
+            android:text="Switch"
+            app:layout_constraintBottom_toTopOf="@+id/rvShiftsTodays"
+            app:layout_constraintEnd_toEndOf="@+id/tvShiftsRegisteredTodays"
+            app:layout_constraintStart_toStartOf="@+id/tvShiftsRegisteredTodays"
             app:layout_constraintTop_toBottomOf="@+id/tvShiftsRegisteredTodays" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

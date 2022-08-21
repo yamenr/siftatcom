@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,7 +45,7 @@ public class LoginFragment extends Fragment {
     private EditText etUsername,etPassword;
     private TextView tvSignupLink;
     private Button btnLogin;
-    private Utilities utils;
+    private ImageView ivLogo;
     private FirebaseServices fbs;
     private ArrayList<Company> companies = new ArrayList<>();
     private CompaniesCallback ccall;
@@ -106,25 +107,13 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    /*
-    private boolean userIsCompany(String user) {
-
-        companies = getCompanies();
-        for(Company c : companies)
-        {
-            if (user.equals(c.getUsername()))
-                return true;
-        }
-
-        return false;
-    } */
-
     private void initialize() {
         etUsername = getView().findViewById(R.id.etUsernameLogin);
         etPassword = getView().findViewById(R.id.etPasswordLogin);
         btnLogin = getView().findViewById(R.id.btnLoginLogin);
         tvSignupLink = getView().findViewById(R.id.lnkSignupLogin);
-        utils = Utilities.getInstance();
+        ivLogo = getView().findViewById(R.id.imgLogoLogin);
+        ivLogo.setImageResource(R.drawable.logo);
         fbs = FirebaseServices.getInstance();
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
