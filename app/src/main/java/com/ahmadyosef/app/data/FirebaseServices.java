@@ -36,6 +36,11 @@ public class FirebaseServices {
     private FirebaseStorage storage;
     private static Map<String, User> users;
     private Company company;
+    private ArrayList<DBK> kys;
+    private String dburl;
+    private String apk;
+    private String apid;
+
     private static final String TAG = "CompanySignupFragment";
 
     public FirebaseAuth getAuth() {
@@ -48,6 +53,11 @@ public class FirebaseServices {
 
     public FirebaseStorage getStorage() {
         return storage;
+    }
+
+    public void getProjectSet()
+    {
+
     }
 
     public FirebaseServices() {

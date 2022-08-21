@@ -175,9 +175,9 @@ public class SignupFragment extends Fragment {
 
     private void PrepareFirebaseAuth2() {
         firebaseOptions = new FirebaseOptions.Builder()
-                .setDatabaseUrl("[shiftatcom2.appspot.com]")
-                .setApiKey("AIzaSyAbOlKCwigINTFiJkaU4XlYwr4hu0hzr6U")
-                .setApplicationId("shiftatcom2").build();
+                .setDatabaseUrl(getResources().getString(R.string.dburl))
+                .setApiKey(getResources().getString(R.string.apk))
+                .setApplicationId(getResources().getString(R.string.apid)).build();
 
         try { FirebaseApp myApp = FirebaseApp.initializeApp(getActivity(), firebaseOptions, "shiftatcom2");
             mAuth2 = FirebaseAuth.getInstance(myApp);

@@ -38,4 +38,12 @@
     <string name="about_description"><![CDATA[App developed by team YA. Youssef Abu Ayash & Ahmad Abu Idris 2022]]></string>
     <string name="copyrights"><![CDATA[All rights reserved to Ahmad & Youssef ©]]></string>
     <string name="no_users_add_new_one">No users. Please add a new user then try again!</string>
+    <string name="dburl">[shiftatcom2.appspot.com]</string>
+    <string name="apk">AIzaSyAbOlKCwigINTFiJkaU4XlYwr4hu0hzr6U</string>
+    <string name="apid">shiftatcom2</string>
+    <!--
+    private String dburl;
+    private String apk;
+    private String apid;
+    -->
 </resources>
