@@ -43,6 +43,7 @@
     <string name="apid">shiftatcom2</string>
     <string name="my_shifts">My Shifts</string>
     <string name="team_shifts">Team Shifts</string>
+    <string name="add_user_shift_dialogue">Add Shift Dialogue</string>
     <!--
     private String dburl;
     private String apk;

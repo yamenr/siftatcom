@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
+import com.ahmadyosef.app.Utilities;
 import com.ahmadyosef.app.adapters.ShiftAdapter;
 import com.ahmadyosef.app.adapters.ShiftsTeamAdapter;
 import com.ahmadyosef.app.data.FirebaseServices;
@@ -67,6 +68,7 @@ public class Todays extends Fragment {
     private ShiftType selectedShiftType;
     private LocalDate selectedDate;
     private Switch swMyOrAll;
+    private Utilities utils;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -126,6 +128,7 @@ public class Todays extends Fragment {
 
     private void initialize() {
         cal = getView().findViewById(R.id.cvTodays);
+        utils = Utilities.getInstance();
         selectedDate = LocalDate.now();
         rv = getView().findViewById(R.id.rvShiftsTodays);
         swMyOrAll = getView().findViewById(R.id.swMyShiftOrAllTeamShiftsTodays);
@@ -157,9 +160,26 @@ public class Todays extends Fragment {
     private void applyOriginalSettings() {
         User user = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), users);
         if (user != null) {
-            adapter = new ShiftAdapter(getContext(), user.getShifts());
+            ArrayList<Shift> shifts7 = getUpcoming7Shifts(user.getShifts());
+
+            adapter = new ShiftAdapter(getContext(), shifts7);
             rv.setAdapter(adapter);
         }
+    }
+
+    private ArrayList<Shift> getUpcoming7Shifts(ArrayList<Shift> shifts) {
+        int dateCount = 0;
+        ArrayList<Shift> new7Shifts = new ArrayList<>();
+
+        for(Shift shift: shifts)
+        {
+            if (utils.convertLocalDate(shift.getDate()).isAfter(selectedDate) &&
+                dateCount <= 7) {
+                new7Shifts.add(shift);
+            }
+        }
+
+        return  new7Shifts;
     }
 
     private void applyTeamSettings() {

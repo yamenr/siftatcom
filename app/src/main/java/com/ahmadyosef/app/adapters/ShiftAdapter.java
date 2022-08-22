@@ -31,6 +31,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         public void onItemClick(View view, int position) {
             Shift shift = mData.get(position);
 
+
             // TODO: add switch to details activity
             /*
             Intent i = new Intent(context, RestDetailsActivity.class);

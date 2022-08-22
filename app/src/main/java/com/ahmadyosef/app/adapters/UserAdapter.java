@@ -27,15 +27,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         @Override
         public void onItemClick(View view, int position) {
             User user = mData.get(position);
-
-            // TODO: add switch to details activity
-            /*
-            Intent i = new Intent(context, RestDetailsActivity.class);
-            i.putExtra("shift", shift);
-
-
-
-            context.startActivity(i);*/
+            //tvName.setText(user.getName());
+            // TODO: Adding dialogue for user's data
+                // create xml: including all text fields of the user
+                // add function the builds and shows dialogue (like the add shift)
         }
     };
 

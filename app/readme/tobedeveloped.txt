@@ -9,10 +9,9 @@ Added extra already:
 
 TODO: * Remove redundancy from code: done partially
 
-TODO: * Regular user:
-
 TODO: * Design
         * Requests
+        * UsersList
         * Font sizes
         * Color Theme
         * Common page lines between items

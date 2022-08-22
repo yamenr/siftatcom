@@ -246,7 +246,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         // Create an alert builder
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.edit_user_shift_dialogue);
+        builder.setTitle(R.string.add_user_shift_dialogue);
 
         // set the custom layout
         final View customLayout
@@ -288,6 +288,18 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
                                     ShiftType.valueOf(spShift.getSelectedItem().toString()));
                                 refreshCommon();
                                 fbs.addShiftToUser(newShiftUser);
+                            }
+                        });
+        builder
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                getExitTransition();
                             }
                         });
 

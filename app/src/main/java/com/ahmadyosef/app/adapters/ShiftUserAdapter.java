@@ -117,7 +117,17 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
                                 removeItem(position);
                             }
                         });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
 
+                    @Override
+                    public void onClick(
+                            DialogInterface dialog,
+                            int which)
+                    {
+                        //(customLayout.getParent())
+                    }
+                });
         AlertDialog dialog
                 = builder.create();
         dialog.show();
@@ -184,6 +194,17 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
                                         spShift.getSelectedItem().toString(), curDate[0].toString(), i);
                             }
                         });
+        builder.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(
+                            DialogInterface dialog,
+                            int which)
+                    {
+                        //((Fragment)getView()).getExitTransition();
+                    }
+                });
 
         // create and show
         // the alert dialog
