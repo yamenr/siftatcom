@@ -299,7 +299,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
                                     DialogInterface dialog,
                                     int which)
                             {
-                                getExitTransition();
+                                dialog.cancel();
                             }
                         });
 

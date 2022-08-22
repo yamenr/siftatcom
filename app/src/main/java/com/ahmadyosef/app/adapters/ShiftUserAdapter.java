@@ -125,7 +125,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
                             DialogInterface dialog,
                             int which)
                     {
-                        //(customLayout.getParent())
+                        dialog.cancel();
                     }
                 });
         AlertDialog dialog
@@ -202,7 +202,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
                             DialogInterface dialog,
                             int which)
                     {
-                        //((Fragment)getView()).getExitTransition();
+                        dialog.cancel();
                     }
                 });
 
