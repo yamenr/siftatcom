@@ -137,12 +137,22 @@ public class LoginFragment extends Fragment {
                     if (user.equals(c.getUsername()))
                     {
                         fbs.setCompany(c);
+                        fbs.setSuperUser(true);
                         gotoAdminActivity();
                         return;
                     }
                 }
 
-                gotoFeedActivity();
+                for(Company c : companies)
+                {
+                    if (c.getUsers().contains(user))
+                    {
+                        fbs.setCompany(c);
+                        fbs.setSuperUser(false);
+                        gotoFeedActivity();
+                        return;
+                    }
+                }
             }
         };
     }

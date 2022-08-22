@@ -21,10 +21,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.adapters.ShiftAdapter;
+import com.ahmadyosef.app.adapters.ShiftsTeamAdapter;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
 import com.ahmadyosef.app.data.ShiftType;
+import com.ahmadyosef.app.data.ShiftUser;
 import com.ahmadyosef.app.data.User;
 import com.ahmadyosef.app.interfaces.ShiftTypeCallback;
 import com.ahmadyosef.app.interfaces.UsersCallback;
@@ -53,7 +55,9 @@ public class Todays extends Fragment {
     private RecyclerView rv;
     private FirebaseServices fbs;
     private ShiftAdapter adapter;
+    private ShiftsTeamAdapter teamAdapter;
     private ArrayList<Shift> shifts = new ArrayList<>();
+    private ArrayList<ShiftUser> shiftsUser = new ArrayList<>();
     private ArrayList<User> users = new ArrayList<>();
     private UsersCallback ucall;
     private ShiftTypeCallback scall;
@@ -122,33 +126,46 @@ public class Todays extends Fragment {
 
     private void initialize() {
         cal = getView().findViewById(R.id.cvTodays);
+        selectedDate = LocalDate.now();
         rv = getView().findViewById(R.id.rvShiftsTodays);
         swMyOrAll = getView().findViewById(R.id.swMyShiftOrAllTeamShiftsTodays);
         swMyOrAll.setText(R.string.my_shifts);
         fbs = FirebaseServices.getInstance();
-        users = getUsers();
+        users= getUsers();
         swMyOrAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Switch sw = (Switch)view;
                 if (sw.isChecked())
                 {
-                    filterAllTeamShifts();
+                    //filterAllTeamShifts();
+                    //getUsers();
+                    applyTeamSettings();
                     swMyOrAll.setText(R.string.team_shifts);
                 }
                 else
                 {
-                    filterOnlyCurrentUserShifts();
+                    //filterOnlyCurrentUserShifts();
+                    //getUsers();
+                    applyOriginalSettings();
                     swMyOrAll.setText(R.string.my_shifts);
                 }
             }
         });
     }
 
-    private void filterOnlyCurrentUserShifts() {
+    private void applyOriginalSettings() {
+        User user = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), users);
+        if (user != null) {
+            adapter = new ShiftAdapter(getContext(), user.getShifts());
+            rv.setAdapter(adapter);
+        }
     }
 
-    private void filterAllTeamShifts() {
+    private void applyTeamSettings() {
+        shiftsUser = buildCompanyUserShifts(users);
+        teamAdapter = new ShiftsTeamAdapter(getContext(), shiftsUser);
+        rv.setAdapter(teamAdapter);
     }
 
     private void setCallbacksAndHandlers() {
@@ -157,11 +174,12 @@ public class Todays extends Fragment {
             public void onCallback(List<User> usersList) {
                 rv = getView().findViewById(R.id.rvShiftsTodays);
                 rv.setLayoutManager(new LinearLayoutManager(getContext()));
-                User user = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), usersList);
-                if (user != null)
+                if (!swMyOrAll.isChecked()) {
+                    applyOriginalSettings();
+                }
+                else
                 {
-                    adapter = new ShiftAdapter(getContext(), user.getShifts());
-                    rv.setAdapter(adapter);
+                    applyTeamSettings();
                 }
             }
         };
@@ -195,20 +213,44 @@ public class Todays extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month,
                                             int dayOfMonth) {
-                for (Shift s : shifts)
-                {
-                    if ((LocalDate.of(year, month + 1, dayOfMonth)).toString().equals(s.getDate()))
-                    {
-                        Toast.makeText(getActivity(), "You already have a shift on this day!", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                }
-
-                // TODO: add dialogue box prompt
                 selectedDate = LocalDate.of(year, month + 1, dayOfMonth);
-                showAlertDialogButtonClicked();
+                if (!swMyOrAll.isChecked()) {
+                    for (Shift s : shifts) {
+                        if (selectedDate.toString().equals(s.getDate())) {
+                            Toast.makeText(getActivity(), "You already have a shift on this day!", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
+
+                    // TODO: add dialogue box prompt
+                    showAlertDialogButtonClicked();
+                }
+                else
+                {
+                    applyTeamSettings();
+                }
             }
         });
+    }
+
+    private ArrayList<ShiftUser> buildCompanyUserShifts(List<User> usersList) {
+        ArrayList<ShiftUser> shifts = new ArrayList<>();
+
+        for(User user: usersList)
+        {
+            if (fbs.getCompany().getUsers().contains(user.getUsername()))
+            {
+                for(Shift shift: user.getShifts())
+                {
+                    if (shift.getDate().equals(selectedDate.toString())) {
+                        ShiftUser su = new ShiftUser(user.getUsername(), shift.getDate(), shift.getType());
+                        shifts.add(su);
+                    }
+                }
+            }
+        }
+
+        return shifts;
     }
 
     public void deSetCallbacksAndHandlers()

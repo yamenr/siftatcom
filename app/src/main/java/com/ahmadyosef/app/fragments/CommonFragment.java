@@ -261,7 +261,7 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                curDate[0] = LocalDate.of(year, month, day);
+                curDate[0] = LocalDate.of(year, month + 1, day);
             }
         });
         cal.setDate(utils.getMilliSecsForCalendar(curDate[0]), true, true);

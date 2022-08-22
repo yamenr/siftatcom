@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragments.TodaysTeamFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvShiftsRegisteredTodaysTeam"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="List of upcoming shifts..."
+            android:textSize="24sp"
+            tools:layout_editor_absoluteX="62dp"
+            tools:layout_editor_absoluteY="361dp" />
+
+        <CalendarView
+            android:id="@+id/cvTodaysTeam"
+            android:layout_width="411dp"
+            android:layout_height="0dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvShiftsTodaysTeam"
+            android:layout_width="365dp"
+            android:layout_height="295dp"
+            tools:layout_editor_absoluteX="21dp"
+            tools:layout_editor_absoluteY="407dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</FrameLayout>

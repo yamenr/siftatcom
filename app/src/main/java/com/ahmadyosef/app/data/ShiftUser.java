@@ -1,6 +1,8 @@
 package com.ahmadyosef.app.data;
 
-public class ShiftUser {
+import java.time.LocalDate;
+
+public class ShiftUser implements Comparable<ShiftUser> {
 
     String username;
     String date;
@@ -46,5 +48,10 @@ public class ShiftUser {
                 ", date='" + date + '\'' +
                 ", type=" + type +
                 '}';
+    }
+
+    @Override
+    public int compareTo(ShiftUser shift) {
+        return (LocalDate.parse(date)).compareTo(LocalDate.parse(shift.date));
     }
 }

@@ -36,10 +36,7 @@ public class FirebaseServices {
     private FirebaseStorage storage;
     private static Map<String, User> users;
     private Company company;
-    private ArrayList<DBK> kys;
-    private String dburl;
-    private String apk;
-    private String apid;
+    private boolean superUser;
 
     private static final String TAG = "CompanySignupFragment";
 
@@ -66,6 +63,7 @@ public class FirebaseServices {
         storage = FirebaseStorage.getInstance();
         users = getUsersMap();
         company = null;
+        superUser = false;
     }
 
     public static FirebaseServices getInstance() {
@@ -292,5 +290,14 @@ public class FirebaseServices {
         }
         // TODO: change it after check
         return "check!";
+    }
+
+    public void setSuperUser(boolean b) {
+        this.superUser = b;
+    }
+
+    public boolean getSuperUser()
+    {
+        return this.superUser;
     }
 }
