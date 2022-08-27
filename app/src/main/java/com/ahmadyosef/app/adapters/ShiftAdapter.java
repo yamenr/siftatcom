@@ -1,6 +1,9 @@
 package com.ahmadyosef.app.adapters;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,7 +14,10 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
+import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
+import com.ahmadyosef.app.data.ShiftRequest;
+import com.ahmadyosef.app.data.ShiftRequestType;
 import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.User;
 import com.squareup.picasso.Picasso;
@@ -25,12 +31,14 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
     private List<Shift> mData;
     private LayoutInflater mInflater;
     private Context context;
+    private FirebaseServices fbs;
 
     private final ShiftAdapter.ItemClickListener mClickListener = new ItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             Shift shift = mData.get(position);
 
+            showSubmitDeleteShiftRequestDialogue(shift);
 
             // TODO: add switch to details activity
             /*
@@ -41,6 +49,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
 
             context.startActivity(i);*/
         }
+
     };
 
     // data is passed into the constructor
@@ -49,6 +58,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         this.mData = data;
         Collections.sort(this.mData);
         this.context = context;
+        this.fbs = FirebaseServices.getInstance();
     }
 
     // inflates the row layout from xml when needed
@@ -97,6 +107,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         }
     }
 
+
     // convenience method for getting data at click position
     Shift getItem(int id) {
         return mData.get(id);
@@ -105,5 +116,46 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
     // parent activity will implement this method to respond to click events
     public interface ItemClickListener {
         void onItemClick(View view, int position);
+    }
+
+    private void showSubmitDeleteShiftRequestDialogue(Shift shift) {
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.submit_request_to_remove_shift);
+        final View customLayout
+                = ((Activity)context).getLayoutInflater()
+                .inflate(
+                        R.layout.dialogue_are_you_sure_delete,
+                        null);
+        builder.setView(customLayout);
+        builder
+                .setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                ShiftRequest sr = new ShiftRequest(fbs.getAuth().getCurrentUser().getEmail(), shift, ShiftRequestType.Delete);
+                                fbs.addShiftRequest(sr);
+                            }
+                        });
+                builder.setNegativeButton(
+                        "Cancel",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                dialog.cancel();
+                            }
+                });
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
     }
 }

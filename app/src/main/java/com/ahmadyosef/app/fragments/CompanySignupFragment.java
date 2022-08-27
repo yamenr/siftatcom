@@ -160,7 +160,7 @@ public class CompanySignupFragment extends Fragment {
                             gotoAdminActivity();
                         } else {
                             Log.e(TAG, task.getException().getMessage());
-                            //Toast.makeText(getv, R.string.err_firebase_general, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

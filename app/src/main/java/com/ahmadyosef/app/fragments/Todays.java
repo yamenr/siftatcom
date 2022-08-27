@@ -26,6 +26,7 @@ import com.ahmadyosef.app.adapters.ShiftsTeamAdapter;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
+import com.ahmadyosef.app.data.ShiftRequestType;
 import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.ShiftUser;
 import com.ahmadyosef.app.data.User;
@@ -143,7 +144,7 @@ public class Todays extends Fragment {
                 {
                     //filterAllTeamShifts();
                     //getUsers();
-                    applyTeamSettings();
+                applyTeamSettings();
                     swMyOrAll.setText(R.string.team_shifts);
                 }
                 else
@@ -206,25 +207,11 @@ public class Todays extends Fragment {
 
         scall = new ShiftTypeCallback() {
             @Override
-            public void onCallback(ShiftType type) {
+            public void onCallback(ShiftType type, ShiftRequestType srt) {
                 FirebaseUser fbUser = fbs.getAuth().getCurrentUser();
                 String uniqID = UUID.randomUUID().toString();
-                ShiftRequest req = new ShiftRequest(fbUser.getEmail(), new Shift(uniqID, selectedDate.toString(), selectedShiftType));
-                fbs.getFire().collection("requests")
-                        .add(req)
-                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                            @Override
-                            public void onSuccess(DocumentReference documentReference) {
-                                Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error adding document", e);
-                            }
-                        });
-
+                ShiftRequest req = new ShiftRequest(fbUser.getEmail(), new Shift(uniqID, selectedDate.toString(), selectedShiftType), srt);
+                fbs.addShiftRequest(req);
             }
         };
 
@@ -283,7 +270,7 @@ public class Todays extends Fragment {
 
         scall = new ShiftTypeCallback() {
             @Override
-            public void onCallback(ShiftType type) {
+            public void onCallback(ShiftType type, ShiftRequestType srt) {
             }
         };
 
@@ -372,7 +359,7 @@ public class Todays extends Fragment {
                                 sendDialogDataToActivity(
                                         spShiftType
                                                 .getSelectedItem().toString()
-                                                .toString());
+                                                .toString(), ShiftRequestType.New);
                             }
                         });
 
@@ -381,15 +368,14 @@ public class Todays extends Fragment {
         AlertDialog dialog
                 = builder.create();
         dialog.show();
-
     }
 
     // Do something with the data
     // coming from the AlertDialog
-    private void sendDialogDataToActivity(String data)
+    private void sendDialogDataToActivity(String data, ShiftRequestType srt)
     {
         selectedShiftType = ShiftType.valueOf(data);
-        scall.onCallback(selectedShiftType);
+        scall.onCallback(selectedShiftType, srt);
         refreshShiftsInList();
         Toast.makeText(getActivity(), getResources().getString(R.string.shift_request_sent), Toast.LENGTH_LONG).show();
     }

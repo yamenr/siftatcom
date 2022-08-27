@@ -21,7 +21,9 @@ import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
+import com.ahmadyosef.app.data.ShiftRequestType;
 import com.ahmadyosef.app.data.ShiftType;
+import com.ahmadyosef.app.data.ShiftUser;
 import com.ahmadyosef.app.data.User;
 import com.ahmadyosef.app.fragments.AdminFragment;
 import com.ahmadyosef.app.interfaces.RequestDialogueCallback;
@@ -66,8 +68,11 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                     }
                 }
             };
+            if (request.getType() == ShiftRequestType.New)
+                showApproveNewShiftrequest(view, request);
+            else if (request.getType() == ShiftRequestType.Delete)
+                showRemoveShiftrequest(view, request, position);
 
-            showAlertDialogButtonClicked(view);
         }
     };
 
@@ -95,6 +100,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             }
         }
     }
+
 
     private void removeRequest(ShiftRequest request, int position) {
         for(Map.Entry<String, ShiftRequest> requestEntry: requests.entrySet())
@@ -193,7 +199,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         void onItemClick(View view, int position);
     }
 
-    public void showAlertDialogButtonClicked(View view)
+    public void showApproveNewShiftrequest(View view, ShiftRequest sr)
     {
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(view.getContext());
@@ -214,7 +220,38 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                                     DialogInterface dialog,
                                     int which)
                             {
-                                rdc.onCallback(true);
+                                //rdc.onCallback(true);
+                                fbs.addShiftRequest(sr);
+                            }
+                        });
+
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+    }
+
+    public void showRemoveShiftrequest(View view, ShiftRequest sr, int position)
+    {
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(view.getContext());
+        builder.setTitle(R.string.delete_shift_request);
+        final View customLayout
+                = ((Activity)view.getContext()).getLayoutInflater()
+                .inflate(
+                        R.layout.dialogue_approve_shift,
+                        null);
+        builder.setView(customLayout);
+        builder
+                .setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                fbs.addShiftRequest(sr);
                             }
                         });
 

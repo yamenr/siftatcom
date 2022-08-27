@@ -8,6 +8,8 @@ Added extra already:
 * Users list from admin
 
 TODO: * Remove redundancy from code: done partially
+      * User can ask until 3 hours before shift to cancel it
+      * Notify user half hour before shift
 
 TODO: * Design
         * Requests

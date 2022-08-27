@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "703786592878",
-    "project_id": "shiftatcom3",
-    "storage_bucket": "shiftatcom3.appspot.com"
+    "project_number": "796061992371",
+    "project_id": "shiftatcom2",
+    "storage_bucket": "shiftatcom2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:703786592878:android:806b1dfef733df61fe947f",
+        "mobilesdk_app_id": "1:796061992371:android:aea7951b04899d4cf9b7c6",
         "android_client_info": {
           "package_name": "com.ahmadyosef.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "703786592878-s4drh9u6ledjgqv25h68k7pv0nlvh91g.apps.googleusercontent.com",
+          "client_id": "796061992371-65ftmj832i380qqj8enimbkgflsjhfae.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyArbt5XafM8OuXaAH0jBRJUyEIkJeLShrM"
+          "current_key": "AIzaSyAbOlKCwigINTFiJkaU4XlYwr4hu0hzr6U"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "703786592878-s4drh9u6ledjgqv25h68k7pv0nlvh91g.apps.googleusercontent.com",
+              "client_id": "796061992371-65ftmj832i380qqj8enimbkgflsjhfae.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -18,6 +18,7 @@ import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.fragments.AboutFragment;
 import com.ahmadyosef.app.fragments.AdminFragment;
 import com.ahmadyosef.app.fragments.CommonFragment;
+import com.ahmadyosef.app.fragments.CommonUserFragment;
 import com.ahmadyosef.app.fragments.Todays;
 
 public class FeedActivity extends AppCompatActivity {
@@ -57,10 +58,10 @@ public class FeedActivity extends AppCompatActivity {
                 gotoFragment(R.id.miTodayFeed);
                 return true;
 
-                /*
+
             case R.id.miCommonFeed:
                 gotoFragment(R.id.miCommonFeed);
-                return true; */
+                return true;
 
             case R.id.miAboutFeed:
                 gotoFragment(R.id.miAboutFeed);
@@ -83,10 +84,10 @@ public class FeedActivity extends AppCompatActivity {
             case R.id.miTodayFeed:
                 fr = new Todays();
                 break;
-/*
+
             case R.id.miCommonFeed:
-                fr = new CommonFragment();
-                break; */
+                fr = new CommonUserFragment();
+                break;
 
             case R.id.miAboutFeed:
                 fr = new AboutFragment();

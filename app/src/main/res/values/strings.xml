@@ -38,12 +38,14 @@
     <string name="about_description"><![CDATA[App developed by team YA. Youssef Abu Ayash & Ahmad Abu Idris 2022]]></string>
     <string name="copyrights"><![CDATA[All rights reserved to Ahmad & Youssef ©]]></string>
     <string name="no_users_add_new_one">No users. Please add a new user then try again!</string>
-    <string name="dburl">[shiftatcom2.appspot.com]</string>
-    <string name="apk">AIzaSyAbOlKCwigINTFiJkaU4XlYwr4hu0hzr6U</string>
-    <string name="apid">shiftatcom2</string>
+    <string name="dburl">[shiftatcom3.appspot.com]</string>
+    <string name="apk">AIzaSyArbt5XafM8OuXaAH0jBRJUyEIkJeLShrM</string>
+    <string name="apid">shiftatcom3</string>
     <string name="my_shifts">My Shifts</string>
     <string name="team_shifts">Team Shifts</string>
     <string name="add_user_shift_dialogue">Add Shift Dialogue</string>
+    <string name="submit_request_to_remove_shift">Are you sure you want to submit a delete request?</string>
+    <string name="delete_shift_request">Employee would like to remove shift. Do you approve?</string>
     <!--
     private String dburl;
     private String apk;

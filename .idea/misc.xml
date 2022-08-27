@@ -46,6 +46,7 @@
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/dialogue_edit_shift.xml" value="0.15433946130825138" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/fragment_about.xml" value="0.22" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/fragment_common.xml" value="0.1359375" />
+        <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/fragment_common_user.xml" value="0.3009833262077811" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/fragment_company_signup.xml" value="0.15" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/fragment_login.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/fragment_shift_details.xml" value="0.18802083333333333" />
@@ -54,7 +55,7 @@
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/fragment_todays_team.xml" value="0.33" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/fragment_users_list.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/request_row.xml" value="0.18802083333333333" />
-        <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/shift_row.xml" value="0.1" />
+        <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/shift_row.xml" value="0.25" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/shifts_team_rows.xml" value="0.35260416666666666" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/layout/user_row.xml" value="0.18518518518518517" />
         <entry key="..\:/Users/Yamen/AndroidStudioProjects/siftatcom23/app/src/main/res/menu/admin_menu_toolbar.xml" value="0.1" />

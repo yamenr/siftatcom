@@ -1,4 +1,4 @@
-package com.ahmadyosef.app;
+package com.ahmadyosef.app.adapters;
 
 import android.view.View;
 import android.widget.TextView;
@@ -6,18 +6,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.adapters.CommonAdapter;
+import com.ahmadyosef.app.adapters.CommonUserAdapter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
+public class CalendarUserViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
     private final ArrayList<LocalDate> days;
     public final View parentView;
     public final TextView dayOfMonth;
-    private final CommonAdapter.OnItemListener onItemListener;
-    public CalendarViewHolder(@NonNull View itemView, CommonAdapter.OnItemListener onItemListener, ArrayList<LocalDate> days)
+    private final CommonUserAdapter.OnItemListener onItemListener;
+
+    public CalendarUserViewHolder(@NonNull View itemView, CommonUserAdapter.OnItemListener onItemListener, ArrayList<LocalDate> days)
     {
         super(itemView);
         parentView = itemView.findViewById(R.id.parentView);
@@ -30,6 +33,6 @@ public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.
     @Override
     public void onClick(View view)
     {
-       onItemListener.onItemClick(getAdapterPosition(), days.get(getAdapterPosition()));
+        onItemListener.onItemClick(getAdapterPosition(), days.get(getAdapterPosition()));
     }
 }
