@@ -261,10 +261,10 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                curDate[0] = LocalDate.of(year, month + 1, day);
+                curDate[0] = LocalDate.of(year, month, day);
             }
         });
-        cal.setDate(utils.getMilliSecsForCalendar(curDate[0]), true, true);
+        cal.setDate(utils.getMilliSecsForCalendar(curDate[0].minusMonths(1)), true, true);
         spShift.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
         ArrayList<String> userShifts = utils.usersList(users);
         spUsers.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, userShifts));
@@ -284,8 +284,17 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
                             {
                                 // send data from the
                                 // AlertDialog to the Activity
-                                ShiftUser newShiftUser = new ShiftUser(spUsers.getSelectedItem().toString(), curDate[0].toString(),
-                                    ShiftType.valueOf(spShift.getSelectedItem().toString()));
+
+                                // TODO: adding a warning that shift is in the past
+
+                                /*
+                                if (selectedDate.isBefore(LocalDate.now()))
+                                {
+                                    Toast.makeText(TAG, getActivity().getResources().getString(R.string.adding_shift_in_past), Toast.LENGTH_SHORT).show();
+                                } */
+
+                                ShiftUser newShiftUser = new ShiftUser(spUsers.getSelectedItem().toString(),
+                                        curDate[0].plusMonths(1).toString(), ShiftType.valueOf(spShift.getSelectedItem().toString()));
                                 refreshCommon();
                                 fbs.addShiftToUser(newShiftUser);
                             }

@@ -41,6 +41,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -221,10 +222,18 @@ public class Todays extends Fragment {
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month,
                                             int dayOfMonth) {
                 selectedDate = LocalDate.of(year, month + 1, dayOfMonth);
+                if (selectedDate.isBefore(LocalDate.now()))
+                {
+                    Toast.makeText(getContext(), R.string.you_cannot_request_shift_past, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                User currentUser = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), users);
+                shifts = currentUser.getShifts();
                 if (!swMyOrAll.isChecked()) {
                     for (Shift s : shifts) {
                         if (selectedDate.toString().equals(s.getDate())) {
-                            Toast.makeText(getActivity(), "You already have a shift on this day!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), R.string.you_already_have_shift_this_days, Toast.LENGTH_LONG).show();
                             return;
                         }
                     }

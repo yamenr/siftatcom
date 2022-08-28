@@ -163,11 +163,11 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                curDate[0] = LocalDate.of(year, month, day);
+                curDate[0] = LocalDate.of(year, month + 1, day);
             }
         });
         ShiftUser shift = shifts.get(i);
-        LocalDate date = utils.convertLocalDate(shift.getDate());
+        LocalDate date = utils.convertLocalDate(shift.getDate()).minusMonths(1);
         cal.setDate(utils.getMilliSecsForCalendar(date), true, true);
         spShift.setAdapter(new ArrayAdapter<ShiftType>(context, android.R.layout.simple_list_item_1, ShiftType.values()));
         spShift.setSelection(shifts.get(i).getType().ordinal());

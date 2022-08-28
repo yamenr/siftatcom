@@ -46,6 +46,10 @@
     <string name="add_user_shift_dialogue">Add Shift Dialogue</string>
     <string name="submit_request_to_remove_shift">Are you sure you want to submit a delete request?</string>
     <string name="delete_shift_request">Employee would like to remove shift. Do you approve?</string>
+    <string name="cannot_request_delete_under_three_hours">Cannot request shift removal before three hours</string>
+    <string name="you_cannot_request_shift_past">You cannot request a shift in the past!</string>
+    <string name="adding_shift_in_past">WARNING! You\'re adding a shift in the past!</string>
+    <string name="you_already_have_shift_this_days">You already have a shift on this day!</string>
     <!--
     private String dburl;
     private String apk;

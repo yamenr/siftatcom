@@ -1,13 +1,17 @@
 package com.ahmadyosef.app;
 
+import static com.ahmadyosef.app.data.ShiftType.*;
+
 import android.util.Log;
 
+import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.ShiftUser;
 import com.ahmadyosef.app.data.User;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -107,6 +111,25 @@ public class Utilities {
         }
         else
             return "Good Night";
+    }
+
+    public LocalTime getShiftStartTime(ShiftType type)
+    {
+        LocalTime time = null;
+        switch (type)
+        {
+            case Morning:
+                time = LocalTime.of(8, 0);
+                break;
+            case Afternoon:
+                time = LocalTime.of(16, 0);
+                break;
+            case Night:
+                time = LocalTime.of(0, 0);
+                break;
+        }
+
+        return time;
     }
 
     // TODO: offline email and password validation

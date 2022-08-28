@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
+import com.ahmadyosef.app.Utilities;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
@@ -47,7 +48,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     private Context context;
     private RequestDialogueCallback rdc;
     private UsersMapCallback umc;
-    //private ArrayList<User> users;
+    private Utilities utils;
     private Map<String, User> users;
     private Map<String, ShiftRequest> requests;
     private FirebaseServices fbs;
@@ -64,14 +65,15 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                 public void onCallback(boolean b) {
                     if (b == true)
                     {
-                        addShiftToUser(request, position);
+                        removeRequest(request, position);
+                        //addShiftToUser(request, position);
                     }
                 }
             };
             if (request.getType() == ShiftRequestType.New)
                 showApproveNewShiftrequest(view, request);
             else if (request.getType() == ShiftRequestType.Delete)
-                showRemoveShiftrequest(view, request, position);
+                showRemoveShiftRequest(view, request, position);
 
         }
     };
@@ -137,6 +139,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         this.mData = data;
         this.context = context;
         this.fbs = FirebaseServices.getInstance();
+        this.utils = Utilities.getInstance();
         umc = new UsersMapCallback() {
             @Override
             public void onCallback(Map<String, User> users) {
@@ -159,8 +162,18 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     @Override
     public void onBindViewHolder(RequestAdapter.ViewHolder holder, int position) {
         ShiftRequest request = mData.get(position);
-        holder.tvUser.setText(request.getUsername());
+        holder.tvUser.setText(fbs.getNameOfUser(request.getUsername()));
         holder.tvDate.setText(request.getShift().getDate());
+        if (request.getType() == ShiftRequestType.New)
+        {
+            holder.tvType.setText(String.valueOf(ShiftRequestType.New));
+            holder.tvType.setTextColor(context.getResources().getColor(R.color.blue));
+        }
+        else if (request.getType() == ShiftRequestType.Delete)
+        {
+            holder.tvType.setText(String.valueOf(ShiftRequestType.Delete));
+            holder.tvType.setTextColor(context.getResources().getColor(R.color.red));
+        }
     }
 
     // total number of rows
@@ -173,12 +186,14 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvUser;
         TextView tvDate;
+        TextView tvType;
         //ImageView ivPhoto;
 
         ViewHolder(View itemView) {
             super(itemView);
             tvUser = itemView.findViewById(R.id.tvUsernameRequestRow);
             tvDate = itemView.findViewById(R.id.tvDateRequestRow);
+            tvType = itemView.findViewById(R.id.tvTypeRequestRow);
             //ivPhoto = itemView.findViewById(R.id.ivPhotoRestRow);
             itemView.setOnClickListener(this);
         }
@@ -220,8 +235,23 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                                     DialogInterface dialog,
                                     int which)
                             {
-                                //rdc.onCallback(true);
-                                fbs.addShiftRequest(sr);
+                                //
+                                // fbs.addShiftRequest(sr);
+                                ShiftUser su = new ShiftUser(sr.getUsername(), sr.getShift().getDate(), sr.getShift().getType());
+                                fbs.addShiftToUser(su);
+                                rdc.onCallback(true);
+                            }
+                        });
+        builder
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                dialog.cancel();
                             }
                         });
 
@@ -230,7 +260,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         dialog.show();
     }
 
-    public void showRemoveShiftrequest(View view, ShiftRequest sr, int position)
+    public void showRemoveShiftRequest(View view, ShiftRequest sr, int position)
     {
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(view.getContext());
@@ -251,10 +281,23 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                                     DialogInterface dialog,
                                     int which)
                             {
-                                fbs.addShiftRequest(sr);
+                                ShiftUser su = new ShiftUser(sr.getUsername(), sr.getShift().getDate(), sr.getShift().getType());
+                                fbs.removeShiftFromUser2(su);
+                                removeRequest(sr, position);
                             }
                         });
+        builder
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
 
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                dialog.cancel();
+                            }
+                        });
         AlertDialog dialog
                 = builder.create();
         dialog.show();

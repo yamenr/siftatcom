@@ -7,9 +7,17 @@ Signup: As company, employees are signed up only through company
 Added extra already:
 * Users list from admin
 
+* Bugs:
+    * Requests list not always shows
+
+
+Enhancements:
+
 TODO: * Remove redundancy from code: done partially
-      * User can ask until 3 hours before shift to cancel it
+      * User can ask until 3 hours before shift to cancel it - check
       * Notify user half hour before shift
+      * Notify on shift request to company shift manager
+      * Notify if user shift request is approved
 
 TODO: * Design
         * Requests

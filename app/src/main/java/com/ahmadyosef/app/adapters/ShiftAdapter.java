@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
+import com.ahmadyosef.app.Utilities;
 import com.ahmadyosef.app.data.FirebaseServices;
 import com.ahmadyosef.app.data.Shift;
 import com.ahmadyosef.app.data.ShiftRequest;
@@ -22,6 +23,11 @@ import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.User;
 import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -32,25 +38,59 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
     private LayoutInflater mInflater;
     private Context context;
     private FirebaseServices fbs;
+    private Utilities utils;
+    private static final String TAG = "ShiftAdapter";
 
     private final ShiftAdapter.ItemClickListener mClickListener = new ItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             Shift shift = mData.get(position);
-
             showSubmitDeleteShiftRequestDialogue(shift);
 
-            // TODO: add switch to details activity
             /*
-            Intent i = new Intent(context, RestDetailsActivity.class);
-            i.putExtra("shift", shift);
+            if (LocalDate.now().isBefore(utils.convertLocalDate(shift.getDate())))
+                showSubmitDeleteShiftRequestDialogue(shift);
+            else
+            {
+                LocalTime shiftStart = utils.getShiftStartTime(shift.getType());
+                LocalTime requestTime = LocalTime.now();
 
-
-
-            context.startActivity(i);*/
+                if (requestTime.isAfter(shiftStart) || (requestTime.isBefore(shiftStart) &&
+                        ((Duration.between(shiftStart, requestTime).getSeconds() / 3600) < 3)))
+                {
+                    showCannotRequestDelete();
+                }
+            }
+             */
         }
-
     };
+
+    private void showCannotRequestDelete() {
+        AlertDialog.Builder builder
+                = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.cannot_request_delete_under_three_hours);
+        final View customLayout
+                = ((Activity)context).getLayoutInflater()
+                .inflate(
+                        R.layout.dialogue_are_you_sure_delete,
+                        null);
+        builder.setView(customLayout);
+        builder.setNegativeButton(
+                "Cancel",
+                new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(
+                            DialogInterface dialog,
+                            int which)
+                    {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog dialog
+                = builder.create();
+        dialog.show();
+    }
 
     // data is passed into the constructor
     public ShiftAdapter(Context context, List<Shift> data) {
@@ -59,6 +99,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         Collections.sort(this.mData);
         this.context = context;
         this.fbs = FirebaseServices.getInstance();
+        this.utils = Utilities.getInstance();
     }
 
     // inflates the row layout from xml when needed
@@ -93,12 +134,15 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvDate;
         ImageView ivPhoto;
+        ImageView ivDelete;
 
         ViewHolder(View itemView) {
             super(itemView);
             tvDate = itemView.findViewById(R.id.tvDate);
             ivPhoto = itemView.findViewById(R.id.ivShiftIconRow);
-            itemView.setOnClickListener(this);
+            ivDelete = itemView.findViewById(R.id.ivShiftRemoveRow);
+
+            ivDelete.setOnClickListener(this);
         }
 
         @Override

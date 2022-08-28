@@ -127,10 +127,6 @@ public class AdminFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        /*
-        if (adapter != null) {
-            ((FeedActivity) getActivity()).gotoFragment(R.id.miCommonFeed);
-        } */
     }
 
     private void initialize() {
