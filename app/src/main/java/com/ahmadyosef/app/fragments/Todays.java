@@ -222,15 +222,15 @@ public class Todays extends Fragment {
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month,
                                             int dayOfMonth) {
                 selectedDate = LocalDate.of(year, month + 1, dayOfMonth);
-                if (selectedDate.isBefore(LocalDate.now()))
-                {
-                    Toast.makeText(getContext(), R.string.you_cannot_request_shift_past, Toast.LENGTH_LONG).show();
-                    return;
-                }
-
                 User currentUser = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), users);
                 shifts = currentUser.getShifts();
                 if (!swMyOrAll.isChecked()) {
+                    if (selectedDate.isBefore(LocalDate.now()))
+                    {
+                        Toast.makeText(getContext(), R.string.you_cannot_request_shift_past, Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     for (Shift s : shifts) {
                         if (selectedDate.toString().equals(s.getDate())) {
                             Toast.makeText(getActivity(), R.string.you_already_have_shift_this_days, Toast.LENGTH_LONG).show();
