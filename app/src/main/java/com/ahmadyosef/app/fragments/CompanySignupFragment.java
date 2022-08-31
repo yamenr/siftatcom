@@ -180,6 +180,8 @@ public class CompanySignupFragment extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
+                        fbs.setCompany(company);
+                        fbs.setSuperUser(true);
                         Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
                     }
                 })

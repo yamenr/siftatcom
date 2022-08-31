@@ -36,6 +36,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,8 +65,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             rdc = new RequestDialogueCallback() {
                 @Override
                 public void onCallback(boolean b) {
-                    if (b == true)
-                    {
+                    if (b == true) {
                         removeRequest(request, position);
                         //addShiftToUser(request, position);
                     }
@@ -73,8 +74,17 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
             if (request.getType() == ShiftRequestType.New)
                 showApproveNewShiftrequest(view, request);
             else if (request.getType() == ShiftRequestType.Delete)
-                showRemoveShiftRequest(view, request, position);
-
+            {
+                boolean isBefore = LocalTime.now().isBefore(utils.getShiftStartTime(request.getShift().getType()));
+                int interval = LocalTime.now().getHour() - utils.getShiftStartTime(request.getShift().getType()).getHour();
+                if (isBefore && (interval > 3))
+                {
+                    showRemoveShiftRequest(view, request, position);
+                }
+                else
+                {
+                }
+            }
         }
     };
 

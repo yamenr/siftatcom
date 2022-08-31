@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class LoginFragment extends Fragment {
     private FirebaseServices fbs;
     private ArrayList<Company> companies = new ArrayList<>();
     private CompaniesCallback ccall;
+    private static final String TAG = "LoginFragment";
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -191,7 +193,8 @@ public class LoginFragment extends Fragment {
                         if (task.isSuccessful()) {
                             PickUserTypeActivity();
                         } else {
-                            Toast.makeText(getActivity(), R.string.err_incorrect_user_password, Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, task.getException().getMessage());
+                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

@@ -2,7 +2,10 @@ package com.ahmadyosef.app;
 
 import static com.ahmadyosef.app.data.ShiftType.*;
 
+import android.app.Notification;
 import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
 
 import com.ahmadyosef.app.data.ShiftType;
 import com.ahmadyosef.app.data.ShiftUser;
@@ -59,6 +62,8 @@ public class Utilities {
         String[] str = dateStr.split("-");
         LocalDate date2 = LocalDate.of(Integer.parseInt(str[0]), Integer.parseInt(str[1]), Integer.parseInt(str[2]));
         return date2;
+
+
         /*
         LocalDate date = null;
         String regex = " at:(\\d{4}-\\d{2}-\\d{2}) Notes:";
@@ -131,31 +136,4 @@ public class Utilities {
 
         return time;
     }
-
-    // TODO: offline email and password validation
-/*
-    public boolean validateEmail(String username) {
-        return true;
-    }
-
-
-    public boolean emailPatternMatches(String emailAddress, String regexPattern) {
-        return Pattern.compile(regexPattern)
-                .matcher(emailAddress)
-                .matches();
-    }
-
-    public boolean validatePassword(String password) {
-        return true;
-    }
-
-    public boolean checkTrimEmpty(String text) {
-        return text.trim().isEmpty();
-    }
-
-/*
-    public boolean validateEmailPassword(String username, String password) {
-        return
-                emailPatternMatches(username, R.string.email_regex_pattern)&&
-    }*/
 }

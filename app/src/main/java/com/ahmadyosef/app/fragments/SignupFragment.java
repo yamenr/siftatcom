@@ -213,6 +213,7 @@ public class SignupFragment extends Fragment {
                             Toast.makeText(getActivity(), R.string.user_successfully_registered, Toast.LENGTH_LONG).show();
                         } else {
                             Log.e(TAG, task.getException().getMessage());
+                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

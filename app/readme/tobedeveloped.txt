@@ -4,6 +4,9 @@ Employee: Adding color to shift + 7 days, delete request
 Signup: As company, employees are signed up only through company
     * Done
 
+Documentation:
+* description for each class and function
+
 Added extra already:
 * Users list from admin
 
