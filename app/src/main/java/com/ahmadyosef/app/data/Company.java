@@ -2,6 +2,9 @@ package com.ahmadyosef.app.data;
 
 import java.util.ArrayList;
 
+/*
+Model data class: holds company user data and information (related users list)
+*/
 public class Company {
     private String id;
     private String name;

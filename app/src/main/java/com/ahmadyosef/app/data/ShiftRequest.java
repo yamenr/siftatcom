@@ -1,5 +1,8 @@
 package com.ahmadyosef.app.data;
 
+/*
+Model data class: holds shift user request submission
+*/
 public class ShiftRequest {
 
     private String username;

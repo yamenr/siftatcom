@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:text="List of upcoming shifts..."
+            android:text="@string/upcoming_shifts_caption"
             android:textSize="24sp"
             app:layout_constraintBottom_toTopOf="@+id/swMyShiftOrAllTeamShiftsTodays"
             app:layout_constraintEnd_toEndOf="parent"

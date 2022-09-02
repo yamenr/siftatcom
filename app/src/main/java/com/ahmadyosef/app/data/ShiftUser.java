@@ -2,6 +2,9 @@ package com.ahmadyosef.app.data;
 
 import java.time.LocalDate;
 
+/*
+Model data class: holds shift user data (relates between shift and user data models)
+*/
 public class ShiftUser implements Comparable<ShiftUser> {
 
     String username;

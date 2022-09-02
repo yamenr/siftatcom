@@ -43,6 +43,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/*
+Adapter class for recycler in AdminFragment
+ */
 public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHolder> {
 
     private List<ShiftRequest> mData;

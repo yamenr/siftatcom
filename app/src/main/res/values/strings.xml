@@ -50,6 +50,10 @@
     <string name="you_cannot_request_shift_past">You cannot request a shift in the past!</string>
     <string name="adding_shift_in_past">WARNING! You\'re adding a shift in the past!</string>
     <string name="you_already_have_shift_this_days">You already have a shift on this day!</string>
+    <string name="upcoming_shifts_caption">List of upcoming shifts...</string>
+    <string name="upcoming_shifts_caption_no_shifts">No scheduled shifts!</string>
+    <string name="user_already_has_shift_today">User already has shift today!</string>
+
     <!--
     private String dburl;
     private String apk;

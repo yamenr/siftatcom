@@ -12,11 +12,9 @@ import android.widget.TextView;
 
 import com.ahmadyosef.app.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AboutFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+/*
+About fragment, both visibile in Feed and Administrative activities
+*/
 public class AboutFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

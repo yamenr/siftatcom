@@ -51,11 +51,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+/*
+Request approval fragment (new shift or delete ), user in administrative activity
+*/
 public class AdminFragment extends Fragment {
 
     private RecyclerView rv;

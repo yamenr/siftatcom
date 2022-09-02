@@ -28,6 +28,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Main Activity: Login, Signup portal
+ * If user already logged in, user is directed to the regular employee activity (FeedActivity)
+ * or to the administration activity (AdminActivity).
+ */
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseServices fbs;

@@ -9,12 +9,13 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Comparator;
 
+/*
+Model data class: holds shift data
+*/
 public class Shift implements Comparable<Shift> {
     private String id;
     private String date;
     private ShiftType type;
-    private Utilities utils;
-    private static final String TAG = "AdminFragment";
 
     public Shift() {
     }
@@ -58,22 +59,8 @@ public class Shift implements Comparable<Shift> {
                 '}';
     }
 
-    /*
-    @Override
-    public int compare(Shift shift, Shift t1) {
-        return (LocalDate.parse(shift.date)).compareTo(LocalDate.parse(t1.date));
-    } */
-
     @Override
     public int compareTo(Shift shift) {
         return (LocalDate.parse(date)).compareTo(LocalDate.parse(shift.date));
     }
-
-    /* TODO: sorting by date
-    @Override
-    public int compareTo(Object o) {
-        Shift shift = (Shift)o;
-        Date d = Utilities.getInstance().convertDate(shift.getDate());
-        return (int) (d.getTime()/1000);
-    } */
 }

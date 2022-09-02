@@ -59,11 +59,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link CommonFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+/*
+Main administrative fragment: picking dates, and viewing current shifts, adding, deleting and editing them
+*/
 public class CommonFragment extends Fragment  implements CommonAdapter.OnItemListener {
 
     // TODO: Rename parameter arguments, choose names that match
@@ -257,14 +255,16 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         spShift = customLayout.findViewById(R.id.spShiftTypeAddEditShiftDialogue);
         spUsers = customLayout.findViewById(R.id.spUserAddEditShiftDialogue);
         cal = customLayout.findViewById(R.id.calAddEditShiftDialogue);
-        final LocalDate[] curDate = {selectedDate};
+        final LocalDate[] curDate = {LocalDate.now()};
         cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
                 curDate[0] = LocalDate.of(year, month, day);
             }
         });
-        cal.setDate(utils.getMilliSecsForCalendar(curDate[0].minusMonths(1)), true, true);
+        // TODO: checking month issue
+        //cal.setDate(utils.getMilliSecsForCalendar(curDate[0].minusMonths(1)), true, true);
+        cal.setDate(utils.getMilliSecsForCalendar(curDate[0]), true, true);
         spShift.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
         ArrayList<String> userShifts = utils.usersList(users);
         spUsers.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, userShifts));
@@ -282,19 +282,17 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
                                     DialogInterface dialog,
                                     int which)
                             {
-                                // send data from the
-                                // AlertDialog to the Activity
-
-                                // TODO: adding a warning that shift is in the past
-
-                                /*
-                                if (selectedDate.isBefore(LocalDate.now()))
-                                {
-                                    Toast.makeText(TAG, getActivity().getResources().getString(R.string.adding_shift_in_past), Toast.LENGTH_SHORT).show();
-                                } */
-
                                 ShiftUser newShiftUser = new ShiftUser(spUsers.getSelectedItem().toString(),
-                                        curDate[0].plusMonths(1).toString(), ShiftType.valueOf(spShift.getSelectedItem().toString()));
+                                        curDate[0].toString(), ShiftType.valueOf(spShift.getSelectedItem().toString()));
+
+                                for(ShiftUser shiftUser : shifts) {
+                                    if (newShiftUser.getUsername().equals(shiftUser.getUsername()) &&
+                                            shiftUser.getDate().equals(newShiftUser.getDate())) {
+                                        Toast.makeText(getActivity(), R.string.user_already_has_shift_today, Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+                                }
+
                                 refreshCommon();
                                 fbs.addShiftToUser(newShiftUser);
                             }

@@ -1,8 +1,13 @@
 package com.ahmadyosef.app.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 
+import android.app.Notification;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
@@ -14,6 +19,8 @@ import android.widget.TextView;
 import com.ahmadyosef.app.R;
 import com.ahmadyosef.app.Utilities;
 
+/*
+* Splash screen: logo anim, 3 secs delay to opening app*/
 public class SplashActivity extends AppCompatActivity {
 
     @Override

@@ -21,6 +21,9 @@ import com.ahmadyosef.app.fragments.CommonFragment;
 import com.ahmadyosef.app.fragments.CommonUserFragment;
 import com.ahmadyosef.app.fragments.Todays;
 
+/*
+ * Feed activity: Serves regular employee, viewing shifts,
+ * submitting shift requests (new, delete) shifts, about */
 public class FeedActivity extends AppCompatActivity {
 
     private FirebaseServices fbs;

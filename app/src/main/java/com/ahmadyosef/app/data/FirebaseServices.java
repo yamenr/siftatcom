@@ -29,6 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/*
+Firebase singleton class, holds main database and cloud services of firebase:
+    authentication, firestore and storage
+*/
 public class FirebaseServices {
 
     private static FirebaseServices instance;

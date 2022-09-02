@@ -32,6 +32,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+/*
+Adapter class for recycler in Todays fragment
+*/
 public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> {
 
     private List<Shift> mData;

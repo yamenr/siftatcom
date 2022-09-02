@@ -36,6 +36,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+Adapter class for individual recycler in CommonFragment
+ */
 public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
 {
     private Utilities utils;

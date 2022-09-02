@@ -17,6 +17,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+/*
+Adapter class for user list recycler in UserListFragment
+*/
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private List<User> mData;

@@ -18,6 +18,9 @@ import com.squareup.picasso.Picasso;
 import java.util.Collections;
 import java.util.List;
 
+/*
+Adapter class for team recycler in CommonFragment
+ */
 public class ShiftsTeamAdapter extends RecyclerView.Adapter<ShiftsTeamAdapter.ViewHolder> {
 
     private List<ShiftUser> mData;

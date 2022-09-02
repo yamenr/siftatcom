@@ -40,9 +40,7 @@ import java.io.IOException;
 import java.util.UUID;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link CompanySignupFragment#newInstance} factory method to
- * create an instance of this fragment.
+Signup fragment, signs up both user as a company and in authentication firebase module
  */
 public class CompanySignupFragment extends Fragment {
     private EditText etName, etUsername, etPassword, etAddress, etPhone;

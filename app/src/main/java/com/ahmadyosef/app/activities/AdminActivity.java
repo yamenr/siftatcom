@@ -20,6 +20,10 @@ import com.ahmadyosef.app.fragments.CommonFragment;
 import com.ahmadyosef.app.fragments.SignupFragment;
 import com.ahmadyosef.app.fragments.UsersListFragment;
 
+
+/*
+* Administrator Activity: Manages shifts (add, delete, edit),
+* regular employees requests (new, delete) shifts, users's list, about */
 public class AdminActivity extends AppCompatActivity {
 
     private FirebaseServices fbs;

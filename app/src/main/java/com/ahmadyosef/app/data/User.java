@@ -2,6 +2,9 @@ package com.ahmadyosef.app.data;
 
 import java.util.ArrayList;
 
+/*
+Model data class: holds user data (in addition to authentication )
+*/
 public class User {
     private String id;
     private String name;

@@ -11,7 +11,9 @@ import com.ahmadyosef.app.adapters.CommonAdapter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+/*
+Holder class for adapter
+* */
 public class CalendarViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
 {
     private final ArrayList<LocalDate> days;

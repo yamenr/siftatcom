@@ -13,6 +13,9 @@ import com.ahmadyosef.app.R;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+/*
+Adapter class for recycler in CommonUserFragment
+ */
 public class CommonUserAdapter extends RecyclerView.Adapter<CalendarUserViewHolder> {
 
     private final ArrayList<LocalDate> days;

@@ -48,9 +48,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link CommonUserFragment#newInstance} factory method to
- * create an instance of this fragment.
+Fragment for testing: not used in project
  */
 public class CommonUserFragment extends Fragment implements CommonUserAdapter.OnItemListener {
 

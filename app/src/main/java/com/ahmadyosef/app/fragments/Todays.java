@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CalendarView;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -69,6 +70,7 @@ public class Todays extends Fragment {
     private Spinner spShiftType;
     private ShiftType selectedShiftType;
     private LocalDate selectedDate;
+    private TextView tvShiftCaption;
     private Switch swMyOrAll;
     private Utilities utils;
 
@@ -130,26 +132,24 @@ public class Todays extends Fragment {
 
     private void initialize() {
         cal = getView().findViewById(R.id.cvTodays);
+        tvShiftCaption = getView().findViewById(R.id.tvShiftsRegisteredTodays);
         utils = Utilities.getInstance();
         selectedDate = LocalDate.now();
         rv = getView().findViewById(R.id.rvShiftsTodays);
         swMyOrAll = getView().findViewById(R.id.swMyShiftOrAllTeamShiftsTodays);
         swMyOrAll.setText(R.string.my_shifts);
         fbs = FirebaseServices.getInstance();
-        users= getUsers();
+        users = getUsers();
         swMyOrAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Switch sw = (Switch)view;
-                if (sw.isChecked())
-                {
+                Switch sw = (Switch) view;
+                if (sw.isChecked()) {
                     //filterAllTeamShifts();
                     //getUsers();
-                applyTeamSettings();
+                    applyTeamSettings();
                     swMyOrAll.setText(R.string.team_shifts);
-                }
-                else
-                {
+                } else {
                     //filterOnlyCurrentUserShifts();
                     //getUsers();
                     applyOriginalSettings();
@@ -166,6 +166,10 @@ public class Todays extends Fragment {
 
             adapter = new ShiftAdapter(getContext(), shifts7);
             rv.setAdapter(adapter);
+            if (adapter.getItemCount() == 0)
+                tvShiftCaption.setText(getContext().getString(R.string.upcoming_shifts_caption_no_shifts));
+            else
+                tvShiftCaption.setText(getContext().getString(R.string.upcoming_shifts_caption));
         }
     }
 
@@ -173,21 +177,24 @@ public class Todays extends Fragment {
         int dateCount = 0;
         ArrayList<Shift> new7Shifts = new ArrayList<>();
 
-        for(Shift shift: shifts)
-        {
+        for (Shift shift : shifts) {
             if (utils.convertLocalDate(shift.getDate()).isAfter(selectedDate) &&
-                dateCount <= 7) {
+                    dateCount <= 7) {
                 new7Shifts.add(shift);
             }
         }
 
-        return  new7Shifts;
+        return new7Shifts;
     }
 
     private void applyTeamSettings() {
         shiftsUser = buildCompanyUserShifts(users);
         teamAdapter = new ShiftsTeamAdapter(getContext(), shiftsUser);
         rv.setAdapter(teamAdapter);
+        if (teamAdapter.getItemCount() == 0)
+            tvShiftCaption.setText(getContext().getString(R.string.upcoming_shifts_caption_no_shifts));
+        else
+            tvShiftCaption.setText(getContext().getString(R.string.upcoming_shifts_caption));
     }
 
     private void setCallbacksAndHandlers() {
@@ -221,7 +228,9 @@ public class Todays extends Fragment {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month,
                                             int dayOfMonth) {
+                // TODO: Check month issue
                 selectedDate = LocalDate.of(year, month + 1, dayOfMonth);
+                //selectedDate = LocalDate.of(year, month, dayOfMonth);
                 User currentUser = findUsingIterator(fbs.getAuth().getCurrentUser().getEmail(), users);
                 shifts = currentUser.getShifts();
                 if (!swMyOrAll.isChecked()) {
