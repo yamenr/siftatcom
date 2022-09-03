@@ -37,9 +37,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link LoginFragment#newInstance} factory method to
- * create an instance of this fragment.
+ Login fragment, logins user according to his type (company or regular employee)
  */
 public class LoginFragment extends Fragment {
 
@@ -186,18 +184,24 @@ public class LoginFragment extends Fragment {
             return;
         }
 
-        fbs.getAuth().signInWithEmailAndPassword(username, password)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            PickUserTypeActivity();
-                        } else {
-                            Log.e(TAG, task.getException().getMessage());
-                            Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+        try {
+            fbs.getAuth().signInWithEmailAndPassword(username, password)
+                    .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                PickUserTypeActivity();
+                            } else {
+                                Log.e(TAG, task.getException().getMessage());
+                                Toast.makeText(getActivity(), task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        }
+        catch (Exception ex) {
+            Log.e(TAG, ex.getMessage());
+            Toast.makeText(getActivity(), ex.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void gotoAdminActivity() {

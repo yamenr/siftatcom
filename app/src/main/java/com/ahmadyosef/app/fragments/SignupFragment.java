@@ -61,9 +61,7 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link SignupFragment#newInstance} factory method to
- * create an instance of this fragment.
+ Signup fragment, serves administrator who has the permissions to add new employees
  */
 public class SignupFragment extends Fragment {
 

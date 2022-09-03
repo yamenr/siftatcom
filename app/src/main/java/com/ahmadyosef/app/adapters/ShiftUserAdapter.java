@@ -98,8 +98,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
 
     public void showAlertDialogDeleteItem(int position)
     {
-        AlertDialog.Builder builder
-                = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder                = new AlertDialog.Builder(context);
         builder.setTitle(R.string.are_you_sure_delete);
         final View customLayout
                 = ((Activity)context).getLayoutInflater()

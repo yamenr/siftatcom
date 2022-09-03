@@ -50,9 +50,8 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link Todays#newInstance} factory method to
- * create an instance of this fragment.
+ Employee main fragment, user can view his next shift, see team shifts and request additional shifts
+ or delete certain shift
  */
 public class Todays extends Fragment {
 
@@ -394,7 +393,7 @@ public class Todays extends Fragment {
     {
         selectedShiftType = ShiftType.valueOf(data);
         scall.onCallback(selectedShiftType, srt);
-        refreshShiftsInList();
+        //refreshShiftsInList();
         Toast.makeText(getActivity(), getResources().getString(R.string.shift_request_sent), Toast.LENGTH_LONG).show();
     }
 

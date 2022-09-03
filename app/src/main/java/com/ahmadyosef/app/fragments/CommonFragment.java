@@ -263,8 +263,8 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
             }
         });
         // TODO: checking month issue
-        //cal.setDate(utils.getMilliSecsForCalendar(curDate[0].minusMonths(1)), true, true);
-        cal.setDate(utils.getMilliSecsForCalendar(curDate[0]), true, true);
+        cal.setDate(System.currentTimeMillis(), false, true);
+        //cal.setDate(utils.getMilliSecsForCalendar(curDate[0]), true, true);
         spShift.setAdapter(new ArrayAdapter<ShiftType>(getActivity(), android.R.layout.simple_list_item_1, ShiftType.values()));
         ArrayList<String> userShifts = utils.usersList(users);
         spUsers.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, userShifts));

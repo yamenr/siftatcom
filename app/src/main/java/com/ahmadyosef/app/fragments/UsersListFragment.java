@@ -30,10 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link UsersListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+User list fragment, administrator can see all registered users
+*/
 public class UsersListFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match

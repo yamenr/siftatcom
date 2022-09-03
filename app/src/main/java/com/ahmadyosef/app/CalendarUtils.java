@@ -8,6 +8,9 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/*
+Utilities, used in Common fragment, for calendar views changes
+*/
 public class CalendarUtils
 {
     public static LocalDate selectedDate;

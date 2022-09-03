@@ -78,15 +78,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                 showApproveNewShiftrequest(view, request);
             else if (request.getType() == ShiftRequestType.Delete)
             {
-                boolean isBefore = LocalTime.now().isBefore(utils.getShiftStartTime(request.getShift().getType()));
-                int interval = LocalTime.now().getHour() - utils.getShiftStartTime(request.getShift().getType()).getHour();
-                if (isBefore && (interval > 3))
-                {
-                    showRemoveShiftRequest(view, request, position);
-                }
-                else
-                {
-                }
+                showRemoveShiftRequest(view, request, position);
             }
         }
     };

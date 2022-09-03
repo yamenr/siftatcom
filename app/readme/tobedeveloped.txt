@@ -18,13 +18,6 @@ Enhancements:
 
 TODO: * Remove redundancy from code: done partially
       * User can ask until 3 hours before shift to cancel it - check
-      * Notify user half hour before shift
-      * Notify on shift request to company shift manager
-      * Notify if user shift request is approved
+      * Bug: Adding new shift from admin dates issue
+      * additional function documentations
 
-TODO: * Design
-        * Requests
-        * UsersList
-        * Font sizes
-        * Color Theme
-        * Common page lines between items

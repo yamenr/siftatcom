@@ -22,11 +22,9 @@ import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-enum ErrorCodes
-{
-    IncorrectAuth, FieldsEmpty, True, False
-}
-
+/*
+Singleton utilities class, used for general purposes
+*/
 public class Utilities {
     private static Utilities instance;
     private final String restsStr = "restaurants";
@@ -43,6 +41,7 @@ public class Utilities {
         return instance;
     }
 
+    // Converting from string date, and returning LocalDate object
     public Date convertDate(String dateStr)
     {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -57,6 +56,7 @@ public class Utilities {
         return date;
     }
 
+    // Converting from string date, and returning LocalDate object
     public LocalDate convertLocalDate(String dateStr)
     {
         String[] str = dateStr.split("-");
@@ -77,6 +77,7 @@ public class Utilities {
         return date;*/
     }
 
+    // used for CalendarView, returning long integer equivalent for LocalDate object
     public long getMilliSecsForCalendar(LocalDate date)
     {
         Calendar calendar = Calendar.getInstance();
@@ -87,6 +88,7 @@ public class Utilities {
         return calendar.getTimeInMillis();
     }
 
+    // returns only the a list of username string from user objects
     public ArrayList<String> usersList(ArrayList<User> users) {
         ArrayList<String> userList = new ArrayList<>();
 
@@ -99,6 +101,7 @@ public class Utilities {
         return userList;
     }
 
+    // Used in splash screen opening, for greeting message according to time of day
     public String sayHello()
     {
         Calendar c = Calendar.getInstance();
