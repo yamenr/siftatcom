@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Company> companies = new ArrayList<>();
     private CompaniesCallback ccall;
 
+    /*
+    * onCreate, onStart, initialize all prepare activity before being launched */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    /*
+    * cGet companies data from firebase, set user company related properties
+    * */
     public ArrayList<Company> getCompanies()
     {
         try {

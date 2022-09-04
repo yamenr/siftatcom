@@ -28,6 +28,10 @@ public class FeedActivity extends AppCompatActivity {
 
     private FirebaseServices fbs;
 
+    /*
+    onCreate, onCreateOptionsMenu, onOptionsItemSelected
+    Initialize app before showing
+    * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +41,9 @@ public class FeedActivity extends AppCompatActivity {
         gotoFragment(R.id.miTodayFeed);
     }
 
+    /*
+    * Initializing properties, action bar and data services
+    * */
     private void initialize() {
         fbs = FirebaseServices.getInstance();
         ActionBar actionBar = getSupportActionBar();

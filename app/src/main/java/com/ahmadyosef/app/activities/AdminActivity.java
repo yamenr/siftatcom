@@ -29,6 +29,10 @@ public class AdminActivity extends AppCompatActivity {
     private FirebaseServices fbs;
     private Fragment fr = null;
 
+    /*
+    onCreate, onCreateOptionsMenu, onOptionsItemSelected
+    Initialize app before showing
+    * */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -68,6 +68,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         }
     };
 
+    // ignore, not used
     private void showCannotRequestDelete() {
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(context);

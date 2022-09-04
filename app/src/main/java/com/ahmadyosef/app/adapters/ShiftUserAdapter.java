@@ -47,6 +47,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
     private List<ShiftUser> shifts;
     private CommonFragment cf;
 
+    // C'tor initialization for properties
     public ShiftUserAdapter(@NonNull Context context, List<ShiftUser> shifts)
     {
         super(context, 0, shifts);
@@ -95,7 +96,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
         return convertView;
     }
 
-
+    // delete dialogue for shift
     public void showAlertDialogDeleteItem(int position)
     {
         AlertDialog.Builder builder                = new AlertDialog.Builder(context);
@@ -135,6 +136,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
         dialog.show();
     }
 
+    // removal of shift from database and view
     private void removeItem(int i) {
         fbs.removeShiftFromUser2(shifts.get(i));
         shifts.remove(i);
@@ -221,6 +223,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
             spShift.setSelection(0);
     } */
 
+    // called after OK button is clicked is clicked in edit dialog
     private void sendDialogDataToActivity(String user, String shiftType, String date, int i)
     {
         if (shiftChanges(user, shiftType, date, i))
@@ -229,6 +232,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
             Toast.makeText(context, R.string.no_changes_made_to_shift, Toast.LENGTH_LONG).show();
     }
 
+    // return true or false if there were changes in edit dialog
     private boolean shiftChanges(String user, String shiftType, String date, int i) {
         ShiftUser shift = shifts.get(i);
         if (!shift.getUsername().equals(user) || !shift.getDate().equals(date) || !shift.getType().equals(shiftType))

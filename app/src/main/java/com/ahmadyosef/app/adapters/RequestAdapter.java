@@ -108,7 +108,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         }
     }
 
-
+    /*remove request from database*/
     private void removeRequest(ShiftRequest request, int position) {
         for(Map.Entry<String, ShiftRequest> requestEntry: requests.entrySet())
         {
@@ -132,6 +132,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         }
     }
 
+    /*remove request from view*/
     public void removeAt(int position) {
         mData.remove(position);
         notifyItemRemoved(position);
@@ -219,6 +220,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         void onItemClick(View view, int position);
     }
 
+    // Dialogue for adding a new shift according to user request
     public void showApproveNewShiftrequest(View view, ShiftRequest sr)
     {
         AlertDialog.Builder builder
@@ -265,6 +267,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         dialog.show();
     }
 
+    // Dialogue for removing a shift according to user request
     public void showRemoveShiftRequest(View view, ShiftRequest sr, int position)
     {
         AlertDialog.Builder builder
@@ -308,6 +311,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
         dialog.show();
     }
 
+    // Get users data from firebase
     public Map<String, User> getUsersMap()
     {
         Map<String, User> users = new HashMap<>();
