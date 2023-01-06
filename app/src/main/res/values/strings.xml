@@ -15,7 +15,7 @@
     <string name="alert">alert</string>
     <string name="dismiss">dismiss</string>
     <string name="OK">OK</string>
-    <string name="pick_shift_time">Pick your shift time:</string>
+    <string name="pick_shift_time">Choose shift type request:</string>
     <string name="approve_shift_request">Do you approve request?</string>
     <string name="required_field">Required</string>
     <string name="shift_request_sent">Shift request sent to supervisor!</string>
@@ -42,7 +42,7 @@
     <string name="apk">AIzaSyArbt5XafM8OuXaAH0jBRJUyEIkJeLShrM</string>
     <string name="apid">shiftatcom3</string>
     <string name="my_shifts">My Shifts</string>
-    <string name="team_shifts">Team Shifts</string>
+    <string name="team_shifts">All shifts of today with my Team</string>
     <string name="add_user_shift_dialogue">Add Shift Dialogue</string>
     <string name="submit_request_to_remove_shift">Are you sure you want to submit a delete request?</string>
     <string name="delete_shift_request">Employee would like to remove shift. Do you approve?</string>

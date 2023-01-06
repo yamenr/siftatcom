@@ -138,7 +138,7 @@ public class LoginFragment extends Fragment {
                     {
                         fbs.setCompany(c);
                         fbs.setSuperUser(true);
-                        gotoAdminActivity();
+                        gotoAdminActivity(); // super user
                         return;
                     }
                 }
@@ -149,7 +149,7 @@ public class LoginFragment extends Fragment {
                     {
                         fbs.setCompany(c);
                         fbs.setSuperUser(false);
-                        gotoFeedActivity();
+                        gotoFeedActivity(); // regular user
                         return;
                     }
                 }

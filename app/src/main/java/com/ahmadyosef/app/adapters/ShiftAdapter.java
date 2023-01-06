@@ -48,6 +48,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         @Override
         public void onItemClick(View view, int position) {
             Shift shift = mData.get(position);
+            // TODO: if three hours before shift possible
             showSubmitDeleteShiftRequestDialogue(shift);
 
             /*
@@ -134,7 +135,7 @@ public class ShiftAdapter extends RecyclerView.Adapter<ShiftAdapter.ViewHolder> 
         return mData.size();
     }
 
-    // stores and recycles views as they are scrol    led off screen
+    // stores and recycles views as they are scrolled off screen
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvDate;
         ImageView ivPhoto;

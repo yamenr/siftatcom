@@ -65,7 +65,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
         ShiftUser shift = getItem(position);
 
         if (convertView == null)
-        convertView = LayoutInflater.from(getContext()).inflate(R.layout.common_shift_user_details, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.common_shift_user_details, parent, false);
 
         TextView tvUsername = convertView.findViewById(R.id.tvCommonShiftUsername);
         ImageView ivShiftTypeLogo = convertView.findViewById(R.id.ivCommonShiftUserIconRow);
@@ -99,7 +99,7 @@ public class ShiftUserAdapter extends ArrayAdapter<ShiftUser>
     // delete dialogue for shift
     public void showAlertDialogDeleteItem(int position)
     {
-        AlertDialog.Builder builder                = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.are_you_sure_delete);
         final View customLayout
                 = ((Activity)context).getLayoutInflater()

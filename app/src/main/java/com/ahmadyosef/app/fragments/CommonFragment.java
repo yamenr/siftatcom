@@ -256,12 +256,19 @@ public class CommonFragment extends Fragment  implements CommonAdapter.OnItemLis
         spUsers = customLayout.findViewById(R.id.spUserAddEditShiftDialogue);
         cal = customLayout.findViewById(R.id.calAddEditShiftDialogue);
         final LocalDate[] curDate = {LocalDate.now()};
-        cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-            @Override
-            public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
-                curDate[0] = LocalDate.of(year, month, day);
-            }
-        });
+        try {
+            cal.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+                @Override
+                public void onSelectedDayChange(@NonNull CalendarView calendarView, int year, int month, int day) {
+                    curDate[0] = LocalDate.of(year, month + 1, day);
+                }
+            });
+        }
+        catch (Exception e) {
+            Log.e("CalDateErr", e.getMessage());
+            e.printStackTrace();
+        }
+
         // TODO: checking month issue
         cal.setDate(System.currentTimeMillis(), false, true);
         //cal.setDate(utils.getMilliSecsForCalendar(curDate[0]), true, true);

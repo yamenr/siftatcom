@@ -75,7 +75,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                 }
             };
             if (request.getType() == ShiftRequestType.New)
-                showApproveNewShiftrequest(view, request);
+                showApproveNewShiftrequest(view, request, position);
             else if (request.getType() == ShiftRequestType.Delete)
             {
                 showRemoveShiftRequest(view, request, position);
@@ -221,7 +221,7 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
     }
 
     // Dialogue for adding a new shift according to user request
-    public void showApproveNewShiftrequest(View view, ShiftRequest sr)
+    public void showApproveNewShiftrequest(View view, ShiftRequest sr, int position)
     {
         AlertDialog.Builder builder
                 = new AlertDialog.Builder(view.getContext());
@@ -247,6 +247,19 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                                 ShiftUser su = new ShiftUser(sr.getUsername(), sr.getShift().getDate(), sr.getShift().getType());
                                 fbs.addShiftToUser(su);
                                 rdc.onCallback(true);
+                            }
+                        });
+        builder
+                .setNeutralButton("Remove Request",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                ShiftUser su = new ShiftUser(sr.getUsername(), sr.getShift().getDate(), sr.getShift().getType());
+                                removeRequest(sr, position);
                             }
                         });
         builder
@@ -295,6 +308,19 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                             }
                         });
         builder
+                .setNeutralButton("Remove Request",
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                ShiftUser su = new ShiftUser(sr.getUsername(), sr.getShift().getDate(), sr.getShift().getType());
+                                removeRequest(sr, position);
+                            }
+                        });
+        builder
                 .setNegativeButton("Cancel",
                         new DialogInterface.OnClickListener() {
 
@@ -310,6 +336,8 @@ public class RequestAdapter extends RecyclerView.Adapter<RequestAdapter.ViewHold
                 = builder.create();
         dialog.show();
     }
+
+
 
     // Get users data from firebase
     public Map<String, User> getUsersMap()

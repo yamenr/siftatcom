@@ -379,7 +379,18 @@ public class Todays extends Fragment {
                                                 .toString(), ShiftRequestType.New);
                             }
                         });
+        builder
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
 
+                            @Override
+                            public void onClick(
+                                    DialogInterface dialog,
+                                    int which)
+                            {
+                                dialog.cancel();
+                            }
+                        });
         // create and show
         // the alert dialog
         AlertDialog dialog

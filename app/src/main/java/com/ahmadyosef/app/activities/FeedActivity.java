@@ -68,10 +68,10 @@ public class FeedActivity extends AppCompatActivity {
                 gotoFragment(R.id.miTodayFeed);
                 return true;
 
-
+/*
             case R.id.miCommonFeed:
                 gotoFragment(R.id.miCommonFeed);
-                return true;
+                return true; */
 
             case R.id.miAboutFeed:
                 gotoFragment(R.id.miAboutFeed);
@@ -94,10 +94,10 @@ public class FeedActivity extends AppCompatActivity {
             case R.id.miTodayFeed:
                 fr = new Todays();
                 break;
-
+/*
             case R.id.miCommonFeed:
                 fr = new CommonUserFragment();
-                break;
+                break; */
 
             case R.id.miAboutFeed:
                 fr = new AboutFragment();
