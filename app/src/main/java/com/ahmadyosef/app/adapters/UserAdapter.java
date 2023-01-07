@@ -1,12 +1,16 @@
 package com.ahmadyosef.app.adapters;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ahmadyosef.app.R;
@@ -34,7 +38,52 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             // TODO: Adding dialogue for user's data
                 // create xml: including all text fields of the user
                 // add function the builds and shows dialogue (like the add shift)
-        }
+                TextView id,name,username,addres,phone,type;
+                //ShiftUserAdapter
+                //-> showShiftEditDialog
+                CalendarView cal;
+                // Create an alert builder
+                AlertDialog.Builder builder
+                        = new AlertDialog.Builder(context);
+                builder.setTitle("info user");
+                // set the custom layout
+                final View customLayout
+                        = ((Activity)context).getLayoutInflater()
+                        .inflate(
+                                R.layout.datauser,
+                                null);
+
+                name=customLayout.findViewById(R.id.name);
+                username=customLayout.findViewById(R.id.username);
+                addres=customLayout.findViewById(R.id.addres);
+                phone=customLayout.findViewById(R.id.phone);
+                type=customLayout.findViewById(R.id.type);
+
+                name.setText(user.getName());
+                username.setText(user.getUsername());
+                addres.setText(user.getAddress());
+                phone.setText(user.getPhone());
+                type.setText(String.valueOf(user.getType()));
+
+
+                builder.setView(customLayout);
+                builder
+                        .setNegativeButton("close",
+                                new DialogInterface.OnClickListener() {
+
+                                    @Override
+                                    public void onClick(
+                                            DialogInterface dialog,
+                                            int which)
+                                    {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog dialog
+                        = builder.create();
+                dialog.show();
+
+            }
     };
 
     // data is passed into the constructor
